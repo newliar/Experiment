@@ -2,10 +2,9 @@ import json
 import os
 import numpy as np
 
-
-
 def get_road():
-    file_path = os.path.dirname(os.getcwd())+"\\dataset\\allways.json"
+    file_path = os.path.dirname(os.getcwd())+"/dataset/allways.json"
+    print(file_path)
     file = open(file_path, 'r', encoding='utf-8')
     # 存放 干线公路、一级道路、二级道路、三级道路
     trunk = []
