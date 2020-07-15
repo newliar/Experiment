@@ -78,6 +78,31 @@ def get_way_ref(way):
 
 # 获得所有node之间的连接情况
 def get_node_relation(way_list):
+    # 获得count和node_relation
+    dic = get_count(way_list)
+    count = dic[0]
+    node_relation = dic[1]
+    print(count)
+    # 存储各个ref的连通状态
+    node_array = np.zeros((count, count))
+    for m in way_list:
+        for n in m:
+            index = node_relation.index(n)
+            node_array[index][index] = 1
+            if(index == 0):
+                continue
+            else:
+                i = which_floor(way_list, n)
+                j = which_floor(way_list, node_relation[index - 1])
+                if(i == j):
+                    node_array[index][index - 1] = 1
+                    node_array[index - 1][index] = 1
+
+            # print(str(n)+"--------"+str(which_floor(way_list, n)))
+    print(node_array)
+
+# 获得ref的不重复个数和道路的不重复集合
+def get_count(way_list):
     # 获得ref的总数量
     count = 0
     count_1 = 0
@@ -89,19 +114,25 @@ def get_node_relation(way_list):
                 node_relation.append(n)
                 count += 1
             count_1 += 1
-    print(count)
-    print(count_1)
+    # print(count)
+    # print(way_list)
+    return count, node_relation
 
-    # 存储各个ref的连通状态
-    node_array = np.zeros([count, count])
-    # i j是node_array下标
-    i = 0
+# 获得ref在way_list的层数，即判断ref是不是同一条路上的点
+def which_floor(way_list, ele):
+    # i代表层数 flag跳出外层循环
+    i = 1
+    flag = 0
     for m in way_list:
-        j = 0
         for n in m:
-            index = node_relation.index(n)
-            node_array[index][index] = 1
-    print(node_array)
+            if(n == ele):
+                flag = 1
+                break
+        if(flag == 1):
+            break
+        i += 1
+    return i
+
 
 
 if __name__ == "__main__":
