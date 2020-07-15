@@ -133,8 +133,6 @@ def which_floor(way_list, ele):
         i += 1
     return i
 
-
-
 if __name__ == "__main__":
     way_tuple = get_road()
     get_node_relation(get_way_ref(way_tuple[0]))
