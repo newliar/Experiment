@@ -1,6 +1,9 @@
 import json
 import os
+
 import numpy as np
+
+import draw_node_test
 
 
 def get_road():
@@ -150,18 +153,44 @@ def which_floor(way_list, ele):
 def get_coordinate(node_list):
     file_path = os.path.dirname(os.getcwd()) + "/dataset/node.json"
     file = open(file_path, 'r', encoding='utf-8')
+    location = []
     for line in file.readlines():
         dic = json.loads(line)
         if "id" in dic:
             if dic["id"] in node_list:
                 if "lat" in dic and "lon" in dic:
-                    print("node:" + str(dic["id"]) + "  " + "latitude:" + str(dic["lat"]) + "  " + "longitude:" + str(dic["lon"]))
+                    coordinate = [np.float64(dic["lat"]), np.float64(dic["lon"])]
+                    location.append(coordinate)
+                    print(dic["id"])
+                    # print("node:" + str(dic["id"]) + "  " + "latitude:" + str(dic["lat"]) + "  " + "longitude:" + str(dic["lon"]))
+                    pass
         else:
             continue
+    return location
+
+
+# 获得ref的经纬度 可视化测试用
+def get_coordinate_test(node_list):
+    file_path = os.path.dirname(os.getcwd()) + "/dataset/node.json"
+    file = open(file_path, 'r', encoding='utf-8')
+    location_map = {}
+    for line in file.readlines():
+        dic = json.loads(line)
+        if "id" in dic:
+            if dic["id"] in node_list:
+                if "lat" in dic and "lon" in dic:
+                    coordinate = [np.float64(dic["lat"]), np.float64(dic["lon"])]
+                    location_map[dic["id"]] = coordinate
+        else:
+            continue
+    return location_map
 
 
 if __name__ == "__main__":
     way_tuple = get_road()
-    way_info = get_node_relation(get_way_ref(way_tuple[0]))
-    # print(way_info[0])
-    get_coordinate(way_info[0])
+    way_ref = get_way_ref(way_tuple[0])
+    way_info = get_node_relation(way_ref)
+    # print(type(way_ref))
+    location_map = get_coordinate_test(way_info[0])
+    draw_node_test.get_way_node(way_ref, location_map)
+    # print(way_ref)
