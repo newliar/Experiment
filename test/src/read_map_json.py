@@ -1,8 +1,7 @@
 import json
 import os
-
 import numpy as np
-
+import folium
 import draw_node_test
 
 
@@ -11,15 +10,17 @@ def get_road():
     # print(file_path)
     file = open(file_path, 'r', encoding='utf-8')
     # 存放 干线公路、一级道路、二级道路、三级道路
-    trunk = []
+    # trunk = []
     primary = []
     secondary = []
     tertiary = []
+    unclassified = []
+    residential = []
     # 存放道路连接路
-    trunk_link = []
-    primary_link = []
-    secondary_link = []
-    tertiary_link = []
+    # trunk_link = []
+    # primary_link = []
+    # secondary_link = []
+    # tertiary_link = []
     #  将道路存放到对应的list
     for line in file.readlines():
         dic = json.loads(line)
@@ -27,47 +28,53 @@ def get_road():
         if "tag" in dic:
             if isinstance(dic["tag"], list):
                 for m in dic["tag"]:
-                    if m["v"] == "trunk":
-                        trunk.append(dic)
-                        break
-                    if m["v"] == "primary":
+                    # if m["v"] == "trunk":
+                    #     trunk.append(dic)
+                    #     break
+                    if m["k"] == "highway" and m["v"] == "primary":
                         primary.append(dic)
                         break
-                    if m["v"] == "secondary":
+                    if m["k"] == "highway" and m["v"] == "secondary":
                         secondary.append(dic)
                         break
-                    if m["v"] == "tertiary":
+                    if m["k"] == "highway" and m["v"] == "tertiary":
                         tertiary.append(dic)
                         break
-                    if m["v"] == "trunk_link":
-                        trunk_link.append(dic)
+                    if m["k"] == "highway" and m["v"] == "unclassified":
+                        unclassified.append(dic)
                         break
-                    if m["v"] == "primary_link":
-                        primary_link.append(dic)
+                    if m["k"] == "highway" and m["v"] == "residential":
+                        residential.append(dic)
                         break
-                    if m["v"] == "secondary_link":
-                        secondary_link.append(dic)
-                        break
-                    if m["v"] == "tertiary_link":
-                        tertiary_link.append(dic)
-                        break
-            elif dic["tag"]["v"] == "trunk":
-                trunk.append(dic)
-            elif dic["tag"]["v"] == "primary":
-                primary.append(dic)
-            elif dic["tag"]["v"] == "secondary":
-                secondary.append(dic)
-            elif dic["tag"]["v"] == "tertiary":
-                tertiary.append(dic)
-            elif dic["tag"]["v"] == "trunk_link":
-                trunk_link.append(dic)
-            elif dic["tag"]["v"] == "primary_link":
-                primary_link.append(dic)
-            elif dic["tag"]["v"] == "secondary_link":
-                secondary_link.append(dic)
-            elif dic["tag"]["v"] == "tertiary_link":
-                tertiary_link.append(dic)
-    return trunk, primary, secondary, tertiary, trunk_link, primary_link, secondary_link, tertiary_link
+                    # if m["v"] == "trunk_link":
+                    #     trunk_link.append(dic)
+                    #     break
+                    # if m["v"] == "primary_link":
+                    #     primary_link.append(dic)
+                    #     break
+                    # if m["v"] == "secondary_link":
+                    #     secondary_link.append(dic)
+                    #     break
+                    # if m["v"] == "tertiary_link":
+                    #     tertiary_link.append(dic)
+                    #     break
+            # elif dic["tag"]["v"] == "trunk":
+            #     trunk.append(dic)
+            # elif dic["tag"]["v"] == "primary":
+            #     primary.append(dic)
+            # elif dic["tag"]["v"] == "secondary":
+            #     secondary.append(dic)
+            # elif dic["tag"]["v"] == "tertiary":
+            #     tertiary.append(dic)
+            # elif dic["tag"]["v"] == "trunk_link":
+            #     trunk_link.append(dic)
+            # elif dic["tag"]["v"] == "primary_link":
+            #     primary_link.append(dic)
+            # elif dic["tag"]["v"] == "secondary_link":
+            #     secondary_link.append(dic)
+            # elif dic["tag"]["v"] == "tertiary_link":
+            #     tertiary_link.append(dic)
+    return primary, secondary, tertiary, unclassified, residential
 
 
 # 获得道路的所有ref值
@@ -161,7 +168,7 @@ def get_coordinate(node_list):
                 if "lat" in dic and "lon" in dic:
                     coordinate = [np.float64(dic["lat"]), np.float64(dic["lon"])]
                     location.append(coordinate)
-                    print(dic["id"])
+                    # print(dic["id"])
                     # print("node:" + str(dic["id"]) + "  " + "latitude:" + str(dic["lat"]) + "  " + "longitude:" + str(dic["lon"]))
                     pass
         else:
@@ -169,28 +176,28 @@ def get_coordinate(node_list):
     return location
 
 
-# 获得ref的经纬度 可视化测试用
-def get_coordinate_test(node_list):
-    file_path = os.path.dirname(os.getcwd()) + "/dataset/node.json"
-    file = open(file_path, 'r', encoding='utf-8')
-    location_map = {}
-    for line in file.readlines():
-        dic = json.loads(line)
-        if "id" in dic:
-            if dic["id"] in node_list:
-                if "lat" in dic and "lon" in dic:
-                    coordinate = [np.float64(dic["lat"]), np.float64(dic["lon"])]
-                    location_map[dic["id"]] = coordinate
-        else:
-            continue
-    return location_map
-
-
 if __name__ == "__main__":
+
+    map = folium.Map([31.2329298, 121.4822705], zoom_start=10)
+
     way_tuple = get_road()
-    way_ref = get_way_ref(way_tuple[0])
-    way_info = get_node_relation(way_ref)
+    # for way in way_tuple:
+    #     way_ref = get_way_ref(way)
+    #     way_info = get_node_relation(way_ref)
+    #     location = get_coordinate(way_info[0])
+    #     print(location)
+    # way_ref = get_way_ref(way_tuple[4])
+    # way_info = get_node_relation(way_ref)
     # print(type(way_ref))
-    location_map = get_coordinate_test(way_info[0])
-    draw_node_test.get_way_node(way_ref, location_map)
+    # location_map = draw_node_test.get_coordinate_test(way_info[0])
+    # map = draw_node_test.get_way_node(map, way_ref, location_map)
     # print(way_ref)
+    for way in way_tuple:
+        way_ref = get_way_ref(way)
+        way_info = get_node_relation(way_ref)
+        # print(way_info[0])
+        # print(type(way_ref))
+        location_map = draw_node_test.get_coordinate_test(way_info[0])
+        map = draw_node_test.get_way_node(map, way_ref, location_map)
+
+    map.save(os.path.join(r'' + os.path.dirname(os.getcwd()) + '/dataset/', 'way.html'))
