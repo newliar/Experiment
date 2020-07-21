@@ -81,45 +81,35 @@ def get_road():
 def get_way_ref(way):
     # 存储way的ref值
     way_ref = []
+    way_refs = []
     for ele in way:
         temp = []
         for nd_ele in ele["nd"]:
             for value in nd_ele.values():
                 temp.append(value)
+                way_refs.append(value)
         way_ref.append(temp)
-    return way_ref
+    return way_ref, way_refs
 
 
 # 获得所有node之间的连接情况
-def get_node_relation(way_list):
-    # 获得count和node_relation(无重复点)
-    dic = get_count(way_list)
-    count = dic[0]
-    node_list = dic[1]
-    # print(count)
+def get_node_relation(node_relation, node_list, way_ref):
     # 存储各个ref的连通状态
-    # 矩阵元素0代表不连通 1代表连通
-    node_relation = np.zeros((count, count))
-    for m in way_list:
-        for n in m:
-            # 矩阵对角线置1 节点与自身视为连通
-            index = node_list.index(n)
-            node_relation[index][index] = 1
-            # 排除下标为0特殊情况
-            if index == 0:
-                continue
-            # 获得当前节点位于那一条way上
-            else:
-                i = which_floor(way_list, n)
-                j = which_floor(way_list, node_list[index - 1])
-                # 同一条way上 相邻节点视为连通
-                if i == j:
-                    node_relation[index][index - 1] = 1
-                    node_relation[index - 1][index] = 1
-
-            # print(str(n)+"--------"+str(which_floor(way_list, n)))
-    # print(node_list)
-    return node_list, node_relation
+    for way_kind in way_ref:
+        for way in way_kind:
+            for reference in way:
+                # 矩阵对角线置1 节点与自身视为连通
+                index_i = node_list.index(reference)
+                node_relation[index_i][index_i] = 1
+                # 排除下标为0特殊情况
+                if way.index(reference) == 0:
+                    continue
+                # 获得当前节点位于那一条way上
+                else:
+                    index_j = node_list.index(way[way.index(reference) - 1])
+                    node_relation[index_i][index_j] = 1
+                    node_relation[index_j][index_i] = 1
+    return node_relation
 
 
 # 获得ref的不重复个数和道路的不重复集合
@@ -135,7 +125,7 @@ def get_count(way_list):
                 node_list.append(n)
                 count += 1
             count_1 += 1
-    # print(count)
+    print(count)
     # print(way_list)
     return count, node_list
 
@@ -177,27 +167,42 @@ def get_coordinate(node_list):
 
 
 if __name__ == "__main__":
-
-    map = folium.Map([31.2329298, 121.4822705], zoom_start=10)
-
+    # map = folium.Map([31.2329298, 121.4822705], zoom_start=10)
+    node_set = set()  # 所有node的集合
+    way_ref = []  # 所有way的reference
+    # 获得所有的道路集合（元组）
     way_tuple = get_road()
-    # for way in way_tuple:
-    #     way_ref = get_way_ref(way)
-    #     way_info = get_node_relation(way_ref)
-    #     location = get_coordinate(way_info[0])
-    #     print(location)
-    # way_ref = get_way_ref(way_tuple[4])
+    # 获得所有道路节点的不重复数量
+    for way in way_tuple:
+        way_ref.append(get_way_ref(way)[0])
+        node_set = node_set | set(get_way_ref(way)[1])
+    # 所有node的不重复数
+    count = len(node_set)
+    node_list = list(node_set)
+    # 存储所有node的连接关系
+    # 矩阵元素0代表不连通 1代表连通
+    node_relation = np.zeros((count, count))
+    node_relation = get_node_relation(node_relation, node_list, way_ref)[1]
+    s = np.argwhere(node_relation == 1)
+    print(s)
+
+
+    # 打印单个 测试用
+    # way_ref = get_way_ref(way_tuple[0])
     # way_info = get_node_relation(way_ref)
-    # print(type(way_ref))
+    # # print(type(way_ref))
     # location_map = draw_node_test.get_coordinate_test(way_info[0])
     # map = draw_node_test.get_way_node(map, way_ref, location_map)
     # print(way_ref)
-    for way in way_tuple:
-        way_ref = get_way_ref(way)
-        way_info = get_node_relation(way_ref)
-        # print(way_info[0])
-        # print(type(way_ref))
-        location_map = draw_node_test.get_coordinate_test(way_info[0])
-        map = draw_node_test.get_way_node(map, way_ref, location_map)
 
-    map.save(os.path.join(r'' + os.path.dirname(os.getcwd()) + '/dataset/', 'way.html'))
+    # 打印所有
+    # for way in way_tuple:
+    #     way_ref = get_way_ref(way)
+    #     way_info = get_node_relation(way_ref)
+    #     # print(way_info[0])
+    #     # print(type(way_ref))
+    #     location_map = draw_node_test.get_coordinate_test(way_info[0])
+    #     map = draw_node_test.get_way_node(map, way_ref, location_map)
+
+    # 画成地图并以网页存储
+    # map.save(os.path.join(r'' + os.path.dirname(os.getcwd()) + '/dataset/', 'primary_node.html'))

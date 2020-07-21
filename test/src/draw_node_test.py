@@ -33,8 +33,8 @@ def get_way_node(map, way_ref, location_map):
                 location.append(location_map[n])
         all_location.append(location)
     # print(all_location)
-    map = draw_line(map, all_location)
-    # map = draw_node(map, all_location)
+    # map = draw_line(map, all_location)
+    map = draw_node(map, all_location)
     return map
 
 # 画出所有路线
