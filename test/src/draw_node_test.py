@@ -23,6 +23,7 @@ def get_coordinate_test(node_list):
             continue
     return location_map
 
+
 # 获得所有的经纬度集合
 def get_way_node(map, way_ref, location_map):
     all_location = []
@@ -37,6 +38,7 @@ def get_way_node(map, way_ref, location_map):
     map = draw_node(map, all_location)
     return map
 
+
 # 画出所有路线
 def draw_line(map, all_location):
     for location in all_location:
@@ -48,6 +50,7 @@ def draw_line(map, all_location):
         ).add_to(map)
     return map
     # m.save(os.path.join(r'' + os.path.dirname(os.getcwd()) + '/dataset/', 'node.html'))
+
 
 # 画点
 def draw_node(map, all_location):
