@@ -217,7 +217,7 @@ if __name__ == "__main__":
     location = get_coordinate(node_list, location)
     df = pd.DataFrame(location)
     df.columns = ['lon', 'lat']
-    df.to_csv('coordinate.csv')
+    df.to_csv('coordinate.csv', index=False)
     distance_matrix = get_distance(node_relation.astype(int), location, distance_matrix)
     x = np.nonzero(distance_matrix)
 
