@@ -3,6 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 from sklearn.manifold import TSNE
+import os
 
 # X = np.loadtxt(open("coordinate.csv", "rb"), delimiter=",", skiprows=0)
 
@@ -10,8 +11,8 @@ from sklearn.manifold import TSNE
 #
 # labels = kmeans.labels_
 # labels = pd.DataFrame(labels, columns=['labels'])
-
-X = pd.read_csv('coordinate.csv')
+file_path = os.path.dirname(os.getcwd()) + "\dataset\coordinate.csv"
+X = pd.read_csv(file_path)
 X.head()
 kmeans_model = KMeans(n_clusters=500, init='k-means++', random_state=0)
 y_kmeans = kmeans_model.fit_predict(X)
@@ -19,7 +20,7 @@ centers = kmeans_model.cluster_centers_
 for i in range(500):
     plt.scatter(centers[i, 0], centers[i, 1], s=1, c='red')
 # plt.show()
-# plt.savefig("test.svg", format="svg")
+plt.savefig("test.svg", format="svg")
 # colors_list = ['red', 'blue', 'green', 'yellow', 'pink']
 # X = X.values
 #

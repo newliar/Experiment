@@ -7,6 +7,7 @@ import pandas as pd
 import copy
 from math import radians, cos, sin, asin, sqrt
 from DFS import Dfs
+import matplotlib.pyplot as plt
 
 inf = float("inf")
 
@@ -215,14 +216,18 @@ if __name__ == "__main__":
     node_relation = get_node_relation(node_relation, node_list, way_ref)
     # 获得各个节点的经纬度及距离情况
     location = get_coordinate(node_list, location)
-    df = pd.DataFrame(location)
-    df.columns = ['lon', 'lat']
-    df.to_csv('coordinate.csv', index=False)
-    distance_matrix = get_distance(node_relation.astype(int), location, distance_matrix)
-    x = np.nonzero(distance_matrix)
-
-    a = np.zeros(count).astype(int)
-    dfs = Dfs(node_relation, a)
+    for i in range(3620):
+        plt.scatter(location[i, 0], location[i, 1], s=1, c='red')
+    # plt.show()
+    plt.savefig("all_node.svg", format="svg")
+    # df = pd.DataFrame(location)
+    # df.columns = ['lon', 'lat']
+    # df.to_csv('coordinate.csv', index=False)
+    # distance_matrix = get_distance(node_relation.astype(int), location, distance_matrix)
+    # x = np.nonzero(distance_matrix)
+    #
+    # a = np.zeros(count).astype(int)
+    # dfs = Dfs(node_relation, a)
 
     # pd_data = pd.DataFrame(distance_matrix, columns=['node_x', 'node_y'])
     # print(pd_data)
