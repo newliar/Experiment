@@ -1,12 +1,12 @@
 import json
 import os
 import numpy as np
-import folium
-import draw_node_test
+# import folium
+# import draw_node_test
 import pandas as pd
 import copy
 from math import radians, cos, sin, asin, sqrt
-from DFS import Dfs
+# from DFS import Dfs
 
 inf = float("inf")
 
@@ -216,13 +216,12 @@ if __name__ == "__main__":
     # 获得各个节点的经纬度及距离情况
     location = get_coordinate(node_list, location)
     df = pd.DataFrame(location)
-    df.columns = ['lon', 'lat']
     df.to_csv('coordinate.csv', index=False)
     distance_matrix = get_distance(node_relation.astype(int), location, distance_matrix)
     x = np.nonzero(distance_matrix)
 
     a = np.zeros(count).astype(int)
-    dfs = Dfs(node_relation, a)
+    # dfs = Dfs(node_relation, a)
 
     # pd_data = pd.DataFrame(distance_matrix, columns=['node_x', 'node_y'])
     # print(pd_data)
