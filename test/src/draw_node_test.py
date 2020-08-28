@@ -4,7 +4,7 @@ import folium
 import numpy as np
 
 # 31.2329298    121.4822705
-m = folium.Map([31.2329298, 121.4822705], zoom_start=6)
+m = folium.Map([31.2329298, 121.4822705], zoom_start=18)
 
 
 # 获得ref的经纬度 可视化测试用
