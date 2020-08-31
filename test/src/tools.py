@@ -1,0 +1,30 @@
+import matplotlib.pyplot as plt
+import folium
+import os
+
+
+# 画两条线段
+def draw_line():
+    plt.scatter(121.771594*1000000, 31.055035*1000000, color='red')
+    plt.scatter(121.7716*1000000, 31.055103*1000000, color='red')
+    # plt.scatter(121.737941*1000000, 31.042536*1000000, color='blue')
+    # plt.scatter(121.737857*1000000, 31.042544*1000000, color='blue')
+
+
+# draw_line()
+# plt.show()
+# plt.savefig("line.svg", format="svg")
+
+def draw_node(map, all_location):
+    for coordinate in all_location:
+        # 数据集格式【经度， 纬度】
+        temp = coordinate[0]
+        coordinate[0] = coordinate[1]
+        coordinate[1] = temp
+        folium.Marker(
+            # folium格式，【纬度，经度】
+            location=coordinate,
+            fill_color='＃43d9de',
+            radius=8
+        ).add_to(map)
+    return map
