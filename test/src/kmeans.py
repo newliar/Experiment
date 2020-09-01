@@ -1,59 +1,36 @@
-import pandas as pd
-import numpy as np
-from sklearn.cluster import DBSCAN
-from sklearn import metrics
 from sklearn.cluster import KMeans
+import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd
+from sklearn.manifold import TSNE
 import os
 
+# X = np.loadtxt(open("coordinate.csv", "rb"), delimiter=",", skiprows=0)
 
-def dbscan(input_file):
-    columns = ['lon', 'lat']
-    in_df = pd.read_csv(input_file, sep=',', header=None, names=columns)
-    # print(in_df.head(10))
-
-    # represent GPS points as (lon, lat)
-    coords = in_df.as_matrix(columns=['lon', 'lat'])
-    coords = coords.astype(np.float)
-    # earth's radius in km
-    kms_per_radian = 6371.0086
-    # define epsilon as 0.5 kilometers, converted to radians for use by haversine
-    # This uses the 'haversine' formula to calculate the great-circle distance between two points
-    # that is, the shortest distance over the earth's surface
-    # http://www.movable-type.co.uk/scripts/latlong.html
-    epsilon = 0.5 / kms_per_radian
-
-    # radians() Convert angles from degrees to radians
-    db = DBSCAN(eps=epsilon, min_samples=15, algorithm='ball_tree', metric='haversine').fit(np.radians(coords))
-    cluster_labels = db.labels_
-
-    # get the number of clusters (ignore noisy samples which are given the label -1)
-    num_clusters = len(set(cluster_labels) - set([-1]))
-
-    print('Clustered ' + str(len(in_df)) + ' points to ' + str(num_clusters) + ' clusters')
-
-    # turn the clusters in to a pandas series
-    # clusters = pd.Series([coords[cluster_labels == n] for n in range(num_clusters)])
-    # print(clusters)
-    kmeans = KMeans(n_clusters=1, n_init=1, max_iter=20, random_state=20)
-
-    for n in range(num_clusters):
-        # print('Cluster ', n, ' all samples:')
-        one_cluster = coords[cluster_labels == n]
-        # print(one_cluster[:1])
-        # clist = one_cluster.tolist()
-        # print(clist[0])
-        kk = kmeans.fit(one_cluster)
-        print(kk.cluster_centers_)
-
-
-def main():
-    path = './coordinate.csv'
-    filelist = os.listdir(path)
-    for f in filelist:
-        datafile = os.path.join(path, f)
-        print(datafile)
-        dbscan(datafile)
-
-
-if __name__ == '__main__':
-    dbscan('coordinate.csv')
+# kmeans = KMeans(n_clusters=500, random_state=0).fit(X)
+#
+# labels = kmeans.labels_
+# labels = pd.DataFrame(labels, columns=['labels'])
+file_path = os.path.dirname(os.getcwd()) + "\dataset\coordinate.csv"
+X = pd.read_csv(file_path)
+X.head()
+kmeans_model = KMeans(n_clusters=500, init='k-means++', random_state=0)
+y_kmeans = kmeans_model.fit_predict(X)
+centers = kmeans_model.cluster_centers_
+for i in range(500):
+    plt.scatter(centers[i, 0], centers[i, 1], s=1, c='red')
+# plt.show()
+plt.savefig("test.svg", format="svg")
+# colors_list = ['red', 'blue', 'green', 'yellow', 'pink']
+# X = X.values
+#
+# for j in range(500):
+#     i = np.random.randint(0, 5)
+#     plt.scatter(X[y_kmeans == i, 0], X[y_kmeans == i, 1], s=100, c=colors_list[i])
+#
+# plt.scatter(kmeans_model.cluster_centers_[:,0],kmeans_model.cluster_centers_[:,1], s=300,c='black',label='Centroids')
+#
+# plt.legend()
+# plt.xlabel('Annual Income (k$)')
+# plt.ylabel('Spending Score (1-100)')
+plt.show()

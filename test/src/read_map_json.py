@@ -1,12 +1,13 @@
 import json
 import os
 import numpy as np
-# import folium
-# import draw_node_test
+import folium
+import draw_node_test
 import pandas as pd
 import copy
 from math import radians, cos, sin, asin, sqrt
-# from DFS import Dfs
+from DFS import Dfs
+import matplotlib.pyplot as plt
 
 inf = float("inf")
 
@@ -192,8 +193,19 @@ def geodistance(lng1, lat1, lng2, lat2):
     return distance
 
 
+def draw_node(map, location):
+    for coordinate in location:
+        folium.Marker(
+            location=coordinate,
+            fill_color='＃43d9de',
+            radius=8
+        ).add_to(map)
+        print(coordinate)
+    return map
+
+
 if __name__ == "__main__":
-    # map = folium.Map([31.2329298, 121.4822705], zoom_start=10)
+    map = folium.Map([31.2329298, 121.4822705], zoom_start=10)
     node_set = set()  # 所有node的集合
     way_ref = []  # 所有way的reference
     # 获得所有的道路集合（元组）
@@ -215,17 +227,23 @@ if __name__ == "__main__":
     node_relation = get_node_relation(node_relation, node_list, way_ref)
     # 获得各个节点的经纬度及距离情况
     location = get_coordinate(node_list, location)
-    df = pd.DataFrame(location)
-    df.to_csv('coordinate.csv', index=False)
-    distance_matrix = get_distance(node_relation.astype(int), location, distance_matrix)
-    x = np.nonzero(distance_matrix)
-
-    a = np.zeros(count).astype(int)
+    for i in range(3620):
+        plt.scatter(location[i, 0], location[i, 1], s=1, c='red')
+    plt.show()
+    plt.savefig("all_node.svg", format="svg")
+    # df = pd.DataFrame(location)
+    # df.columns = ['lon', 'lat']
+    # df.to_csv('coordinate.csv', index=False)
+    # distance_matrix = get_distance(node_relation.astype(int), location, distance_matrix)
+    # x = np.nonzero(distance_matrix)
+    #
+    # a = np.zeros(count).astype(int)
     # dfs = Dfs(node_relation, a)
 
     # pd_data = pd.DataFrame(distance_matrix, columns=['node_x', 'node_y'])
     # print(pd_data)
     # pd_data.to_csv('F:/Experiment/test/dataset/pd_data.csv')
+    # ---------------------------------------------------------------------------------
 
     # 打印单个 测试用
     # way_ref = get_way_ref(way_tuple[0])
@@ -245,4 +263,5 @@ if __name__ == "__main__":
     #     map = draw_node_test.get_way_node(map, way_ref, location_map)
 
     # 画成地图并以网页存储
+    # draw_node(map, location)
     # map.save(os.path.join(r'' + os.path.dirname(os.getcwd()) + '/dataset/', 'primary_node.html'))
