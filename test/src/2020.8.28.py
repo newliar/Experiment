@@ -8,8 +8,7 @@ import folium
 
 import cross as cr
 import tools
-
-f = 1000000
+import configuration as conf
 
 
 def get_road():
@@ -68,7 +67,9 @@ def delete_node(way, ref):
     pass
 
 
-# 获得ref的经纬度,写成csv
+# 获得ref的经纬度
+# 返回值为3维表格
+# 最里层表格列名分别为way_id, 道路名称, node_id, 经度, 纬度
 def get_coordinate(way_info):
     coordinate = []
     for ele in way_info[2:]:
@@ -81,19 +82,6 @@ def get_coordinate(way_info):
         coordinate.append(_coordinate)
     return coordinate
 
-    # print(coordinate_df)
-    # coordinate = []
-    # for line in file.readlines():
-    #     dic = json.loads(line)
-    #     if "id" in dic:
-    #         if dic["id"] in node_list:
-    #             if "lat" in dic and "lon" in dic:
-    #                 _coordinate = []
-    #                 _coordinate.append(dic["id"])
-    #                 _coordinate.append(np.float64(dic["lon"]))
-    #                 _coordinate.append(np.float64(dic["lat"]))
-    #                 coordinate.append(_coordinate)
-
 
 # 根据经纬度计算两点之间距离
 def geodistance(lng1, lat1, lng2, lat2):
@@ -104,10 +92,9 @@ def geodistance(lng1, lat1, lng2, lat2):
     distance = 2 * asin(sqrt(a)) * 6371 * 1000  # 地球平均半径，6371km
     distance = round(distance, 3)
     return distance
-# 31.055399800000004,121.77162299999999
-# 31.0562038,121.77168780000001
 
 
+# 得到路口信息
 def cross(coordinate_info):
     index = 0
     cross_coordinate = []
@@ -119,14 +106,18 @@ def cross(coordinate_info):
                     continue
                 else:
                     for j in range(i+1, len(_single_road)-1):
-                        A = cr.Point(single_road[i][3]*f, single_road[i][4]*f)
-                        B = cr.Point(single_road[i+1][3]*f, single_road[i+1][4]*f)
-                        C = cr.Point(_single_road[j][3]*f, _single_road[j][4]*f)
-                        D = cr.Point(_single_road[j+1][3]*f, _single_road[j+1][4]*f)
+                        A = cr.Point(single_road[i][3]*conf.FACTOR, single_road[i][4]*conf.FACTOR)
+                        B = cr.Point(single_road[i+1][3]*conf.FACTOR, single_road[i+1][4]*conf.FACTOR)
+                        C = cr.Point(_single_road[j][3]*conf.FACTOR, _single_road[j][4]*conf.FACTOR)
+                        D = cr.Point(_single_road[j+1][3]*conf.FACTOR, _single_road[j+1][4]*conf.FACTOR)
                         # 判断是否相交
                         if cr.is_intersected(A, B, C, D):
+                            _cross_coordinate = []
                             # 求交点坐标
-                            cross_coordinate.append(cr.get_intersection(A, B, C, D))
+                            _cross_coordinate.append([single_road[i][0], single_road[i][1]])
+                            _cross_coordinate.append([_single_road[j][0], _single_road[j][1]])
+                            _cross_coordinate.append(cr.get_intersection(A, B, C, D))
+                            cross_coordinate.append(_cross_coordinate)
                             index += 1
                             print(index)
                         j += 1
@@ -135,41 +126,25 @@ def cross(coordinate_info):
 
 
 if __name__ == "__main__":
-    way_ref = []  # 所有way的reference
+    # 根据osm文件获得所有道路信息
     way_tuple = get_road()
     way_info = get_way_ref(way_tuple)
-    coordinate_info = []
 
+    # 读取所有node节点的经纬度文件
     coordinate_file = os.path.dirname(os.getcwd()) + "/dataset/id_coordinate.csv"
     coordinate_data = pd.read_csv(coordinate_file)
     coordinate_df = pd.DataFrame(coordinate_data)
     coordinate_df.set_index(['ref'], inplace=True)
-    # print(coordinate_df)
-    for ele in way_info:
-        _coordiante_info = []
-        _coordiante_info = get_coordinate(ele)
-        coordinate_info.append(_coordiante_info)
-    cross_coordinate = cross(coordinate_info)
-    print(len(cross_coordinate))
-    s = set(np.array(cross_coordinate))
-    print(len(s))
 
-    map = folium.Map([31.055, 121.771], zoom_start=18)
-    map = tools.draw_node(map, cross_coordinate)
-    map.save(os.path.join(r'' + os.path.dirname(os.getcwd()) + '/dataset/', '十字路口.html'))
-    # for single_road in coordinate_info:
-    #     # print(len(single_road))
-    #     folium.Marker(
-    #         location=[single_road[len(single_road)-1][3], single_road[len(single_road)-1][4]],
-    #         fill_color='＃43d9de',
-    #         radius=8
-    #     ).add_to(map)
-    #     folium.Marker(
-    #         location=[single_road[len(single_road)-1][3], single_road[len(single_road)-1][4]],
-    #         fill_color='＃43d9de',
-    #         radius=8
-    #     ).add_to(map)
-    # columns = ['ref', 'lon', 'lat', 'way_id', 'name']
-    # save_file = pd.DataFrame(columns=columns, data=coordinate)
-    # save_file.to_csv('id_coordinate.csv', index=False, encoding="utf-8")
+    coordinate_info = []
+    # 获得所需道路上节点的经纬度
+    for ele in way_info:
+        coordinate_info.append(get_coordinate(ele))
+    # 获得十字路口信息
+    cross_coordinate = cross(coordinate_info)
+
+    # 调用folium画图
+    # map = folium.Map([31.055, 121.771], zoom_start=18)
+    # map = tools.draw_node(map, cross_coordinate)
+    # map.save(os.path.join(r'' + os.path.dirname(os.getcwd()) + '/dataset/', '十字路口.html'))
 

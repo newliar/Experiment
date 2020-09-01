@@ -1,4 +1,5 @@
 import numpy as np
+import configuration as conf
 
 f = 1000000
 # 判断两线段是否相交
@@ -48,7 +49,7 @@ def is_intersected(A, B, C, D):
         and (vector_product(CA, CB) * vector_product(DA, DB) <= ZERO)
 
 
-# 求交点 联立方程组求点
+# 求交点 联立方程组求点，线性代数解法
 def get_intersection(A, B, C, D):
     # 求斜率
     # 考虑斜率不存在的情况
@@ -65,3 +66,8 @@ def get_intersection(A, B, C, D):
         k2 = (D.y - C.y) / (D.x - C.x)
         X = np.array([[k1, -1], [k2, -1]])
         Y = np.array([k1*A.x-A.y, k2*C.x-C.y])
+
+    # 方程组的解
+    XY = np.linalg.solve(X, Y)/conf.FACTOR
+    print(XY)
+    return XY

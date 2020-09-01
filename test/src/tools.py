@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import folium
 import os
+from bs4 import BeautifulSoup
 
 
 # 画两条线段
@@ -28,3 +29,13 @@ def draw_node(map, all_location):
             radius=8
         ).add_to(map)
     return map
+
+
+# 更改css和js文件地址到本地
+def boost_html(file_name):
+    file = open(os.path.dirname(os.getcwd()) + '/dataset/' + file_name, 'rb')
+    html = file.read()
+    bs = BeautifulSoup(html, "html.parser")
+    for item in bs.head.find_all('script'):
+        print(item)
+
