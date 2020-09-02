@@ -17,17 +17,19 @@ def draw_line():
 # plt.savefig("line.svg", format="svg")
 
 def draw_node(map, all_location):
-    for coordinate in all_location:
+    for location in all_location:
         # 数据集格式【经度， 纬度】
-        temp = coordinate[0]
-        coordinate[0] = coordinate[1]
-        coordinate[1] = temp
-        folium.Marker(
-            # folium格式，【纬度，经度】
-            location=coordinate,
-            fill_color='＃43d9de',
-            radius=8
-        ).add_to(map)
+        try:
+            coordinate = [location[2][1], location[2][0]]
+        except:
+            print(location)
+        else:
+            folium.Marker(
+                # folium格式，【纬度，经度】
+                location=coordinate,
+                fill_color='＃43d9de',
+                radius=8
+            ).add_to(map)
     return map
 
 

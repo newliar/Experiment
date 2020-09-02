@@ -62,9 +62,35 @@ def get_way_ref(way):
     return way_ref
 
 
-def delete_node(way, ref):
+def delete_node(cross_coordinate):
+    coordinates_del = []
+    for i in range(len(cross_coordinate)-1):
+        for j in range(i+1, len(cross_coordinate)):
+            distance = geodistance(cross_coordinate[i][2][0], cross_coordinate[i][2][1],
+                                   cross_coordinate[j][2][0], cross_coordinate[j][2][1])
+            if distance < 10:
+                print(distance)
+                print(cross_coordinate[j])
+                coordinates_del.append(cross_coordinate[j])
 
-    pass
+    index = 1
+    for coordinate in coordinates_del:
+        # print(coordinate)
+        try:
+            cross_coordinate.remove(coordinate)
+        except Exception as ex:
+            print(coordinate)
+            print("异常%s"%ex)
+        else:
+            # print("********************")
+            # print("remove success+"+str(index))
+            # print(coordinate)
+            # print("********************")
+            index += 1
+
+    return cross_coordinate, coordinates_del
+
+
 
 
 # 获得ref的经纬度
@@ -100,26 +126,30 @@ def cross(coordinate_info):
     cross_coordinate = []
     for single_road in coordinate_info:
         road_name = single_road[0][1]
-        for i in range(len(single_road)-1):
+        for i in range(len(single_road)-2):
             for _single_road in coordinate_info:
+                # 重名路首尾连接不算路口
                 if road_name == _single_road[0][1]:
                     continue
                 else:
-                    for j in range(i+1, len(_single_road)-1):
-                        A = cr.Point(single_road[i][3]*conf.FACTOR, single_road[i][4]*conf.FACTOR)
-                        B = cr.Point(single_road[i+1][3]*conf.FACTOR, single_road[i+1][4]*conf.FACTOR)
-                        C = cr.Point(_single_road[j][3]*conf.FACTOR, _single_road[j][4]*conf.FACTOR)
-                        D = cr.Point(_single_road[j+1][3]*conf.FACTOR, _single_road[j+1][4]*conf.FACTOR)
-                        # 判断是否相交
-                        if cr.is_intersected(A, B, C, D):
-                            _cross_coordinate = []
-                            # 求交点坐标
-                            _cross_coordinate.append([single_road[i][0], single_road[i][1]])
-                            _cross_coordinate.append([_single_road[j][0], _single_road[j][1]])
-                            _cross_coordinate.append(cr.get_intersection(A, B, C, D))
-                            cross_coordinate.append(_cross_coordinate)
-                            index += 1
-                            print(index)
+                    for j in range(i+1, len(_single_road)):
+                        if j == len(_single_road)-1:
+                            break
+                        else:
+                            A = cr.Point(single_road[i][3]*conf.FACTOR, single_road[i][4]*conf.FACTOR)
+                            B = cr.Point(single_road[i+1][3]*conf.FACTOR, single_road[i+1][4]*conf.FACTOR)
+                            C = cr.Point(_single_road[j][3]*conf.FACTOR, _single_road[j][4]*conf.FACTOR)
+                            D = cr.Point(_single_road[j+1][3]*conf.FACTOR, _single_road[j+1][4]*conf.FACTOR)
+                            # 判断是否相交
+                            if cr.is_intersected(A, B, C, D):
+                                _cross_coordinate = []
+                                # 求交点坐标
+                                _cross_coordinate.append([single_road[i][0], single_road[i][1]])
+                                _cross_coordinate.append([_single_road[j][0], _single_road[j][1]])
+                                _cross_coordinate.append(cr.get_intersection(A, B, C, D))
+                                cross_coordinate.append(_cross_coordinate)
+                                index += 1
+                                print(index)
                         j += 1
             i += 1
     return cross_coordinate
@@ -143,8 +173,10 @@ if __name__ == "__main__":
     # 获得十字路口信息
     cross_coordinate = cross(coordinate_info)
 
+    _cross_coordinate, coordinates_del = delete_node(cross_coordinate)
+
     # 调用folium画图
-    # map = folium.Map([31.055, 121.771], zoom_start=18)
-    # map = tools.draw_node(map, cross_coordinate)
-    # map.save(os.path.join(r'' + os.path.dirname(os.getcwd()) + '/dataset/', '十字路口.html'))
+    m = folium.Map([31.055, 121.771], zoom_start=18)
+    m = tools.draw_node(m, _cross_coordinate)
+    m.save(os.path.join(r'' + os.path.dirname(os.getcwd()) + '/dataset/', '十字路口.html'))
 
