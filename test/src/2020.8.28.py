@@ -2,9 +2,7 @@ import json
 import os
 import numpy as np
 import pandas as pd
-from math import radians, cos, sin, asin, sqrt
 import folium
-
 
 import cross as cr
 import tools
@@ -12,9 +10,10 @@ import configuration as conf
 
 
 def get_road():
-    file_path = os.path.dirname(os.getcwd()) + "/dataset/allways.json"
+    file_path = os.path.dirname(os.getcwd()) + "\\dataset\\ways.json"
     file = open(file_path, 'r', encoding='utf-8')
     # 存放 干线公路、一级道路、二级道路、三级道路
+    trunk = []
     primary = []
     secondary = []
     tertiary = []
@@ -25,22 +24,28 @@ def get_road():
         if "tag" in dic:
             if isinstance(dic["tag"], list):
                 for m in dic["tag"]:
-                    if m["k"] == "highway" and m["v"] == "primary":
-                        primary.append(dic)
+                    if (m["k"] == "bridge" and m["v"] == "yes") or (m["k"] == "layer" and m["v"] == "-1"):
                         break
-                    if m["k"] == "highway" and m["v"] == "secondary":
-                        secondary.append(dic)
-                        break
-                    if m["k"] == "highway" and m["v"] == "tertiary":
-                        tertiary.append(dic)
-                        break
-                    if m["k"] == "highway" and m["v"] == "unclassified":
-                        unclassified.append(dic)
-                        break
-                    if m["k"] == "highway" and m["v"] == "residential":
-                        residential.append(dic)
-                        break
-    return primary, secondary, tertiary, unclassified, residential
+                    else:
+                        if m["k"] == "highway" and m["v"] == "trunk":
+                            trunk.append(dic)
+                            break
+                        if m["k"] == "highway" and m["v"] == "primary":
+                            primary.append(dic)
+                            break
+                        if m["k"] == "highway" and m["v"] == "secondary":
+                            secondary.append(dic)
+                            break
+                        if m["k"] == "highway" and m["v"] == "tertiary":
+                            tertiary.append(dic)
+                            break
+                        if m["k"] == "highway" and m["v"] == "unclassified":
+                            unclassified.append(dic)
+                            break
+                        if m["k"] == "highway" and m["v"] == "residential":
+                            residential.append(dic)
+                            break
+    return trunk, primary, secondary, tertiary, unclassified, residential
 
 
 # 获得道路的所有ref值
@@ -64,14 +69,16 @@ def get_way_ref(way):
 
 def delete_node(cross_coordinate):
     coordinates_del = []
-    for i in range(len(cross_coordinate)-1):
-        for j in range(i+1, len(cross_coordinate)):
-            distance = geodistance(cross_coordinate[i][2][0], cross_coordinate[i][2][1],
-                                   cross_coordinate[j][2][0], cross_coordinate[j][2][1])
-            if distance < 10:
+    coordinate_err = []
+    for i in range(len(cross_coordinate) - 1):
+        for j in range(i + 1, len(cross_coordinate)):
+            distance = tools.geodistance(cross_coordinate[i][2][0], cross_coordinate[i][2][1],
+                                         cross_coordinate[j][2][0], cross_coordinate[j][2][1])
+            if distance < 50:
                 print(distance)
-                print(cross_coordinate[j])
-                coordinates_del.append(cross_coordinate[j])
+                print(cross_coordinate[i])
+                coordinates_del.append(cross_coordinate[i])
+                break
 
     index = 1
     for coordinate in coordinates_del:
@@ -79,8 +86,9 @@ def delete_node(cross_coordinate):
         try:
             cross_coordinate.remove(coordinate)
         except Exception as ex:
+            coordinate_err.append(coordinate)
             print(coordinate)
-            print("异常%s"%ex)
+            print("异常%s" % ex)
         else:
             # print("********************")
             # print("remove success+"+str(index))
@@ -88,9 +96,7 @@ def delete_node(cross_coordinate):
             # print("********************")
             index += 1
 
-    return cross_coordinate, coordinates_del
-
-
+    return cross_coordinate, coordinates_del, coordinate_err
 
 
 # 获得ref的经纬度
@@ -103,21 +109,10 @@ def get_coordinate(way_info):
         _coordinate.append(way_info[0])
         _coordinate.append(way_info[1])
         _coordinate.append(ele)
-        _coordinate.append(round(coordinate_df.loc[int(ele)].loc['lon'], 6))
-        _coordinate.append(round(coordinate_df.loc[int(ele)].loc['lat'], 6))
+        _coordinate.append(round(coordinate_df.loc[int(ele)].loc['lon'], 7))
+        _coordinate.append(round(coordinate_df.loc[int(ele)].loc['lat'], 7))
         coordinate.append(_coordinate)
     return coordinate
-
-
-# 根据经纬度计算两点之间距离
-def geodistance(lng1, lat1, lng2, lat2):
-    lng1, lat1, lng2, lat2 = map(radians, [float(lng1), float(lat1), float(lng2), float(lat2)])  # 经纬度转换成弧度
-    dlon = lng2 - lng1
-    dlat = lat2 - lat1
-    a = sin(dlat / 2) ** 2 + cos(lat1) * cos(lat2) * sin(dlon / 2) ** 2
-    distance = 2 * asin(sqrt(a)) * 6371 * 1000  # 地球平均半径，6371km
-    distance = round(distance, 3)
-    return distance
 
 
 # 得到路口信息
@@ -126,20 +121,20 @@ def cross(coordinate_info):
     cross_coordinate = []
     for single_road in coordinate_info:
         road_name = single_road[0][1]
-        for i in range(len(single_road)-2):
+        for i in range(len(single_road) - 2):
             for _single_road in coordinate_info:
                 # 重名路首尾连接不算路口
                 if road_name == _single_road[0][1]:
                     continue
                 else:
-                    for j in range(i+1, len(_single_road)):
-                        if j == len(_single_road)-1:
+                    for j in range(i + 1, len(_single_road)):
+                        if j == len(_single_road) - 1:
                             break
                         else:
-                            A = cr.Point(single_road[i][3]*conf.FACTOR, single_road[i][4]*conf.FACTOR)
-                            B = cr.Point(single_road[i+1][3]*conf.FACTOR, single_road[i+1][4]*conf.FACTOR)
-                            C = cr.Point(_single_road[j][3]*conf.FACTOR, _single_road[j][4]*conf.FACTOR)
-                            D = cr.Point(_single_road[j+1][3]*conf.FACTOR, _single_road[j+1][4]*conf.FACTOR)
+                            A = cr.Point(single_road[i][3] * conf.FACTOR, single_road[i][4] * conf.FACTOR)
+                            B = cr.Point(single_road[i + 1][3] * conf.FACTOR, single_road[i + 1][4] * conf.FACTOR)
+                            C = cr.Point(_single_road[j][3] * conf.FACTOR, _single_road[j][4] * conf.FACTOR)
+                            D = cr.Point(_single_road[j + 1][3] * conf.FACTOR, _single_road[j + 1][4] * conf.FACTOR)
                             # 判断是否相交
                             if cr.is_intersected(A, B, C, D):
                                 _cross_coordinate = []
@@ -155,9 +150,34 @@ def cross(coordinate_info):
     return cross_coordinate
 
 
+def get_way_order(way_tuple):
+    way_name_arr = []
+    way_order = []
+    for way_type in way_tuple:
+        for single_way in way_type:
+            if isinstance(single_way["tag"], list):
+                for ele in single_way["tag"]:
+                    if ele["k"] == "name" and ele["v"] not in way_name_arr:
+                        way_name_arr.append(ele["v"])
+    for way_name in way_name_arr:
+        order = []
+        for way_type in way_tuple:
+            for single_way in way_type:
+                if isinstance(single_way["tag"], list):
+                    for ele in single_way["tag"]:
+                        if ele["k"] == "name" and ele["v"] == way_name:
+                            order.append(single_way["id"])
+        way_order.append(order)
+    return way_name_arr, way_order
+
+
+
 if __name__ == "__main__":
     # 根据osm文件获得所有道路信息
     way_tuple = get_road()
+    # way_name, way_order = get_way_order(way_tuple)
+
+    # 注释以下
     way_info = get_way_ref(way_tuple)
 
     # 读取所有node节点的经纬度文件
@@ -173,10 +193,9 @@ if __name__ == "__main__":
     # 获得十字路口信息
     cross_coordinate = cross(coordinate_info)
 
-    _cross_coordinate, coordinates_del = delete_node(cross_coordinate)
-
+    _cross_coordinate, coordinates_del, error = delete_node(cross_coordinate)
+    info, save_file = tools.write_cross_to_file(_cross_coordinate)
     # 调用folium画图
-    m = folium.Map([31.055, 121.771], zoom_start=18)
+    m = folium.Map([31.2240060, 121.4639028], zoom_start=15)
     m = tools.draw_node(m, _cross_coordinate)
     m.save(os.path.join(r'' + os.path.dirname(os.getcwd()) + '/dataset/', '十字路口.html'))
-
