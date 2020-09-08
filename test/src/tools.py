@@ -68,6 +68,7 @@ def geodistance(lonA, latA, lonB, latB):
     return distance
 
 
+# 返回B点相较于A点的方位角
 def getDegree(lonA, latA, lonB, latB):
     """
     Args:
