@@ -90,22 +90,22 @@ def get_shortest_node_on_same_way(cross_info):
 
     for re_sort_ in re_sort:
         relation_ = []
-        try:
-            i = re_sort_[0][0]
-            j = re_sort_[0][1]
-        except:
-            print(re_sort_)
         angle_1 = tools.getDegree(cross_info[re_sort_[0][0]][5], cross_info[re_sort_[0][0]][6],
                                   cross_info[re_sort_[0][1]][5], cross_info[re_sort_[0][1]][6])
         for re_sort_ele in re_sort_:
             angle_2 = tools.getDegree(cross_info[re_sort_ele[0]][5], cross_info[re_sort_ele[0]][6],
                                       cross_info[re_sort_ele[1]][5], cross_info[re_sort_ele[1]][6])
-            if abs(angle_1-angle_2) >= 90:
+            if abs(angle_1 - angle_2) >= 90:
                 relation_.append(re_sort_[0])
                 relation_.append(re_sort_ele)
-        relation.append(relation_)
-
-
+                relation.append(relation_)
+                break
+            if angle_2 == tools.getDegree(cross_info[re_sort_ele[0]][5], cross_info[re_sort_ele[0]][6],
+                                          cross_info[re_sort_[len(re_sort_) - 1][1]][5],
+                                          cross_info[re_sort_[len(re_sort_) - 1][1]][6]):
+                relation_.append(re_sort_[0])
+                relation.append(relation_)
+                break
 
             # target_index = []
     # for ele in re:
@@ -150,27 +150,49 @@ def get_shortest_node_on_same_way(cross_info):
     #                 relation_.append(data)
     #     relation.append(relation_)
     #
-    # # for ele in re_:
-    # #     if len(ele) == 1:
-    # #         way_id = ele[0][2]
-    # #         way_name = ele[0][3]
-    # #         for node in cross_info:
-    # #             if (node[1] != way_id and node[2] == way_name) or (node[3] != way_id and node[4] == way_name):
-    #
-    # # for dependency_ele in dependency:
-    # #     for re_sort_ele in re_sort:
-    # #         for ele in re_sort_ele:
-    # #             if ele == dependency_ele:
-    # #                 re_sort_ele.remove(ele)
+    # for ele in re_:
+    #     if len(ele) == 1:
+    #         way_id = ele[0][2]
+    #         way_name = ele[0][3]
+    #         for node in cross_info:
+    #             if (node[1] != way_id and node[2] == way_name) or (node[3] != way_id and node[4] == way_name):
+
+    # for dependency_ele in dependency:
+    #     for re_sort_ele in re_sort:
+    #         for ele in re_sort_ele:
+    #             if ele == dependency_ele:
+    #                 re_sort_ele.remove(ele)
 
     return distance, re, re_sort, relation
 
 
-def write_relation(raw_relation):
-    relation = []
-    for raw_relation in raw_relation:
-        if len(raw_relation) != 0:
-            relation.append(raw_relation)
+def write_relation_to_csv(relation):
+    # relation的index范围为0-558
+    relation_558 = []
+    for i in range(559):
+        same_node = []
+        for relation_ in relation:
+            if relation_[0][0] == i:
+                for relation_ele in relation_:
+                    same_node.append(relation_ele)
+            if relation_[0][0] > i:
+                break
+        relation_558.append(same_node)
+    relation_file = []
+    for single_relation in relation_558:
+        relation_file_ = [single_relation[0][0]]
+        for ele in single_relation:
+            relation_file_.append(ele[1])
+            relation_file_.append(ele[4])
+            relation_file_.append(get_direction(cross_info[ele[0]][5], cross_info[ele[0]][6],
+                                                cross_info[ele[1]][5], cross_info[ele[1]][6]))
+        relation_file.append(relation_file_)
+    df = pd.DataFrame(relation_file, columns=['start_point',
+                                              'target_point_one', 'distance_one', 'direction_one',
+                                              'target_point_two', 'distance_two', 'direction_two',
+                                              'target_point_three', 'distance_three', 'direction_three',
+                                              'target_point_four', 'distance_four', 'direction_four'])
+    df.to_csv('cross_relation.csv', index=False, encoding="utf-8")
 
 
 if __name__ == "__main__":
@@ -178,3 +200,4 @@ if __name__ == "__main__":
     df = pd.read_csv(file_path, encoding="gb2312")
     cross_info = round(df, 7).values.tolist()
     distance, re, re_sort, relation = get_shortest_node_on_same_way(cross_info)
+    write_relation_to_csv(relation)
