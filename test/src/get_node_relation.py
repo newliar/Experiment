@@ -178,3 +178,4 @@ if __name__ == "__main__":
     df = pd.read_csv(file_path, encoding="gb2312")
     cross_info = round(df, 7).values.tolist()
     distance, re, re_sort, relation = get_shortest_node_on_same_way(cross_info)
+    print("over")
