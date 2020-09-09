@@ -47,11 +47,11 @@ def write_cross_to_file(cross_coordinate):
     columns = ['way_one_id', 'way_one_name', 'way_two_id', "way_two_name", "lon", "lat"]
     save_file = pd.DataFrame(columns=columns, data=info)
     try:
-        save_file.to_csv('cross_info.csv', index=True, encoding="gb2312")
+        save_file.to_csv('cross_info.csv', index=True, encoding="utf-8")
     except:
         os.remove('cross_info.csv')
         try:
-            save_file.to_csv('cross_info.csv', index=True, encoding="gb2312")
+            save_file.to_csv('cross_info.csv', index=True, encoding="utf-8")
         except Exception as ex:
             print(ex)
     return info, save_file

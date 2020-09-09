@@ -182,16 +182,22 @@ def write_relation_to_csv(relation):
     for single_relation in relation_558:
         relation_file_ = [single_relation[0][0]]
         for ele in single_relation:
+            # 添加target, way_id, way_name, distance, direction
             relation_file_.append(ele[1])
+            relation_file_.append(ele[2])
+            relation_file_.append(ele[3])
             relation_file_.append(ele[4])
             relation_file_.append(get_direction(cross_info[ele[0]][5], cross_info[ele[0]][6],
                                                 cross_info[ele[1]][5], cross_info[ele[1]][6]))
         relation_file.append(relation_file_)
-    df = pd.DataFrame(relation_file, columns=['start_point',
-                                              'target_point_one', 'distance_one', 'direction_one',
-                                              'target_point_two', 'distance_two', 'direction_two',
-                                              'target_point_three', 'distance_three', 'direction_three',
-                                              'target_point_four', 'distance_four', 'direction_four'])
+    df = pd.DataFrame(relation_file,
+                      columns=[
+                          'start_point',
+                          'target_point_one', 'way_id_one', 'way_name_one', 'distance_one', 'direction_one',
+                          'target_point_two', 'way_id_two', 'way_name_two', 'distance_two', 'direction_two',
+                          'target_point_three', 'way_id_three', 'way_name_three', 'distance_three', 'direction_three',
+                          'target_point_four', 'way_id_four', 'way_name_four', 'distance_four', 'direction_four'
+                      ])
     df.to_csv('cross_relation.csv', index=False, encoding="utf-8")
 
 
