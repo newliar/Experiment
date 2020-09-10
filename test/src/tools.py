@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import folium
 import os
 import pandas as pd
+import numpy as np
 from math import radians, cos, sin, asin, sqrt, atan2, degrees
 from bs4 import BeautifulSoup
 
@@ -42,7 +43,7 @@ def write_cross_to_file(cross_coordinate):
         info.append([ele[0][0], ele[0][1],
                      ele[1][0], ele[1][1],
                      round(ele[2][0], 7), round(ele[2][1], 7)])
-        print(str(index)+ele[0][1])
+        print(str(index) + ele[0][1])
         index += 1
     columns = ['way_one_id', 'way_one_name', 'way_two_id', "way_two_name", "lon", "lat"]
     save_file = pd.DataFrame(columns=columns, data=info)
@@ -97,3 +98,63 @@ def boost_html(file_name):
     bs = BeautifulSoup(html, "html.parser")
     for item in bs.head.find_all('script'):
         print(item)
+
+
+def get_cross_info(cross_info_df):
+    cross_info_df = cross_info_df.fillna(-1)
+    cross_info_raw = cross_info_df.values.tolist()
+    cross_info = []
+    for raw_single_cross_info in cross_info_raw:
+        i = 0
+        single_cross_info = []
+        for ele in raw_single_cross_info:
+            if i == 6 or i == 7 or i == 11 or i == 12 or i == 16 or i == 17:
+                if ele != -1:
+                    single_cross_info.append(int(ele))
+            elif i == 4 or i == 9 or i == 14 or i == 19:
+                if ele != -1:
+                    single_cross_info.append(round(ele, 3))
+            else:
+                if ele != -1:
+                    single_cross_info.append(ele)
+            i += 1
+        cross_info.append(single_cross_info)
+    return cross_info
+
+
+def get_details(cross_info):
+    next_state_list = []
+    distance_list = []
+    action_list = []
+    for single_cross_info in cross_info:
+        next_state_list_ = []
+        distance_list_ = []
+        action_list_ = []
+        try:
+            next_state_list_.append(single_cross_info[1])
+            next_state_list_.append(single_cross_info[6])
+            next_state_list_.append(single_cross_info[11])
+            next_state_list_.append(single_cross_info[16])
+        except:
+            next_state_list.append(next_state_list_)
+        else:
+            next_state_list.append(next_state_list_)
+        try:
+            distance_list_.append(single_cross_info[4])
+            distance_list_.append(single_cross_info[9])
+            distance_list_.append(single_cross_info[14])
+            distance_list_.append(single_cross_info[19])
+        except:
+            distance_list.append(distance_list_)
+        else:
+            distance_list.append(distance_list_)
+        try:
+            action_list_.append(single_cross_info[5])
+            action_list_.append(single_cross_info[10])
+            action_list_.append(single_cross_info[15])
+            action_list_.append(single_cross_info[20])
+        except:
+            action_list.append(action_list_)
+        else:
+            action_list.append(action_list_)
+    return next_state_list, distance_list, action_list

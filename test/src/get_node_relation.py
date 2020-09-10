@@ -203,7 +203,7 @@ def write_relation_to_csv(relation):
 
 if __name__ == "__main__":
     file_path = "cross_info.csv"
-    df = pd.read_csv(file_path, encoding="gb2312")
+    df = pd.read_csv(file_path, encoding="utf-8")
     cross_info = round(df, 7).values.tolist()
     distance, re, re_sort, relation = get_shortest_node_on_same_way(cross_info)
     write_relation_to_csv(relation)
