@@ -3,32 +3,47 @@ from cross_env import Cross
 import tools
 import pandas as pd
 import numpy as np
+import time
 
 N_STATES = 559
 ACTIONS = ['u', 'd', 'l', 'r']
 
 
 def update(env):
-    for episode in range(100):
+    time_start = time.time()
+    for episode in range(1000):
         observation = env.start_point
         while True:
-            index, index_ = RL.choose_action(observation, env)
+            index, index_flag = RL.choose_action(observation, env)
 
-            observation_, reward, done = env.step(observation, index)
+            observation_, reward, done = env.step(observation, index, index_flag)
 
-            RL.learn(observation, index, reward, observation_, index_)
+            q_table = RL.learn(observation, index, reward, observation_, env)
 
-            # observation_, reward, done =
+            observation = observation_
+
+            if done:
+                break
+
+        # print(episode + 1, "th episode is completed, totally cost:", time_end - time_start)
+        # print('--------------------------------------------------------')
+        # print(q_table)
+        # print('--------------------------------------------------------')
+    time_end = time.time()
+    print('over', time_end - time_start)
 
 
 if __name__ == "__main__":
-    df = pd.read_csv('cross_relation.csv', encoding='utf-8')
-    cross_info = tools.get_cross_info(df)
-    next_state_list, distance_list, action_list = tools.get_details(cross_info)
+    df_re = pd.read_csv('cross_relation.csv', encoding='utf-8')
+    df_co = pd.read_csv('cross_info.csv', encoding='utf-8')
+    cross_relation = tools.get_cross_info(df_re)
+    cross_info = df_co.values.tolist()
+    next_state_list, distance_list, action_list = tools.get_details(cross_relation)
 
     # TODO Start_Point & End_Point 待输入
-    start_point = 0
-    end_point = 559
+    start_point = 265
+    end_point = 497
 
-    env = Cross(next_state_list, action_list, distance_list, start_point, end_point)
     RL = QLearningTable(ACTIONS)
+    env = Cross(next_state_list, action_list, distance_list, start_point, end_point, cross_info)
+    update(env)
