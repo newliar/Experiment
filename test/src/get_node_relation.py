@@ -107,62 +107,6 @@ def get_shortest_node_on_same_way(cross_info):
                 relation.append(relation_)
                 break
 
-            # target_index = []
-    # for ele in re:
-    #     target_index_ = []
-    #     for ele_ in ele:
-    #         target_index_.append(ele_[1])
-    #
-    #     target_index.append(target_index_)
-    #
-    #
-    # dependency = []
-    # for i in range(len(re)):
-    #     for ele_ in re[i]:
-    #         for ele_compare in re:
-    #             if re[i] == ele_compare:
-    #                 continue
-    #             if ele_[1] < ele_compare[0][0]:
-    #                 break
-    #             if ele_[1] == ele_compare[0][0]:
-    #                 for ele_compare_ in ele_compare:
-    #                     if ele_compare_[1] in target_index[i]:
-    #                         if re[i][target_index[i].index(ele_compare_[1])][4] > ele_compare_[4]:
-    #                             if re[i][target_index[i].index(ele_compare_[1])] not in dependency:
-    #                                 dependency.append(re[i][target_index[i].index(ele_compare_[1])])
-    #
-    # raw_relation = []
-    # for _re_ in re:
-    #     raw_relation_ = []
-    #     for re_ele in _re_:
-    #         if re_ele not in dependency:
-    #             raw_relation_.append(re_ele)
-    #     raw_relation.append(raw_relation_)
-    #
-    # # 十字路口编号范围 0~558
-    # for i in range(559):
-    #     relation_ = []
-    #     for raw_data in raw_relation:
-    #         if len(raw_data) == 0:
-    #             continue
-    #         if raw_data[0][0] == i:
-    #             for data in raw_data:
-    #                 relation_.append(data)
-    #     relation.append(relation_)
-    #
-    # for ele in re_:
-    #     if len(ele) == 1:
-    #         way_id = ele[0][2]
-    #         way_name = ele[0][3]
-    #         for node in cross_info:
-    #             if (node[1] != way_id and node[2] == way_name) or (node[3] != way_id and node[4] == way_name):
-
-    # for dependency_ele in dependency:
-    #     for re_sort_ele in re_sort:
-    #         for ele in re_sort_ele:
-    #             if ele == dependency_ele:
-    #                 re_sort_ele.remove(ele)
-
     return distance, re, re_sort, relation
 
 
@@ -206,4 +150,5 @@ if __name__ == "__main__":
     df = pd.read_csv(file_path, encoding="utf-8")
     cross_info = round(df, 7).values.tolist()
     distance, re, re_sort, relation = get_shortest_node_on_same_way(cross_info)
-    write_relation_to_csv(relation)
+    # write_relation_to_csv(relation)
+    tools.draw_relation(relation, cross_info)

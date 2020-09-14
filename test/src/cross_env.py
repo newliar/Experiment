@@ -37,7 +37,7 @@ class Cross:
             if s_ == self.end_point:
                 reward = 1
                 done = True
-                s_ = 'terminal'
+                s_ = 'end_point'
                 print('get it')
             elif 100 < abs(angle_1 - angle_2) < 260:
                 reward = -(1 / self.get_distance(state, index))
@@ -46,3 +46,10 @@ class Cross:
                 reward = 1 / self.get_distance(state, index)
                 done = False
         return s_, reward, done
+
+
+    # def get_node_order(self, q_table):
+    #
+    #     start = q_table.[q_table.loc[self.start_point, :].max()].index
+    #     print(start)
+    #     pass

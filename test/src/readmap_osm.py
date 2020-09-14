@@ -2,13 +2,14 @@ import os
 import json
 from lxml import etree
 import xmltodict
+import configuration
 
 # ****************************
 # 提取OSM文件有用信息并转成json文件
 # ****************************
 
 os.chdir(os.path.dirname(os.getcwd()) + "/dataset/")
-osmfile = 'map.osm'
+osmfile = configuration.CITY+'_map.osm'
 
 
 def iter_element(file_parsed, file_length, file_write):
@@ -38,7 +39,7 @@ for file_length, line in enumerate(open(osmfile, 'rU', encoding='utf-8')):
 file_length += 1
 print("length of the file:\t" + str(file_length))
 
-file_node = open("node.json", "w+")
+file_node = open(configuration.CITY+"_node.json", "w+")
 file_parsed = etree.iterparse(osmfile, tag=["node", "way"])
 iter_element(file_parsed, file_length, file_node)
 file_node.close()
