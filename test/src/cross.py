@@ -68,14 +68,13 @@ def get_intersection(A, B, C, D):
         Y = np.array([k1*A.x-A.y, k2*C.x-C.y])
 
     # 方程组的解
-    try :
+    try:
         XY = np.linalg.solve(X, Y)/conf.FACTOR
     except:
         print("**********************")
         print("矩阵不可逆")
-        print(X)
-        print(Y)
         print("**********************")
+
     else:
         print(XY)
         return XY

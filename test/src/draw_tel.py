@@ -9,11 +9,11 @@ location_ = df.values
 location_[:, [0, 1]] = location_[:, [1, 0]]
 location = location_.tolist()
 
-map = folium.Map([31.05, 121.7], zoom_start=13)
+map = folium.Map([31.22, 121.45], zoom_start=13)
 count = 0
 for coordinate in location:
     # 选取指定经纬度范围内的坐标
-    if 121.6557 < coordinate[1] < 121.7889 and 30.9835 < coordinate[0] < 31.1009:
+    if 121.4388 < coordinate[1] < 121.4846 and 31.2019 < coordinate[0] < 31.2411:
         count += 1
         # matplotlib显示
         # plt.scatter(location[i, 0], location[i, 1], s=1, c='red')
@@ -21,13 +21,19 @@ for coordinate in location:
         # 地图显示
         folium.Circle(
             coordinate,
-            color='grey',
-            radius=2000,
-            fill=False
+            color='#123456',
+            fill_color='#123456',
+            radius=400,
+            fill=True
         ).add_to(map)
+        # folium.Marker(
+        #     coordinate,
+        #     color='#123456',
+        #     radius=8
+        # ).add_to(map)
 
 # 地图显示
-map.save(os.path.join(r'' + os.path.dirname(os.getcwd()) + '/dataset/', 'tel_station.html'))
+map.save(os.path.join(r'' + os.path.dirname(os.getcwd()) + '/dataset/', 'tel_station_node.html'))
 
 # import folium
 # latlon = [ (51.249443914705175, -0.13878830247011467), (51.249443914705175, -0.13878830247011467), (51.249768239976866, -2.8610415615063034)]
