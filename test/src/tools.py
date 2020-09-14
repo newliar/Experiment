@@ -108,10 +108,10 @@ def get_cross_info(cross_info_df):
         i = 0
         single_cross_info = []
         for ele in raw_single_cross_info:
-            if i == 6 or i == 7 or i == 11 or i == 12 or i == 16 or i == 17:
+            if i == 6 or i == 7 or i == 11 or i == 12 or i == 16 or i == 17 or i == 21 or i == 22 or i == 26 or i == 27:
                 if ele != -1:
                     single_cross_info.append(int(ele))
-            elif i == 4 or i == 9 or i == 14 or i == 19:
+            elif i == 4 or i == 9 or i == 14 or i == 19 or i == 24 or i == 29:
                 if ele != -1:
                     single_cross_info.append(round(ele, 3))
             else:
@@ -135,6 +135,8 @@ def get_details(cross_info):
             next_state_list_.append(single_cross_info[6])
             next_state_list_.append(single_cross_info[11])
             next_state_list_.append(single_cross_info[16])
+            next_state_list_.append(single_cross_info[21])
+            next_state_list_.append(single_cross_info[26])
         except:
             next_state_list.append(next_state_list_)
         else:
@@ -144,6 +146,8 @@ def get_details(cross_info):
             distance_list_.append(single_cross_info[9])
             distance_list_.append(single_cross_info[14])
             distance_list_.append(single_cross_info[19])
+            distance_list_.append(single_cross_info[24])
+            distance_list_.append(single_cross_info[29])
         except:
             distance_list.append(distance_list_)
         else:
@@ -153,6 +157,8 @@ def get_details(cross_info):
             action_list_.append(single_cross_info[10])
             action_list_.append(single_cross_info[15])
             action_list_.append(single_cross_info[20])
+            action_list_.append(single_cross_info[25])
+            action_list_.append(single_cross_info[30])
         except:
             action_list.append(action_list_)
         else:
