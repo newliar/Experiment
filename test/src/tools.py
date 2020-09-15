@@ -5,6 +5,7 @@ import pandas as pd
 import numpy as np
 from math import radians, cos, sin, asin, sqrt, atan2, degrees
 from bs4 import BeautifulSoup
+import random
 
 
 # 画两条线段
@@ -19,7 +20,7 @@ def draw_line():
 # plt.show()
 # plt.savefig("line.svg", format="svg")
 
-def draw_node(map, all_location):
+def draw_node(m, all_location):
     for location in all_location:
         # 数据集格式【经度， 纬度】
         try:
@@ -32,8 +33,54 @@ def draw_node(map, all_location):
                 location=coordinate,
                 fill_color='＃43d9de',
                 radius=8
-            ).add_to(map)
-    return map
+            ).add_to(m)
+    return m
+
+
+def get_all_node(coordinate_info):
+    coordinate = []
+    for ele_ in coordinate_info:
+        for ele in ele_:
+            coordinate.append([ele[3], ele[4]])
+    return coordinate
+
+
+def draw_relation(relation, cross_info):
+    m = folium.Map([31.2240060, 121.4639028], zoom_start=15)
+    for single_relation in relation:
+        color = get_random_color()
+        for ele in single_relation:
+            location_1 = [cross_info[ele[0]][6], cross_info[ele[0]][5]]
+            location_2 = [cross_info[ele[1]][6], cross_info[ele[1]][5]]
+            location = [location_1, location_2]
+            route = folium.PolyLine(
+                location,
+                weight=5,
+                color='black',
+                opacity=1
+            ).add_to(m)
+    m.add_child(folium.LatLngPopup())
+    m.add_child(
+        folium.ClickForMarker(popup='Waypoint')
+    )
+    # for ele in cross_info:
+    #     coordinate = [ele[6], ele[5]]
+    #     folium.Marker(
+    #         # folium格式，【纬度，经度】
+    #         location=coordinate,
+    #         fill_color='＃43d9de',
+    #         radius=8
+    #     ).add_to(m)
+
+    m.save(os.path.join(r'' + os.path.dirname(os.getcwd()) + '/dataset/', 'relation_no_node.html'))
+
+
+def get_random_color():
+    colorArr = ['1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F']
+    color = ""
+    for i in range(6):
+        color += colorArr[random.randint(0, 14)]
+    return "#"+color
 
 
 def write_cross_to_file(cross_coordinate):
