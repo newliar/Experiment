@@ -63,3 +63,11 @@ def draw_node(map, all_location):
             ).add_to(map)
             print(coordinate)
     return map
+
+m = folium.Map([31.2240060, 121.4639028], zoom_start=15)
+folium.Marker(
+    location=[31.211553, 121.496921],
+    fill_color='＃43d9de',
+    radius=8
+).add_to(m)
+m.save(os.path.join(r'' + os.path.dirname(os.getcwd()) + '/dataset/', 'single_node.html'))

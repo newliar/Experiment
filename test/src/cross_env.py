@@ -23,33 +23,35 @@ class Cross:
     def get_length(self, state):
         return len(self.action_list[state])
 
-    def step(self, state, index, index_flag):
-        if index_flag:
+    def step(self, state, index):
+        s_ = self.get_next_state(state, index)
+        # 获得终点相较于当前状态的方位角
+        angle_1 = tools.getDegree(self.cross_info[state][1], self.cross_info[state][2],
+                                  self.cross_info[self.end_point][1], self.cross_info[self.end_point][2])
+        # 获得下一节点相较于当前状态的方位角
+        angle_2 = tools.getDegree(self.cross_info[state][1], self.cross_info[state][2],
+                                  self.cross_info[self.next_state_list[state][index]][1], self.cross_info[self.next_state_list[state][index]][2])
+        # 获得起点与终点的直线距离
+        distance_1 = tools.geodistance(self.cross_info[self.start_point][1], self.cross_info[self.start_point][2],
+                                       self.cross_info[self.end_point][1], self.cross_info[self.end_point][2])
+        # 获得下一状态与终点之间的距离
+        distance_2 = tools.geodistance(self.cross_info[self.next_state_list[state][index]][1], self.cross_info[self.next_state_list[state][index]][2],
+                                       self.cross_info[self.end_point][1], self.cross_info[self.end_point][2])
+        # 如果到达终点，返回奖励1，并给予完成状态
+        if s_ == self.end_point:
+            reward = 1
+            done = True
+            s_ = 'end_point'
+            print('get it')
+        # 如果所选下一个action与终点角度差距过大，减少奖励
+        elif 110 < abs(angle_1 - angle_2) < 250:
+            reward = -(1 / self.get_distance(state, index))
+            done = False
+        elif distance_2 > distance_1*2:
             reward = -1
             done = True
             s_ = 'terminal'
         else:
-            s_ = self.get_next_state(state, index)
-            angle_1 = tools.getDegree(self.cross_info[state][1], self.cross_info[state][2],
-                                      self.cross_info[self.end_point][1], self.cross_info[self.end_point][2])
-            angle_2 = tools.getDegree(self.cross_info[state][1], self.cross_info[state][2],
-                                      self.cross_info[self.next_state_list[state][index]][1], self.cross_info[self.next_state_list[state][index]][2])
-            if s_ == self.end_point:
-                reward = 1
-                done = True
-                s_ = 'end_point'
-                print('get it')
-            elif 110 < abs(angle_1 - angle_2) < 250:
-                reward = -(1 / self.get_distance(state, index))
-                done = False
-            else:
-                reward = 1 / self.get_distance(state, index)
-                done = False
+            reward = 1 / self.get_distance(state, index)
+            done = False
         return s_, reward, done
-
-
-    # def get_node_order(self, q_table):
-    #
-    #     start = q_table.[q_table.loc[self.start_point, :].max()].index
-    #     print(start)
-    #     pass

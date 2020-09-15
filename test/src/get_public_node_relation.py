@@ -1,6 +1,8 @@
 import pandas as pd
 import tools
 import traceback
+import folium
+import os
 
 
 def get_direction(lonA, latA, lonB, latB):
@@ -24,6 +26,7 @@ def get_direction(lonA, latA, lonB, latB):
         direction = dire_arr[7]
     return direction
 
+
 def get_shortest_node_by_same_id(public_node_info):
     distance = []
     for node in public_node_info:
@@ -32,6 +35,7 @@ def get_shortest_node_by_same_id(public_node_info):
             if node[0] == node_compare[0]:
                 continue
             else:
+                # 比较way_id是否相同
                 # 第一轮比较
                 try:
                     if node[4] == node_compare[4]:
@@ -375,9 +379,9 @@ def get_relation(re_sort, public_node_info):
 
 
 def write_relation_to_csv(relation, public_node_info):
-    # relation的index范围为0-1001
+    # relation的index范围为0-999
     relation_1001 = []
-    for i in range(1002):
+    for i in range(999):
         same_node = []
         for relation_ in relation:
             if relation_[0][0] == i:
@@ -386,7 +390,6 @@ def write_relation_to_csv(relation, public_node_info):
             if relation_[0][0] > i:
                 break
         relation_1001.append(same_node)
-    del(relation_1001[998])
     relation_file = []
     for single_relation in relation_1001:
         try:
@@ -420,20 +423,49 @@ def write_relation_to_csv(relation, public_node_info):
 
 
 if __name__ == '__main__':
-    # 第一阶段
+    # # 第一阶段
     # file_path = "public_node_info.csv"
     # df = pd.read_csv(file_path, encoding='utf-8')
     # di, re, re_sort = get_shortest_node_by_same_id(df.values.tolist())
     # de_no, df_1 = delete_same_node(di, df)
     # df_1 = df_1.reset_index(drop=True)
     # df_1 = df_1.drop(['Unnamed: 0'], axis=1)
+    # # 去除噪声
+    # df_1 = df_1.drop([84])
+    # df_1 = df_1.drop([229])
+    # df_1 = df_1.drop([998])
+    # df_1 = df_1.reset_index(drop=True)
     # df_1.to_csv('public_node_info_.csv', index=True, encoding="utf-8")
 
     # 第二阶段
     file_path_ = "public_node_info_.csv"
     df_ = pd.read_csv(file_path_, encoding='utf-8')
-    di, re, re_sort = get_shortest_node_by_same_id(df_.values.tolist())
+    df_list = df_.values.tolist()
+    di, re, re_sort = get_shortest_node_by_same_id(df_list)
     relation = get_relation(re_sort, df_.values.tolist())
-    relation_file = write_relation_to_csv(relation, df_.values.tolist())
+    relation_file = write_relation_to_csv(relation, df_list)
 
-    # df = df.fillna(-1)
+    # 画图部分
+    m = folium.Map([31.2240060, 121.4639028], zoom_start=15)
+    # for ele in df_.values.tolist():
+    #     coordinate = [ele[2], ele[1]]
+    #     folium.Marker(
+    #         location=coordinate,
+    #         fill_color='＃43d9de',
+    #         radius=8
+    #     ).add_to(m)
+    for single_node in relation_file:
+        index = 0
+        for ele in single_node:
+            if index == 1 or index == 6 or index == 11 or index == 16 or index == 21 or index == 26:
+                location = [[df_list[single_node[0]][2], df_list[single_node[0]][1]],
+                            [df_list[single_node[index]][2], df_list[single_node[index]][1]]]
+                folium.PolyLine(
+                    location,
+                    weight=5,
+                    color='black',
+                    opacity=1
+                ).add_to(m)
+            index += 1
+    m.save(os.path.join(r'' + os.path.dirname(os.getcwd()) + '/dataset/', 'public_relation.html'))
+
