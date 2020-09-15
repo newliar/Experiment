@@ -30,16 +30,16 @@ class Cross:
             s_ = 'terminal'
         else:
             s_ = self.get_next_state(state, index)
-            angle_1 = tools.getDegree(self.cross_info[state][5], self.cross_info[state][6],
-                                      self.cross_info[self.end_point][5], self.cross_info[self.end_point][6])
-            angle_2 = tools.getDegree(self.cross_info[state][5], self.cross_info[state][6],
-                                      self.cross_info[self.next_state_list[state][index]][5], self.cross_info[self.next_state_list[state][index]][6])
+            angle_1 = tools.getDegree(self.cross_info[state][1], self.cross_info[state][2],
+                                      self.cross_info[self.end_point][1], self.cross_info[self.end_point][2])
+            angle_2 = tools.getDegree(self.cross_info[state][1], self.cross_info[state][2],
+                                      self.cross_info[self.next_state_list[state][index]][1], self.cross_info[self.next_state_list[state][index]][2])
             if s_ == self.end_point:
                 reward = 1
                 done = True
                 s_ = 'end_point'
                 print('get it')
-            elif 100 < abs(angle_1 - angle_2) < 260:
+            elif 110 < abs(angle_1 - angle_2) < 250:
                 reward = -(1 / self.get_distance(state, index))
                 done = False
             else:

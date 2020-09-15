@@ -5,13 +5,13 @@ import pandas as pd
 import numpy as np
 import time
 
-N_STATES = 559
-ACTIONS = ['u', 'd', 'l', 'r']
+N_STATES = 1002
+ACTIONS = ['1', '2', '3', '4', '5', '6']
 
 
 def update(env):
     # time_start = time.time()
-    for episode in range(1000):
+    for episode in range(100000):
         time_start = time.time()
         observation = env.start_point
         while True:
@@ -36,15 +36,15 @@ def update(env):
 
 
 if __name__ == "__main__":
-    df_re = pd.read_csv('cross_relation.csv', encoding='utf-8')
-    df_co = pd.read_csv('cross_info.csv', encoding='utf-8')
+    df_re = pd.read_csv('public_node_relation.csv', encoding='utf-8')
+    df_co = pd.read_csv('public_node_info_.csv', encoding='utf-8')
     cross_relation = tools.get_cross_info(df_re)
     cross_info = df_co.values.tolist()
     next_state_list, distance_list, action_list = tools.get_details(cross_relation)
 
     # TODO Start_Point & End_Point 待输入
-    start_point = 252
-    end_point = 497
+    start_point = 0
+    end_point = 500
 
     RL = QLearningTable(ACTIONS)
     env = Cross(next_state_list, action_list, distance_list, start_point, end_point, cross_info)
