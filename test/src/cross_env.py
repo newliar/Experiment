@@ -39,19 +39,23 @@ class Cross:
                                        self.cross_info[self.end_point][1], self.cross_info[self.end_point][2])
         # 如果到达终点，返回奖励1，并给予完成状态
         if s_ == self.end_point:
-            reward = 1
+            reward = 10
             done = True
             s_ = 'end_point'
             print('get it')
         # 如果所选下一个action与终点角度差距过大，减少奖励
         elif 110 < abs(angle_1 - angle_2) < 250:
-            reward = -(1 / self.get_distance(state, index))
+            reward = -(2 / self.get_distance(state, index))
             done = False
+        # 如果下一状态到终点的直线距离两倍于起点到终点的直线距离，跳出循环
         elif distance_2 > distance_1*2:
             reward = -1
             done = True
             s_ = 'terminal'
-        else:
+        elif abs(angle_1 - angle_2) < 60 and distance_2 < distance_1:
             reward = 1 / self.get_distance(state, index)
+            done = False
+        else:
+            reward = -(1 / self.get_distance(state, index))
             done = False
         return s_, reward, done
