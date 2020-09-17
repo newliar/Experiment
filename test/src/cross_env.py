@@ -1,4 +1,5 @@
 import tools
+import traceback
 
 
 class Cross:
@@ -21,7 +22,14 @@ class Cross:
         return self.distance_list[state][index]
 
     def get_length(self, state):
-        return len(self.action_list[state])
+        try:
+            return len(self.action_list[state])
+        except Exception as ex:
+            print(state)
+            print('#########')
+            print(ex.args)
+            print('#########')
+            print(traceback.format_exc())
 
     def step(self, state, index):
         s_ = self.get_next_state(state, index)

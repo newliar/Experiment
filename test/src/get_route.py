@@ -11,15 +11,17 @@ ACTIONS = ['1', '2', '3', '4', '5', '6']
 
 def update(env):
     time_start = time.time()
-    for episode in range(100000):
+    for episode in range(1000):
+        episode_start_time = time.time()
         plt.ion()
         observation = env.start_point
-        if episode >= 30:
-            RL.epsilon = 1.0
+        # if episode >= 30:
+        #     RL.epsilon = 1.0
         while True:
             index = RL.choose_action(observation, env)
 
             observation_, reward, done = env.step(observation, index)
+            
 
             plt.clf()
             plt.scatter(x[start_point], y[start_point], marker='o', s=30, label='start_point', c='black')
@@ -37,13 +39,14 @@ def update(env):
             q_table = RL.learn(observation, index, reward, observation_, env)
 
             observation = observation_
-
             if done:
                 break
+        episode_end_time = time.time()
         print('==========================================')
-        print(episode + 1, "th episode is completed")
+        print(episode + 1, "th episode is completed, time cost:", episode_end_time - episode_start_time)
         print('==========================================')
         print(q_table)
+
     time_end = time.time()
     print('totally completely, time cost:', time_end - time_start)
     return q_table
