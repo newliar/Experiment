@@ -3,7 +3,7 @@ import pandas as pd
 
 
 class QLearningTable:
-    def __init__(self, actions, learning_rate=1, reward_decay=0.9, e_greedy=0.9):
+    def __init__(self, actions, learning_rate=1, reward_decay=0.5, e_greedy=0.9):
         self.actions = actions
         self.lr = learning_rate
         self.gamma = reward_decay
@@ -38,7 +38,7 @@ class QLearningTable:
         else:
             q_target = r
         self.q_table.loc[s, self.actions[i]] += self.lr * (q_target - q_predict)
-
+        # print(self.q_table)
         return self.q_table
 
     # 查看此状态是否存在于Q表，不在即添加

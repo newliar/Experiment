@@ -138,6 +138,15 @@ def getDegree(lonA, latA, lonB, latB):
     return brng
 
 
+def get_angle(degree_A, degree_B):
+    bigger = max(degree_A, degree_B)
+    smaller = min(degree_A, degree_B)
+    if bigger - smaller > 180:
+        return smaller+360-bigger
+    else:
+        return bigger-smaller
+
+
 # 更改css和js文件地址到本地
 def boost_html(file_name):
     file = open(os.path.dirname(os.getcwd()) + '/dataset/' + file_name, 'rb')
@@ -173,6 +182,7 @@ def get_details(cross_info):
     next_state_list = []
     distance_list = []
     action_list = []
+    tel_list = []
     for single_cross_info in cross_info:
         next_state_list_ = []
         distance_list_ = []
@@ -210,4 +220,6 @@ def get_details(cross_info):
             action_list.append(action_list_)
         else:
             action_list.append(action_list_)
-    return next_state_list, distance_list, action_list
+        tel_list.append(single_cross_info[31])
+
+    return next_state_list, distance_list, action_list, tel_list
