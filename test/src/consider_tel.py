@@ -4,6 +4,7 @@ from RL_brain import QLearningTable
 from cross_env import Cross
 import time
 import matplotlib.pyplot as plt
+import tools
 
 
 def update(env):

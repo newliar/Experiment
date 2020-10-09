@@ -2,4 +2,8 @@
 # 经纬度乘1000000变成整数便于计算
 FACTOR = 10000000
 
-CITY = 'ShangHai'
+CITY = 'HF_BH'
+
+START_POINT = 258
+
+END_POINT = 900

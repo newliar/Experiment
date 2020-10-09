@@ -8,10 +8,11 @@ import cross as cr
 import tools
 import configuration as conf
 import t_file
+import configuration
 
 
 def get_road():
-    file_path = os.path.dirname(os.getcwd()) + "\\dataset\\ways.json"
+    file_path = os.path.dirname(os.getcwd()) + "\\dataset\\"+configuration.CITY+"_ways.json"
     file = open(file_path, 'r', encoding='utf-8')
     # 存放 干线公路、一级道路、二级道路、三级道路
     trunk = []
@@ -25,27 +26,27 @@ def get_road():
         if "tag" in dic:
             if isinstance(dic["tag"], list):
                 for m in dic["tag"]:
-                    if (m["k"] == "bridge" and m["v"] == "yes") or (m["k"] == "layer" and m["v"] == "-1"):
+                    # if (m["k"] == "bridge" and m["v"] == "yes") or (m["k"] == "layer" and m["v"] == "-1"):
+                    #     break
+                    # else:
+                    if m["k"] == "highway" and m["v"] == "trunk":
+                        trunk.append(dic)
                         break
-                    else:
-                        if m["k"] == "highway" and m["v"] == "trunk":
-                            trunk.append(dic)
-                            break
-                        if m["k"] == "highway" and m["v"] == "primary":
-                            primary.append(dic)
-                            break
-                        if m["k"] == "highway" and m["v"] == "secondary":
-                            secondary.append(dic)
-                            break
-                        if m["k"] == "highway" and m["v"] == "tertiary":
-                            tertiary.append(dic)
-                            break
-                        if m["k"] == "highway" and m["v"] == "unclassified":
-                            unclassified.append(dic)
-                            break
-                        if m["k"] == "highway" and m["v"] == "residential":
-                            residential.append(dic)
-                            break
+                    if m["k"] == "highway" and m["v"] == "primary":
+                        primary.append(dic)
+                        break
+                    if m["k"] == "highway" and m["v"] == "secondary":
+                        secondary.append(dic)
+                        break
+                    if m["k"] == "highway" and m["v"] == "tertiary":
+                        tertiary.append(dic)
+                        break
+                    if m["k"] == "highway" and m["v"] == "unclassified":
+                        unclassified.append(dic)
+                        break
+                    if m["k"] == "highway" and m["v"] == "residential":
+                        residential.append(dic)
+                        break
     return trunk, primary, secondary, tertiary, unclassified, residential
 
 
@@ -225,7 +226,7 @@ if __name__ == "__main__":
 
     # 获得公共点
     public_node = get_public_node(way_info)
-    coordinate_file = os.path.dirname(os.getcwd()) + "/dataset/id_coordinate.csv"
+    coordinate_file = os.path.dirname(os.getcwd()) + "/dataset/"+configuration.CITY+"_id_coordinate.csv"
     coordinate_data = pd.read_csv(coordinate_file)
     coordinate_df = pd.DataFrame(coordinate_data)
     coordinate_df.set_index(['ref'], inplace=True)
@@ -235,20 +236,20 @@ if __name__ == "__main__":
     df_node = pd.DataFrame(public_node,
                            columns=[
                                'node_id', 'way_id_one', 'way_name_one', 'way_id_two', 'way_name_two',
-                               'way_id_three', 'way_name_three', 'way_id_four', 'way_name_four',
-                               'way_id_five', 'way_name_five', 'way_id_six', 'way_name_six',
+                               'way_id_three', 'way_name_three', 'way_id_four', 'way_name_four'
+                               # 'way_id_five', 'way_name_five'
                            ])
     df_coor = pd.DataFrame(list_, columns=['lon', 'lat'])
     df = pd.concat([df_coor, df_node], axis=1)
-    df.to_csv('public_node_info.csv', index=True, encoding="utf-8")
-    # m = folium.Map([31.2240060, 121.4639028], zoom_start=15)
-    # for location in list_:
-    #     coordinate = [location[1], location[0]]
-    #     folium.Marker(
-    #         # folium格式，【纬度，经度】
-    #         location=coordinate,
-    #         fill_color='＃43d9de',
-    #         radius=8
-    #     ).add_to(m)
-    # m.save(os.path.join(r'' + os.path.dirname(os.getcwd()) + '/dataset/', 'public_node.html'))
+    df.to_csv(os.path.dirname(os.getcwd())+"/dataset/"+configuration.CITY+'_public_node_info.csv', index=True, encoding="utf-8")
+    m = folium.Map([31.864183, 117.2939917], zoom_start=15)
+    for location in list_:
+        coordinate = [location[1], location[0]]
+        folium.Marker(
+            # folium格式，【纬度，经度】
+            location=coordinate,
+            fill_color='＃43d9de',
+            radius=8
+        ).add_to(m)
+    m.save(os.path.join(r'' + os.path.dirname(os.getcwd()) + '/dataset/', configuration.CITY+'_public_node.html'))
 

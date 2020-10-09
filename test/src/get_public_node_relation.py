@@ -3,6 +3,7 @@ import tools
 import traceback
 import folium
 import os
+import configuration
 
 
 def get_direction(lonA, latA, lonB, latB):
@@ -65,20 +66,20 @@ def get_shortest_node_by_same_id(public_node_info):
                         distance.append(distance_)
                 except Exception as ex:
                     print(ex)
-                try:
-                    if node[4] == node_compare[12]:
-                        distance_ = [node[0], node_compare[0], int(node[4]), node[5],
-                                     tools.geodistance(node[1], node[2], node_compare[1], node_compare[2])]
-                        distance.append(distance_)
-                except Exception as ex:
-                    print(ex)
-                try:
-                    if node[4] == node_compare[14]:
-                        distance_ = [node[0], node_compare[0], int(node[4]), node[5],
-                                     tools.geodistance(node[1], node[2], node_compare[1], node_compare[2])]
-                        distance.append(distance_)
-                except Exception as ex:
-                    print(ex)
+                # try:
+                #     if node[4] == node_compare[12]:
+                #         distance_ = [node[0], node_compare[0], int(node[4]), node[5],
+                #                      tools.geodistance(node[1], node[2], node_compare[1], node_compare[2])]
+                #         distance.append(distance_)
+                # except Exception as ex:
+                #     print(ex)
+                # try:
+                #     if node[4] == node_compare[14]:
+                #         distance_ = [node[0], node_compare[0], int(node[4]), node[5],
+                #                      tools.geodistance(node[1], node[2], node_compare[1], node_compare[2])]
+                #         distance.append(distance_)
+                # except Exception as ex:
+                #     print(ex)
 
                 # 第二轮比较
                 try:
@@ -109,20 +110,20 @@ def get_shortest_node_by_same_id(public_node_info):
                         distance.append(distance_)
                 except Exception as ex:
                     print(ex)
-                try:
-                    if node[6] == node_compare[12]:
-                        distance_ = [node[0], node_compare[0], int(node[6]), node[7],
-                                     tools.geodistance(node[1], node[2], node_compare[1], node_compare[2])]
-                        distance.append(distance_)
-                except Exception as ex:
-                    print(ex)
-                try:
-                    if node[6] == node_compare[14]:
-                        distance_ = [node[0], node_compare[0], int(node[6]), node[7],
-                                     tools.geodistance(node[1], node[2], node_compare[1], node_compare[2])]
-                        distance.append(distance_)
-                except Exception as ex:
-                    print(ex)
+                # try:
+                #     if node[6] == node_compare[12]:
+                #         distance_ = [node[0], node_compare[0], int(node[6]), node[7],
+                #                      tools.geodistance(node[1], node[2], node_compare[1], node_compare[2])]
+                #         distance.append(distance_)
+                # except Exception as ex:
+                #     print(ex)
+                # try:
+                #     if node[6] == node_compare[14]:
+                #         distance_ = [node[0], node_compare[0], int(node[6]), node[7],
+                #                      tools.geodistance(node[1], node[2], node_compare[1], node_compare[2])]
+                #         distance.append(distance_)
+                # except Exception as ex:
+                #     print(ex)
 
                 # 第三轮比较
                 try:
@@ -153,20 +154,20 @@ def get_shortest_node_by_same_id(public_node_info):
                         distance.append(distance_)
                 except Exception as ex:
                     print(ex)
-                try:
-                    if node[8] == node_compare[12]:
-                        distance_ = [node[0], node_compare[0], int(node[8]), node[9],
-                                     tools.geodistance(node[1], node[2], node_compare[1], node_compare[2])]
-                        distance.append(distance_)
-                except Exception as ex:
-                    print(ex)
-                try:
-                    if node[8] == node_compare[14]:
-                        distance_ = [node[0], node_compare[0], int(node[8]), node[9],
-                                     tools.geodistance(node[1], node[2], node_compare[1], node_compare[2])]
-                        distance.append(distance_)
-                except Exception as ex:
-                    print(ex)
+                # try:
+                #     if node[8] == node_compare[12]:
+                #         distance_ = [node[0], node_compare[0], int(node[8]), node[9],
+                #                      tools.geodistance(node[1], node[2], node_compare[1], node_compare[2])]
+                #         distance.append(distance_)
+                # except Exception as ex:
+                #     print(ex)
+                # try:
+                #     if node[8] == node_compare[14]:
+                #         distance_ = [node[0], node_compare[0], int(node[8]), node[9],
+                #                      tools.geodistance(node[1], node[2], node_compare[1], node_compare[2])]
+                #         distance.append(distance_)
+                # except Exception as ex:
+                #     print(ex)
 
                 # 第四轮比较
                 try:
@@ -197,108 +198,108 @@ def get_shortest_node_by_same_id(public_node_info):
                         distance.append(distance_)
                 except Exception as ex:
                     print(ex)
-                try:
-                    if node[10] == node_compare[12]:
-                        distance_ = [node[0], node_compare[0], int(node[10]), node[11],
-                                     tools.geodistance(node[1], node[2], node_compare[1], node_compare[2])]
-                        distance.append(distance_)
-                except Exception as ex:
-                    print(ex)
-                try:
-                    if node[10] == node_compare[14]:
-                        distance_ = [node[0], node_compare[0], int(node[10]), node[11],
-                                     tools.geodistance(node[1], node[2], node_compare[1], node_compare[2])]
-                        distance.append(distance_)
-                except Exception as ex:
-                    print(ex)
+                # try:
+                #     if node[10] == node_compare[12]:
+                #         distance_ = [node[0], node_compare[0], int(node[10]), node[11],
+                #                      tools.geodistance(node[1], node[2], node_compare[1], node_compare[2])]
+                #         distance.append(distance_)
+                # except Exception as ex:
+                #     print(ex)
+                # try:
+                #     if node[10] == node_compare[14]:
+                #         distance_ = [node[0], node_compare[0], int(node[10]), node[11],
+                #                      tools.geodistance(node[1], node[2], node_compare[1], node_compare[2])]
+                #         distance.append(distance_)
+                # except Exception as ex:
+                #     print(ex)
 
-                # 第五轮比较
-                try:
-                    if node[12] == node_compare[4]:
-                        distance_ = [node[0], node_compare[0], int(node[12]), node[13],
-                                     tools.geodistance(node[1], node[2], node_compare[1], node_compare[2])]
-                        distance.append(distance_)
-                except Exception as ex:
-                    print(ex)
-                try:
-                    if node[12] == node_compare[6]:
-                        distance_ = [node[0], node_compare[0], int(node[12]), node[13],
-                                     tools.geodistance(node[1], node[2], node_compare[1], node_compare[2])]
-                        distance.append(distance_)
-                except Exception as ex:
-                    print(ex)
-                try:
-                    if node[12] == node_compare[8]:
-                        distance_ = [node[0], node_compare[0], int(node[12]), node[13],
-                                     tools.geodistance(node[1], node[2], node_compare[1], node_compare[2])]
-                        distance.append(distance_)
-                except Exception as ex:
-                    print(ex)
-                try:
-                    if node[12] == node_compare[10]:
-                        distance_ = [node[0], node_compare[0], int(node[12]), node[13],
-                                     tools.geodistance(node[1], node[2], node_compare[1], node_compare[2])]
-                        distance.append(distance_)
-                except Exception as ex:
-                    print(ex)
-                try:
-                    if node[12] == node_compare[12]:
-                        distance_ = [node[0], node_compare[0], int(node[12]), node[13],
-                                     tools.geodistance(node[1], node[2], node_compare[1], node_compare[2])]
-                        distance.append(distance_)
-                except Exception as ex:
-                    print(ex)
-                try:
-                    if node[12] == node_compare[14]:
-                        distance_ = [node[0], node_compare[0], int(node[12]), node[13],
-                                     tools.geodistance(node[1], node[2], node_compare[1], node_compare[2])]
-                        distance.append(distance_)
-                except Exception as ex:
-                    print(ex)
+                # # 第五轮比较
+                # try:
+                #     if node[12] == node_compare[4]:
+                #         distance_ = [node[0], node_compare[0], int(node[12]), node[13],
+                #                      tools.geodistance(node[1], node[2], node_compare[1], node_compare[2])]
+                #         distance.append(distance_)
+                # except Exception as ex:
+                #     print(ex)
+                # try:
+                #     if node[12] == node_compare[6]:
+                #         distance_ = [node[0], node_compare[0], int(node[12]), node[13],
+                #                      tools.geodistance(node[1], node[2], node_compare[1], node_compare[2])]
+                #         distance.append(distance_)
+                # except Exception as ex:
+                #     print(ex)
+                # try:
+                #     if node[12] == node_compare[8]:
+                #         distance_ = [node[0], node_compare[0], int(node[12]), node[13],
+                #                      tools.geodistance(node[1], node[2], node_compare[1], node_compare[2])]
+                #         distance.append(distance_)
+                # except Exception as ex:
+                #     print(ex)
+                # try:
+                #     if node[12] == node_compare[10]:
+                #         distance_ = [node[0], node_compare[0], int(node[12]), node[13],
+                #                      tools.geodistance(node[1], node[2], node_compare[1], node_compare[2])]
+                #         distance.append(distance_)
+                # except Exception as ex:
+                #     print(ex)
+                # try:
+                #     if node[12] == node_compare[12]:
+                #         distance_ = [node[0], node_compare[0], int(node[12]), node[13],
+                #                      tools.geodistance(node[1], node[2], node_compare[1], node_compare[2])]
+                #         distance.append(distance_)
+                # except Exception as ex:
+                #     print(ex)
+                # try:
+                #     if node[12] == node_compare[14]:
+                #         distance_ = [node[0], node_compare[0], int(node[12]), node[13],
+                #                      tools.geodistance(node[1], node[2], node_compare[1], node_compare[2])]
+                #         distance.append(distance_)
+                # except Exception as ex:
+                #     print(ex)
 
                 # 第六轮比较
-                try:
-                    if node[14] == node_compare[4]:
-                        distance_ = [node[0], node_compare[0], int(node[14]), node[15],
-                                     tools.geodistance(node[1], node[2], node_compare[1], node_compare[2])]
-                        distance.append(distance_)
-                except Exception as ex:
-                    print(ex)
-                try:
-                    if node[14] == node_compare[6]:
-                        distance_ = [node[0], node_compare[0], int(node[14]), node[15],
-                                     tools.geodistance(node[1], node[2], node_compare[1], node_compare[2])]
-                        distance.append(distance_)
-                except Exception as ex:
-                    print(ex)
-                try:
-                    if node[14] == node_compare[8]:
-                        distance_ = [node[0], node_compare[0], int(node[14]), node[15],
-                                     tools.geodistance(node[1], node[2], node_compare[1], node_compare[2])]
-                        distance.append(distance_)
-                except Exception as ex:
-                    print(ex)
-                try:
-                    if node[14] == node_compare[10]:
-                        distance_ = [node[0], node_compare[0], int(node[14]), node[15],
-                                     tools.geodistance(node[1], node[2], node_compare[1], node_compare[2])]
-                        distance.append(distance_)
-                except Exception as ex:
-                    print(ex)
-                try:
-                    if node[14] == node_compare[12]:
-                        distance_ = [node[0], node_compare[0], int(node[14]), node[15],
-                                     tools.geodistance(node[1], node[2], node_compare[1], node_compare[2])]
-                        distance.append(distance_)
-                except Exception as ex:
-                    print(ex)
-                try:
-                    if node[14] == node_compare[14]:
-                        distance_ = [node[0], node_compare[0], int(node[14]), node[15],
-                                     tools.geodistance(node[1], node[2], node_compare[1], node_compare[2])]
-                        distance.append(distance_)
-                except Exception as ex:
-                    print(ex)
+                # try:
+                #     if node[14] == node_compare[4]:
+                #         distance_ = [node[0], node_compare[0], int(node[14]), node[15],
+                #                      tools.geodistance(node[1], node[2], node_compare[1], node_compare[2])]
+                #         distance.append(distance_)
+                # except Exception as ex:
+                #     print(ex)
+                # try:
+                #     if node[14] == node_compare[6]:
+                #         distance_ = [node[0], node_compare[0], int(node[14]), node[15],
+                #                      tools.geodistance(node[1], node[2], node_compare[1], node_compare[2])]
+                #         distance.append(distance_)
+                # except Exception as ex:
+                #     print(ex)
+                # try:
+                #     if node[14] == node_compare[8]:
+                #         distance_ = [node[0], node_compare[0], int(node[14]), node[15],
+                #                      tools.geodistance(node[1], node[2], node_compare[1], node_compare[2])]
+                #         distance.append(distance_)
+                # except Exception as ex:
+                #     print(ex)
+                # try:
+                #     if node[14] == node_compare[10]:
+                #         distance_ = [node[0], node_compare[0], int(node[14]), node[15],
+                #                      tools.geodistance(node[1], node[2], node_compare[1], node_compare[2])]
+                #         distance.append(distance_)
+                # except Exception as ex:
+                #     print(ex)
+                # try:
+                #     if node[14] == node_compare[12]:
+                #         distance_ = [node[0], node_compare[0], int(node[14]), node[15],
+                #                      tools.geodistance(node[1], node[2], node_compare[1], node_compare[2])]
+                #         distance.append(distance_)
+                # except Exception as ex:
+                #     print(ex)
+                # try:
+                #     if node[14] == node_compare[14]:
+                #         distance_ = [node[0], node_compare[0], int(node[14]), node[15],
+                #                      tools.geodistance(node[1], node[2], node_compare[1], node_compare[2])]
+                #         distance.append(distance_)
+                # except Exception as ex:
+                #     print(ex)
 
     # 路口按照way_id归类
     re = []
@@ -354,10 +355,10 @@ def get_relation(re_sort, public_node_info):
     for re_sort_ in re_sort:
         relation_ = []
         angle_1 = tools.getDegree(public_node_info[re_sort_[0][0]][1], public_node_info[re_sort_[0][0]][2],
-                                  public_node_info[re_sort_[0][1]][1], public_node_info[re_sort_[0][1]][2])
+                              public_node_info[re_sort_[0][1]][1], public_node_info[re_sort_[0][1]][2])
         for re_sort_ele in re_sort_:
             angle_2 = tools.getDegree(public_node_info[re_sort_ele[0]][1], public_node_info[re_sort_ele[0]][2],
-                                      public_node_info[re_sort_ele[1]][1], public_node_info[re_sort_ele[1]][2])
+                                    public_node_info[re_sort_ele[1]][1], public_node_info[re_sort_ele[1]][2])
             if abs(angle_1 - angle_2) >= 90:
                 relation_.append(re_sort_[0])
                 relation_.append(re_sort_ele)
@@ -381,7 +382,7 @@ def get_relation(re_sort, public_node_info):
 def write_relation_to_csv(relation, public_node_info):
     # relation的index范围为0-999
     relation_1001 = []
-    for i in range(999):
+    for i in range(1551):
         same_node = []
         for relation_ in relation:
             if relation_[0][0] == i:
@@ -391,10 +392,13 @@ def write_relation_to_csv(relation, public_node_info):
                 break
         relation_1001.append(same_node)
     relation_file = []
+    i = 0
     for single_relation in relation_1001:
         try:
+            i += 1
             relation_file_ = [single_relation[0][0]]
         except Exception as ex:
+            print(i)
             print(single_relation)
             print(ex.args)
             print('=========')
@@ -415,30 +419,36 @@ def write_relation_to_csv(relation, public_node_info):
                           'target_point_two', 'way_id_two', 'way_name_two', 'distance_two', 'direction_two',
                           'target_point_three', 'way_id_three', 'way_name_three', 'distance_three', 'direction_three',
                           'target_point_four', 'way_id_four', 'way_name_four', 'distance_four', 'direction_four',
-                          'target_point_five', 'way_id_five', 'way_name_five', 'distance_five', 'direction_five',
-                          'target_point_six', 'way_id_six', 'way_name_six', 'distance_six', 'direction_six'
+                          'target_point_five', 'way_id_five', 'way_name_five', 'distance_five', 'direction_five'
+                          # 'target_point_six', 'way_id_six', 'way_name_six', 'distance_six', 'direction_six'
                       ])
-    df.to_csv('public_node_relation.csv', index=False, encoding="utf-8")
+    df.to_csv(os.path.dirname(os.getcwd())+"/dataset/"+configuration.CITY+'_public_node_relation.csv', index=False, encoding="utf-8")
     return relation_file
 
 
 if __name__ == '__main__':
     # # 第一阶段
-    # file_path = "public_node_info.csv"
+    # file_path = os.path.dirname(os.getcwd())+"/dataset/"+configuration.CITY+'_public_node_info.csv'
     # df = pd.read_csv(file_path, encoding='utf-8')
     # di, re, re_sort = get_shortest_node_by_same_id(df.values.tolist())
     # de_no, df_1 = delete_same_node(di, df)
     # df_1 = df_1.reset_index(drop=True)
     # df_1 = df_1.drop(['Unnamed: 0'], axis=1)
     # # 去除噪声
-    # df_1 = df_1.drop([84])
-    # df_1 = df_1.drop([229])
-    # df_1 = df_1.drop([998])
+    # df_1 = df_1.drop([220])
+    # df_1 = df_1.drop([669])
+    # df_1 = df_1.drop([416])
+    # df_1 = df_1.drop([493])
+    # df_1 = df_1.drop([884])
+    # df_1 = df_1.drop([1027])
+    # df_1 = df_1.drop([1642])
+    # df_1 = df_1.drop([1682])
+    # df_1 = df_1.drop([1687])
     # df_1 = df_1.reset_index(drop=True)
-    # df_1.to_csv('public_node_info_.csv', index=True, encoding="utf-8")
+    # df_1.to_csv(os.path.dirname(os.getcwd())+"/dataset/"+configuration.CITY+'_public_node_info_.csv', index=True, encoding="utf-8")
 
     # 第二阶段
-    file_path_ = "public_node_info_.csv"
+    file_path_ = os.path.dirname(os.getcwd())+'/dataset/'+configuration.CITY+'_public_node_info_.csv'
     df_ = pd.read_csv(file_path_, encoding='utf-8')
     df_list = df_.values.tolist()
     di, re, re_sort = get_shortest_node_by_same_id(df_list)
@@ -446,14 +456,14 @@ if __name__ == '__main__':
     relation_file = write_relation_to_csv(relation, df_list)
 
     # 画图部分
-    m = folium.Map([31.2240060, 121.4639028], zoom_start=15)
-    # for ele in df_.values.tolist():
-    #     coordinate = [ele[2], ele[1]]
-    #     folium.Marker(
-    #         location=coordinate,
-    #         fill_color='＃43d9de',
-    #         radius=8
-    #     ).add_to(m)
+    m = folium.Map([31.7750817, 117.3165301], zoom_start=15)
+    for ele in df_.values.tolist():
+        coordinate = [ele[2], ele[1]]
+        folium.Marker(
+            location=coordinate,
+            fill_color='＃43d9de',
+            radius=8
+        ).add_to(m)
     for single_node in relation_file:
         index = 0
         for ele in single_node:
@@ -467,5 +477,5 @@ if __name__ == '__main__':
                     opacity=1
                 ).add_to(m)
             index += 1
-    m.save(os.path.join(r'' + os.path.dirname(os.getcwd()) + '/dataset/', 'public_relation.html'))
+    m.save(os.path.join(r'' + os.path.dirname(os.getcwd()) + '/dataset/', configuration.CITY+'_public_relation.html'))
 

@@ -193,7 +193,7 @@ def get_details(cross_info):
             next_state_list_.append(single_cross_info[11])
             next_state_list_.append(single_cross_info[16])
             next_state_list_.append(single_cross_info[21])
-            next_state_list_.append(single_cross_info[26])
+            # next_state_list_.append(single_cross_info[26])
         except:
             next_state_list.append(next_state_list_)
         else:
@@ -204,7 +204,7 @@ def get_details(cross_info):
             distance_list_.append(single_cross_info[14])
             distance_list_.append(single_cross_info[19])
             distance_list_.append(single_cross_info[24])
-            distance_list_.append(single_cross_info[29])
+            # distance_list_.append(single_cross_info[29])
         except:
             distance_list.append(distance_list_)
         else:
@@ -215,11 +215,11 @@ def get_details(cross_info):
             action_list_.append(single_cross_info[15])
             action_list_.append(single_cross_info[20])
             action_list_.append(single_cross_info[25])
-            action_list_.append(single_cross_info[30])
+            # action_list_.append(single_cross_info[30])
         except:
             action_list.append(action_list_)
         else:
             action_list.append(action_list_)
-        tel_list.append(single_cross_info[31])
+        # tel_list.append(single_cross_info[31])
 
     return next_state_list, distance_list, action_list, tel_list

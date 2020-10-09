@@ -3,14 +3,14 @@ import traceback
 
 
 class Cross:
-    def __init__(self, next_state_list, action_list, distance_list, start_point, end_point, cross_info, tel_list, n_states=559):
+    def __init__(self, next_state_list, action_list, distance_list, start_point, end_point, cross_info, n_states=559):
         self.next_state_list = next_state_list
         self.action_list = action_list
         self.distance_list = distance_list
         self.start_point = start_point
         self.end_point = end_point
         self.cross_info = cross_info
-        self.tel_list = tel_list
+        # self.tel_list = tel_list
         self.n_states = n_states
 
     def get_next_states(self, state):
@@ -98,12 +98,12 @@ class Cross:
             s_ = 'end_point'
             print('get it')
         # 靠近终点正向奖励
-        elif distance_2 < distance_3 and distance_4 < distance_5 or angle < 50:
-            reward = 1 / self.get_distance(state, index)*3
+        elif distance_2 < distance_3 and angle < 50:
+            reward = 1 / self.get_distance(state, index)
             done = False
         # 远离终点惩罚
-        elif distance_2 > distance_3 or distance_4 > distance_5:
-            reward = -(6 / self.get_distance(state, index))
+        elif distance_2 > distance_3:
+            reward = -(2 / self.get_distance(state, index))
             done = False
         # 如果下一状态到终点的直线距离两倍于起点到终点的直线距离，跳出循环
         elif distance_2 > distance_1 * 1.5:
@@ -112,11 +112,11 @@ class Cross:
             s_ = 'terminal'
         # 如果所选下一个action与终点角度差距过大，惩罚
         elif 120 < abs(azimuth_6 - azimuth_4) < 260:
-            reward = -(5 / self.get_distance(state, index))
+            reward = -(2 / self.get_distance(state, index))
             done = False
         # 超距后，惩罚
         elif distance_1 < distance_5:
-            reward = -(7 / self.get_distance(state, index))
+            reward = -(3 / self.get_distance(state, index))
             done = False
         # elif distance_2 > distance_3:
         #     reward = -(2 / self.get_distance(state, index))
@@ -134,9 +134,9 @@ class Cross:
             done = False
         return s_, reward, done
 
-    def step_second(self, state, index):
-        s_ = self.get_next_state(state, index)
-        tel_list = self.get_tels(state, index)
-        tel_len = len(tel_list)
-        if tel_len == 0:
+    # def step_second(self, state, index):
+    #     s_ = self.get_next_state(state, index)
+    #     tel_list = self.get_tels(state, index)
+    #     tel_len = len(tel_list)
+    #     if tel_len == 0:
             
