@@ -139,4 +139,3 @@ class Cross:
     #     tel_list = self.get_tels(state, index)
     #     tel_len = len(tel_list)
     #     if tel_len == 0:
-            

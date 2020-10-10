@@ -382,7 +382,7 @@ def get_relation(re_sort, public_node_info):
 def write_relation_to_csv(relation, public_node_info):
     # relation的index范围为0-999
     relation_1001 = []
-    for i in range(1551):
+    for i in range(1725):
         same_node = []
         for relation_ in relation:
             if relation_[0][0] == i:
@@ -435,7 +435,7 @@ if __name__ == '__main__':
     # df_1 = df_1.reset_index(drop=True)
     # df_1 = df_1.drop(['Unnamed: 0'], axis=1)
     # # 去除噪声
-    # df_1 = df_1.drop([220])
+    # df_1 = df_1.drop([777])
     # df_1 = df_1.drop([669])
     # df_1 = df_1.drop([416])
     # df_1 = df_1.drop([493])
@@ -455,27 +455,27 @@ if __name__ == '__main__':
     relation = get_relation(re_sort, df_.values.tolist())
     relation_file = write_relation_to_csv(relation, df_list)
 
-    # 画图部分
-    m = folium.Map([31.7750817, 117.3165301], zoom_start=15)
-    for ele in df_.values.tolist():
-        coordinate = [ele[2], ele[1]]
-        folium.Marker(
-            location=coordinate,
-            fill_color='＃43d9de',
-            radius=8
-        ).add_to(m)
-    for single_node in relation_file:
-        index = 0
-        for ele in single_node:
-            if index == 1 or index == 6 or index == 11 or index == 16 or index == 21 or index == 26:
-                location = [[df_list[single_node[0]][2], df_list[single_node[0]][1]],
-                            [df_list[single_node[index]][2], df_list[single_node[index]][1]]]
-                folium.PolyLine(
-                    location,
-                    weight=5,
-                    color='black',
-                    opacity=1
-                ).add_to(m)
-            index += 1
-    m.save(os.path.join(r'' + os.path.dirname(os.getcwd()) + '/dataset/', configuration.CITY+'_public_relation.html'))
+    # # 画图部分
+    # m = folium.Map([31.7750817, 117.3165301], zoom_start=15)
+    # for ele in df_.values.tolist():
+    #     coordinate = [ele[2], ele[1]]
+    #     folium.Marker(
+    #         location=coordinate,
+    #         fill_color='＃43d9de',
+    #         radius=8
+    #     ).add_to(m)
+    # for single_node in relation_file:
+    #     index = 0
+    #     for ele in single_node:
+    #         if index == 1 or index == 6 or index == 11 or index == 16 or index == 21 or index == 26:
+    #             location = [[df_list[single_node[0]][2], df_list[single_node[0]][1]],
+    #                         [df_list[single_node[index]][2], df_list[single_node[index]][1]]]
+    #             folium.PolyLine(
+    #                 location,
+    #                 weight=5,
+    #                 color='black',
+    #                 opacity=1
+    #             ).add_to(m)
+    #         index += 1
+    # m.save(os.path.join(r'' + os.path.dirname(os.getcwd()) + '/dataset/', configuration.CITY+'_public_relation.html'))
 

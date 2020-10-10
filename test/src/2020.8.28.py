@@ -242,7 +242,7 @@ if __name__ == "__main__":
     df_coor = pd.DataFrame(list_, columns=['lon', 'lat'])
     df = pd.concat([df_coor, df_node], axis=1)
     df.to_csv(os.path.dirname(os.getcwd())+"/dataset/"+configuration.CITY+'_public_node_info.csv', index=True, encoding="utf-8")
-    m = folium.Map([31.864183, 117.2939917], zoom_start=15)
+    m = folium.Map([31.70687, 117.31422], zoom_start=15)
     for location in list_:
         coordinate = [location[1], location[0]]
         folium.Marker(

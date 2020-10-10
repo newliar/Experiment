@@ -1,26 +1,47 @@
 import pandas as pd
 import tools
+import os
+
+import configuration
 
 
-def merge_two_dataset():
-    pd_cross = pd.read_csv('public_node_info_.csv', encoding='utf-8')
-    pd_tel = pd.read_csv('tel_location.csv', encoding='utf-8')
+cross_file_path = os.path.dirname(os.getcwd())+'/dataset/'+configuration.CITY+'_public_node_info_.csv'
+tel_file_path = os.path.dirname(os.getcwd())+'/dataset/'+configuration.CITY+'_tel_station.xls'
 
-    cross_list = pd_cross.values.tolist()
-    tel_list = pd_tel.values.tolist()
-    cross_addition = []
-    for cross in cross_list:
-        cross_addition_ = []
-        for tel in tel_list:
-            distance = tools.geodistance(cross[1], cross[2], tel[1], tel[2])
-            if distance < 300:
-                cross_addition_.append(int(tel[0]))
-        cross_addition.append(cross_addition_)
-    ser = pd.Series(cross_addition, name='tel')
-    result = pd.concat([pd_cross, ser], axis=1)
-    return result
+df_cross = pd.read_csv(cross_file_path, encoding='utf-8')
+df_cross.set_index('Unnamed: 0', inplace=True)
+
+df_tel = pd.read_excel(tel_file_path, encoding='utf-8')
+
+tel = []
+i = 0
+for index_cr, row_cr in df_cross.iterrows():
+    i += 1
+    tel_ = []
+    j = 0
+    for index_tel, row_tel in df_tel.iterrows():
+        j += 1
+        distance = tools.geodistance(row_cr['lon'], row_cr['lat'], row_tel['扇区经度'], row_tel['扇区纬度'])
+        if distance < 400:
+            print(i, j)
+            tel_.append(index_tel)
+    tel.append(tel_)
+
+tel_s = pd.Series(tel)
+df_cross['tel'] = tel_s
+df_cross.to_csv(os.path.dirname(os.getcwd())+"/dataset/"+configuration.CITY+'_node&tel.csv', index=True, encoding="utf-8")
+# cross_list = pd_cross.values.tolist()
+# tel_list = pd_tel.values.tolist()
+# cross_addition = []
+# for cross in cross_list:
+#     cross_addition_ = []
+#     for tel in tel_list:
+#         distance = tools.geodistance(cross[1], cross[2], tel[1], tel[2])
+#         if distance < 300:
+#             cross_addition_.append(int(tel[0]))
+#     cross_addition.append(cross_addition_)
+# ser = pd.Series(cross_addition, name='tel')
+# result = pd.concat([pd_cross, ser], axis=1)
+# return result
 
 
-if __name__ == '__main__':
-    cross_tel = merge_two_dataset()
-    cross_tel.to_csv('public_node_info_.csv', encoding='utf-8')

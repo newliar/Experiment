@@ -2,6 +2,7 @@ from RL_brain import QLearningTable
 from cross_env import Cross
 import tools
 import pandas as pd
+import numpy as np
 import time
 import matplotlib
 import matplotlib.pyplot as plt
@@ -11,7 +12,7 @@ import configuration
 ACTIONS = ['1', '2', '3', '4']
 
 
-def update(env):
+def update(env, start_point, end_point):
     time_start = time.time()
     for episode in range(100):
         episode_start_time = time.time()
@@ -26,11 +27,11 @@ def update(env):
             # print(observation_)
             
             plt.clf()
-            plt.scatter(x[configuration.START_POINT], y[configuration.START_POINT], marker='o', s=100, label='start_point', c='yellow')
-            plt.scatter(x[configuration.END_POINT], y[configuration.END_POINT], marker='^', s=100, label='end_point', c='yellow')
+            plt.scatter(x[start_point], y[start_point], marker='o', s=100, label='start_point', c='yellow')
+            plt.scatter(x[end_point], y[end_point], marker='^', s=100, label='end_point', c='yellow')
             plt.scatter(x, y, s=15, alpha=0.3, c='green')
             if observation_ == 'end_point':
-                plt.scatter(x[configuration.END_POINT], y[configuration.END_POINT], s=15, c='red')
+                plt.scatter(x[end_point], y[end_point], s=15, c='red')
             elif observation_ == 'terminal':
                 plt.scatter(x[observation], y[observation], s=15, c='yellow')
             else:
@@ -42,7 +43,7 @@ def update(env):
 
             observation = observation_
             current_time = time.time()
-            if current_time - episode_start_time > 60:
+            if current_time - episode_start_time > 180:
                 break
             if done:
                 break
@@ -76,13 +77,14 @@ if __name__ == "__main__":
     next_state_list, distance_list, action_list, tel_list = tools.get_details(cross_relation)
 
     # TODO Start_Point & End_Point 待输入
-    # for i in range(999):
-    #     for j in range(999):
-    #         if i != j:
-    RL = QLearningTable(ACTIONS)
-    env = Cross(next_state_list, action_list, distance_list, configuration.START_POINT, configuration.END_POINT, cross_info)
-    q_table = update(env)
-    q_table.to_csv(os.getcwd()+'/table/'+configuration.CITY+'_'+str(configuration.START_POINT)+'_'+str(configuration.END_POINT)+'_'+'q_table.csv', encoding="utf-8")
+    for i in range(66, 88):
+        np.random.seed(i)
+        start_point = np.random.randint(0, 800)
+        end_point = np.random.randint(801, 1725)
+        RL = QLearningTable(ACTIONS)
+        env = Cross(next_state_list, action_list, distance_list, start_point, end_point, cross_info)
+        q_table = update(env, start_point, end_point)
+        q_table.to_csv(os.getcwd()+'/table/'+configuration.CITY+'_'+str(start_point)+'_'+str(end_point)+'_'+'q_table.csv', encoding="utf-8")
     # df_q_tb = pd.read_csv(os.getcwd() + '/table/0_363_q_table.csv', encoding='utf-8')
     # q_table = df_q_tb.values.tolist()
                 
