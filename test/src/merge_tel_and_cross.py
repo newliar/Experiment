@@ -6,12 +6,12 @@ import configuration
 
 
 cross_file_path = os.path.dirname(os.getcwd())+'/dataset/'+configuration.CITY+'_public_node_info_.csv'
-tel_file_path = os.path.dirname(os.getcwd())+'/dataset/'+configuration.CITY+'_tel_station.xls'
+tel_file_path = os.path.dirname(os.getcwd())+'/dataset/'+configuration.CITY+'_tel_station.csv'
 
 df_cross = pd.read_csv(cross_file_path, encoding='utf-8')
 df_cross.set_index('Unnamed: 0', inplace=True)
 
-df_tel = pd.read_excel(tel_file_path, encoding='utf-8')
+df_tel = pd.read_csv(tel_file_path, encoding='utf-8')
 
 tel = []
 i = 0
@@ -21,7 +21,7 @@ for index_cr, row_cr in df_cross.iterrows():
     j = 0
     for index_tel, row_tel in df_tel.iterrows():
         j += 1
-        distance = tools.geodistance(row_cr['lon'], row_cr['lat'], row_tel['扇区经度'], row_tel['扇区纬度'])
+        distance = tools.geodistance(row_cr['lon'], row_cr['lat'], row_tel['lon'], row_tel['lat'])
         if distance < 400:
             print(i, j)
             tel_.append(index_tel)
@@ -29,7 +29,7 @@ for index_cr, row_cr in df_cross.iterrows():
 
 tel_s = pd.Series(tel)
 df_cross['tel'] = tel_s
-df_cross.to_csv(os.path.dirname(os.getcwd())+"/dataset/"+configuration.CITY+'_node&tel.csv', index=True, encoding="utf-8")
+# df_cross.to_csv(os.path.dirname(os.getcwd())+"/dataset/"+configuration.CITY+'_node&tel.csv', index=True, encoding="utf-8")
 # cross_list = pd_cross.values.tolist()
 # tel_list = pd_tel.values.tolist()
 # cross_addition = []

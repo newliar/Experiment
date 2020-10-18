@@ -69,15 +69,15 @@ def update_realtime():
 
 if __name__ == "__main__":
     df_re = pd.read_csv(os.path.dirname(os.getcwd())+"/dataset/"+configuration.CITY+'_public_node_relation.csv', encoding='utf-8')
-    df_co = pd.read_csv(os.path.dirname(os.getcwd())+"/dataset/"+configuration.CITY+'_public_node_info_.csv', encoding='utf-8')
+    df_co = pd.read_csv(os.path.dirname(os.getcwd())+"/dataset/"+configuration.CITY+'_node&tel.csv', encoding='utf-8')
     x = df_co['lon'].round(decimals=6).tolist()
     y = df_co['lat'].round(decimals=6).tolist()
     cross_relation = tools.get_cross_info(df_re)
     cross_info = df_co.values.tolist()
-    next_state_list, distance_list, action_list, tel_list = tools.get_details(cross_relation)
+    next_state_list, distance_list, action_list = tools.get_details(cross_relation)
 
     # TODO Start_Point & End_Point 待输入
-    for i in range(66, 88):
+    for i in range(166, 288):
         np.random.seed(i)
         start_point = np.random.randint(0, 800)
         end_point = np.random.randint(801, 1725)

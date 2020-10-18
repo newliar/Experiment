@@ -10,7 +10,6 @@ class Cross:
         self.start_point = start_point
         self.end_point = end_point
         self.cross_info = cross_info
-        # self.tel_list = tel_list
         self.n_states = n_states
 
     def get_next_states(self, state):
@@ -23,7 +22,7 @@ class Cross:
         return self.distance_list[state][index]
 
     def get_tels(self, state, index):
-        return self.tel_list[state][index]
+        return self.cross_info[self.get_next_state(state, index)][12]
 
     def get_length(self, state):
         try:
@@ -91,6 +90,10 @@ class Cross:
         # azimuth_4和azimuth_6的夹角
         angle = tools.get_angle(azimuth_4, azimuth_6)
 
+        tel_list = self.get_tels(state, index)
+
+        total_cost = 0.8*self.get_distance(state, index) + 0.2*20*10
+
         # 如果到达终点，返回奖励1，并给予完成状态
         if s_ == self.end_point:
             reward = 1
@@ -99,11 +102,11 @@ class Cross:
             print('get it')
         # 靠近终点正向奖励
         elif distance_2 < distance_3 and angle < 50:
-            reward = 1 / self.get_distance(state, index)
+            reward = 1 / total_cost
             done = False
         # 远离终点惩罚
         elif distance_2 > distance_3:
-            reward = -(2 / self.get_distance(state, index))
+            reward = -(2 / total_cost)
             done = False
         # 如果下一状态到终点的直线距离两倍于起点到终点的直线距离，跳出循环
         elif distance_2 > distance_1 * 1.5:
@@ -112,11 +115,11 @@ class Cross:
             s_ = 'terminal'
         # 如果所选下一个action与终点角度差距过大，惩罚
         elif 120 < abs(azimuth_6 - azimuth_4) < 260:
-            reward = -(2 / self.get_distance(state, index))
+            reward = -(2 / total_cost)
             done = False
         # 超距后，惩罚
         elif distance_1 < distance_5:
-            reward = -(3 / self.get_distance(state, index))
+            reward = -(3 / total_cost)
             done = False
         # elif distance_2 > distance_3:
         #     reward = -(2 / self.get_distance(state, index))
@@ -130,7 +133,7 @@ class Cross:
         #     reward = 1 / self.get_distance(state, index)
         #     done = False
         else:
-            reward = -(1 / self.get_distance(state, index))
+            reward = -(1 / total_cost)
             done = False
         return s_, reward, done
 

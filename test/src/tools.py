@@ -182,11 +182,12 @@ def get_details(cross_info):
     next_state_list = []
     distance_list = []
     action_list = []
-    tel_list = []
+    # tel_list = []
     for single_cross_info in cross_info:
         next_state_list_ = []
         distance_list_ = []
         action_list_ = []
+
         try:
             next_state_list_.append(single_cross_info[1])
             next_state_list_.append(single_cross_info[6])
@@ -222,4 +223,4 @@ def get_details(cross_info):
             action_list.append(action_list_)
         # tel_list.append(single_cross_info[31])
 
-    return next_state_list, distance_list, action_list, tel_list
+    return next_state_list, distance_list, action_list
