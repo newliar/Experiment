@@ -182,7 +182,7 @@ def get_details(cross_info):
     next_state_list = []
     distance_list = []
     action_list = []
-    # tel_list = []
+    tel_list = []
     for single_cross_info in cross_info:
         next_state_list_ = []
         distance_list_ = []

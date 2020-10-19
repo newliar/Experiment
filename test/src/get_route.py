@@ -74,7 +74,7 @@ if __name__ == "__main__":
     y = df_co['lat'].round(decimals=6).tolist()
     cross_relation = tools.get_cross_info(df_re)
     cross_info = df_co.values.tolist()
-    next_state_list, distance_list, action_list = tools.get_details(cross_relation)
+    next_state_list, distance_list, action_list, tel_list = tools.get_details(cross_relation)
 
     # TODO Start_Point & End_Point 待输入
     for i in range(166, 288):

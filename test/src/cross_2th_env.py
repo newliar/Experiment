@@ -1,15 +1,17 @@
 import tools
 import traceback
+import numpy as np
 
 
 class Cross_2th:
-    def __init__(self, next_state_list, action_list, distance_list, start_point, end_point, cross_info, n_states=1724):
+    def __init__(self, next_state_list, action_list, distance_list, start_point, end_point, cross_info, tel_list, n_states=1724):
         self.next_state_list = next_state_list
         self.action_list = action_list
         self.distance_list = distance_list
         self.start_point = start_point
         self.end_point = end_point
         self.cross_info = cross_info
+        self.tel_list = tel_list
         self.n_states = n_states
 
     def get_next_states(self, state):
@@ -49,4 +51,5 @@ class Cross_2th:
         # azimuth_4和azimuth_6的夹角
         angle = tools.get_angle(azimuth_4, azimuth_6)
 
-        tel_list = self.get_tels(state, index)
+        # 获得下一个状态范围内的基站并随机选择一个用来模拟延迟最小
+        tel = np.random.choice(self.tel_list[self.get_next_state(state, index)])
