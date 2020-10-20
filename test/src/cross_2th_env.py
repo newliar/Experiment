@@ -48,8 +48,75 @@ class Cross_2th:
                                     self.cross_info[self.next_state_list[state][index]][1],
                                     self.cross_info[self.next_state_list[state][index]][2])
 
+        # 获得起点与终点的直线距离
+        distance_1 = tools.geodistance(self.cross_info[self.start_point][1], self.cross_info[self.start_point][2],
+                                       self.cross_info[self.end_point][1], self.cross_info[self.end_point][2])
+
+        # 获得下一状态与终点之间的距离
+        distance_2 = tools.geodistance(self.cross_info[self.next_state_list[state][index]][1],
+                                       self.cross_info[self.next_state_list[state][index]][2],
+                                       self.cross_info[self.end_point][1], self.cross_info[self.end_point][2])
+
+        # 当前状态与终点之间的距离
+        distance_3 = tools.geodistance(self.cross_info[state][1], self.cross_info[state][2],
+                                       self.cross_info[self.end_point][1], self.cross_info[self.end_point][2])
+
+        # 当前状态与起点之间的距离
+        distance_4 = tools.geodistance(self.cross_info[state][1], self.cross_info[state][2],
+                                       self.cross_info[self.start_point][1], self.cross_info[self.start_point][2])
+
+        # 下一状态与起点之间的距离
+        distance_5 = tools.geodistance(self.cross_info[self.next_state_list[state][index]][1],
+                                       self.cross_info[self.next_state_list[state][index]][2],
+                                       self.cross_info[self.start_point][1], self.cross_info[self.start_point][2])
+
         # azimuth_4和azimuth_6的夹角
         angle = tools.get_angle(azimuth_4, azimuth_6)
 
         # 获得下一个状态范围内的基站并随机选择一个用来模拟延迟最小
         tel = np.random.choice(self.tel_list[self.get_next_state(state, index)])
+
+        total_cost = 0.8 * self.get_distance(state, index) + 0.2 * 20 * 10
+
+        # 如果到达终点，返回奖励1，并给予完成状态
+        if s_ == self.end_point:
+            reward = 1
+            done = True
+            s_ = 'end_point'
+            print('get it')
+        # 靠近终点正向奖励
+        elif distance_2 < distance_3 and angle < 50:
+            reward = 1 / total_cost
+            done = False
+        # 远离终点惩罚
+        elif distance_2 > distance_3:
+            reward = -(2 / total_cost)
+            done = False
+        # 如果下一状态到终点的直线距离两倍于起点到终点的直线距离，跳出循环
+        elif distance_2 > distance_1 * 1.5:
+            reward = -1
+            done = True
+            s_ = 'terminal'
+        # 如果所选下一个action与终点角度差距过大，惩罚
+        elif 120 < abs(azimuth_6 - azimuth_4) < 260:
+            reward = -(2 / total_cost)
+            done = False
+        # 超距后，惩罚
+        elif distance_1 < distance_5:
+            reward = -(3 / total_cost)
+            done = False
+        # elif distance_2 > distance_3:
+        #     reward = -(2 / self.get_distance(state, index))
+        #     done = False
+        # elif (abs(angle_1 - angle_3) < 60 or 300 < abs(360 - (angle_1 - angle_3)) < 360) and \
+        #         (abs(angle_1 - angle_2) or 300 < abs(360 - (angle_1 - angle_3)) < 360) and \
+        #         distance_2 < distance_1 and distance_2 < distance_3:
+        #     reward = 1 / self.get_distance(state, index)
+        #     done = False
+        # elif abs(angle_1-angle_3) < 60 or abs(360-(angle_1-angle_3)) < 60:
+        #     reward = 1 / self.get_distance(state, index)
+        #     done = False
+        else:
+            reward = -(1 / total_cost)
+            done = False
+        return s_, reward, done

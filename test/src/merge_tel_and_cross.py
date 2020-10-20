@@ -8,6 +8,7 @@ import configuration
 cross_file_path = os.path.dirname(os.getcwd())+'/dataset/'+configuration.CITY+'_public_node_info_.csv'
 tel_file_path = os.path.dirname(os.getcwd())+'/dataset/'+configuration.CITY+'_tel_station.csv'
 
+
 df_cross = pd.read_csv(cross_file_path, encoding='utf-8')
 df_cross.set_index('Unnamed: 0', inplace=True)
 
@@ -27,8 +28,13 @@ for index_cr, row_cr in df_cross.iterrows():
             tel_.append(index_tel)
     tel.append(tel_)
 
+
 tel_s = pd.Series(tel)
 df_cross['tel'] = tel_s
+
+df_re = pd.read_csv(os.path.dirname(os.getcwd())+"/dataset/"+configuration.CITY+'_public_node_relation.csv', encoding='utf-8')
+df_re['tel'] = tel_s
+df_re.to_csv(os.path.dirname(os.getcwd())+"/dataset/"+configuration.CITY+'_public_node_relation.csv', index=False, encoding="utf-8")
 # df_cross.to_csv(os.path.dirname(os.getcwd())+"/dataset/"+configuration.CITY+'_node&tel.csv', index=True, encoding="utf-8")
 # cross_list = pd_cross.values.tolist()
 # tel_list = pd_tel.values.tolist()

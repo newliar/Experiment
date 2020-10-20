@@ -224,3 +224,4 @@ def get_details(cross_info):
         # tel_list.append(single_cross_info[31])
 
     return next_state_list, distance_list, action_list
+
