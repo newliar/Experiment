@@ -74,9 +74,13 @@ class Cross_2th:
         angle = tools.get_angle(azimuth_4, azimuth_6)
 
         # 获得下一个状态范围内的基站并随机选择一个用来模拟延迟最小
-        tel = np.random.choice(self.tel_list[self.get_next_state(state, index)])
+        tel_list = self.tel_list[self.get_next_state(state, index)]
+        if len(tel_list) == 0:
+            tel = 7
+        else:
+            tel = np.random.choice(tel_list)
 
-        total_cost = 0.8 * self.get_distance(state, index) + 0.2 * 20 * 10
+        total_cost = 0.8 * self.get_distance(state, index) + 0.2 * 20 * tel
 
         # 如果到达终点，返回奖励1，并给予完成状态
         if s_ == self.end_point:
