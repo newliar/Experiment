@@ -164,10 +164,10 @@ def get_cross_info(cross_info_df):
         i = 0
         single_cross_info = []
         for ele in raw_single_cross_info:
-            if i == 6 or i == 7 or i == 11 or i == 12 or i == 16 or i == 17 or i == 21 or i == 22 or i == 26 or i == 27:
+            if i == 6 or i == 7 or i == 11 or i == 12 or i == 16 or i == 17 or i == 21 or i == 22:
                 if ele != -1:
                     single_cross_info.append(int(ele))
-            elif i == 4 or i == 9 or i == 14 or i == 19 or i == 24 or i == 29:
+            elif i == 4 or i == 9 or i == 14 or i == 19 or i == 24:
                 if ele != -1:
                     single_cross_info.append(round(ele, 3))
             else:
@@ -221,7 +221,7 @@ def get_details(cross_info):
             action_list.append(action_list_)
         else:
             action_list.append(action_list_)
-        # tel_list.append(single_cross_info[31])
+        tel_list.append(single_cross_info[len(single_cross_info)-1])
 
-    return next_state_list, distance_list, action_list
+    return next_state_list, distance_list, action_list, tel_list
 
