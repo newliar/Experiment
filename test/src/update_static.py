@@ -56,7 +56,7 @@ class UpdateStatic:
                     plt.pause(0.01)
                     plt.ioff()
 
-                    q_table = RL.learn(observation, index, reward, observation_, 1)
+                    q_table = RL.learn(observation, index, reward, observation_)
 
                     observation = observation_
                     current_time = time.time()
