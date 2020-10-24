@@ -39,6 +39,7 @@ class UpdateRealtime:
             df_q_table = pd.read_csv(os.getcwd() + '/table/' + configuration.CITY + '_' + str(start_point) + '_' + str(
                 end_point) + '_' + 'q_table.csv', encoding="utf-8")
             df_q_table = df_q_table.set_index(['Unnamed: 0'])
+            df_q_table = df_q_table[['1', '2', '3', '4']].astype(np.float64)
             RL = QLearningTable(self.actions)
 
             # 贪心策略设置为1
@@ -57,21 +58,21 @@ class UpdateRealtime:
                     index = RL.choose_action(observation, env, 2)
                     observation_, reward, done = env.step_2th(observation, index)
 
-                    # plt.clf()
-                    # plt.scatter(self.x[start_point], self.y[start_point], marker='o', s=100, label='start_point',
-                    #             c='yellow')
-                    # plt.scatter(self.x[end_point], self.y[end_point], marker='^', s=100, label='end_point', c='yellow')
-                    # plt.scatter(self.x, self.y, s=15, alpha=0.3, c='green')
-                    # if observation_ == 'end_point':
-                    #     plt.scatter(self.x[end_point], self.y[end_point], s=15, c='red')
-                    # elif observation_ == 'terminal':
-                    #     plt.scatter(self.x[observation], self.y[observation], s=15, c='yellow')
-                    # else:
-                    #     plt.scatter(self.x[observation_], self.y[observation_], s=15, c='red')
-                    # plt.pause(0.01)
-                    # plt.ioff()
+                    plt.clf()
+                    plt.scatter(self.x[start_point], self.y[start_point], marker='o', s=100, label='start_point',
+                                c='yellow')
+                    plt.scatter(self.x[end_point], self.y[end_point], marker='^', s=100, label='end_point', c='yellow')
+                    plt.scatter(self.x, self.y, s=15, alpha=0.3, c='green')
+                    if observation_ == 'end_point':
+                        plt.scatter(self.x[end_point], self.y[end_point], s=15, c='red')
+                    elif observation_ == 'terminal':
+                        plt.scatter(self.x[observation], self.y[observation], s=15, c='yellow')
+                    else:
+                        plt.scatter(self.x[observation_], self.y[observation_], s=15, c='red')
+                    plt.pause(0.01)
+                    plt.ioff()
 
-                    q_table = RL.learn(observation, index, reward, observation_, 2)
+                    q_table = RL.learn(observation, index, reward, observation_)
 
                     observation = observation_
                     current_time = time.time()
@@ -88,4 +89,4 @@ class UpdateRealtime:
             time_end = time.time()
             print('totally completely, time cost:', time_end - time_start)
             q_table.to_csv(os.getcwd() + '/table/' + configuration.CITY + '_' + str(start_point) + '_' + str(
-                end_point) + '_' + 'q_table.csv', encoding="utf-8")
+                end_point) + '_realtime_q_table.csv', encoding="utf-8")

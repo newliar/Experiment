@@ -76,14 +76,17 @@ class Cross_2th:
 
         # 获得下一个状态范围内的基站并随机选择一个用来模拟延迟最小
         tel_list = self.tel_list[self.get_next_state(state, index)]
-        if len(tel_list) == 0:
+        # print(tel_list, '----', state, '-----', index, 'length', len(tel_list), 'type', type(tel_list))
+        if len(tel_list) == 2:
+            # print(tel_list)
             tel = 7
+            tel_delay_list = self.df_tel.iloc[int(tel), 3]
         else:
             tel_list = tel_list[1:-1]
             tel_list = tel_list.split(',')
             tel = np.random.choice(tel_list)
+            tel_delay_list = self.df_tel.iloc[int(tel), 3]
 
-        tel_delay_list = self.df_tel.iloc[int(tel), 3]
         tel_delay_list = tel_delay_list[1:-1]
         if tel_delay_list[0] == ' ':
             tel_delay_list = tel_delay_list[1:]
@@ -92,49 +95,65 @@ class Cross_2th:
         tel_delay = int(np.random.choice(tel_delay_list))
 
         # total_cost = 0.8 * self.get_distance(state, index) + 0.2 * 20 * (tel_delay-10)
-        total_cost = (tel_delay-10)*20
+        total_cost = (tel_delay-10)*200
         # 如果到达终点，返回奖励1，并给予完成状态
+
         if s_ == self.end_point:
             reward = 1
             done = True
             s_ = 'end_point'
             print('get it')
-        # # 靠近终点正向奖励
-        # elif distance_2 < distance_3 and angle < 50:
-        #     reward = 1 / total_cost
-        #     done = False
-        # # 远离终点惩罚
-        # elif distance_2 > distance_3:
-        #     reward = -(2 / total_cost)
-        #     done = False
-        # # 如果下一状态到终点的直线距离两倍于起点到终点的直线距离，跳出循环
-        # elif distance_2 > distance_1 * 1.5:
-        #     reward = -1
-        #     done = True
-        #     s_ = 'terminal'
-        # # 如果所选下一个action与终点角度差距过大，惩罚
-        # elif 120 < abs(azimuth_6 - azimuth_4) < 260:
-        #     reward = -(2 / total_cost)
-        #     done = False
-        # # 超距后，惩罚
-        # elif distance_1 < distance_5:
-        #     reward = -(3 / total_cost)
-        #     done = False
-        # # elif distance_2 > distance_3:
-        # #     reward = -(2 / self.get_distance(state, index))
-        # #     done = False
-        # # elif (abs(angle_1 - angle_3) < 60 or 300 < abs(360 - (angle_1 - angle_3)) < 360) and \
-        # #         (abs(angle_1 - angle_2) or 300 < abs(360 - (angle_1 - angle_3)) < 360) and \
-        # #         distance_2 < distance_1 and distance_2 < distance_3:
-        # #     reward = 1 / self.get_distance(state, index)
-        # #     done = False
-        # # elif abs(angle_1-angle_3) < 60 or abs(360-(angle_1-angle_3)) < 60:
-        # #     reward = 1 / self.get_distance(state, index)
-        # #     done = False
-        else:
+        # 靠近终点正向奖励
+        elif distance_2 < distance_3 and angle < 50:
             if total_cost == 0:
                 reward = 0
             else:
                 reward = 1 / total_cost
+            done = False
+        # 远离终点惩罚
+        elif distance_2 > distance_3:
+            if total_cost == 0:
+                reward = 0
+            else:
+                reward = -(2 / total_cost)
+            done = False
+        # 如果下一状态到终点的直线距离两倍于起点到终点的直线距离，跳出循环
+        elif distance_2 > distance_1 * 1.5:
+            if total_cost == 0:
+                reward = 0
+            else:
+                reward = -1
+            done = True
+            s_ = 'terminal'
+        # 如果所选下一个action与终点角度差距过大，惩罚
+        elif 120 < abs(azimuth_6 - azimuth_4) < 260:
+            if total_cost == 0:
+                reward = 0
+            else:
+                reward = -(2 / total_cost)
+            done = False
+        # 超距后，惩罚
+        elif distance_1 < distance_5:
+            if total_cost == 0:
+                reward = 0
+            else:
+                reward = -(3 / total_cost)
+            done = False
+        # elif distance_2 > distance_3:
+        #     reward = -(2 / self.get_distance(state, index))
+        #     done = False
+        # elif (abs(angle_1 - angle_3) < 60 or 300 < abs(360 - (angle_1 - angle_3)) < 360) and \
+        #         (abs(angle_1 - angle_2) or 300 < abs(360 - (angle_1 - angle_3)) < 360) and \
+        #         distance_2 < distance_1 and distance_2 < distance_3:
+        #     reward = 1 / self.get_distance(state, index)
+        #     done = False
+        # elif abs(angle_1-angle_3) < 60 or abs(360-(angle_1-angle_3)) < 60:
+        #     reward = 1 / self.get_distance(state, index)
+        #     done = False
+        else:
+            if total_cost == 0:
+                reward = 0
+            else:
+                reward = -1 / total_cost
             done = False
         return s_, reward, done
