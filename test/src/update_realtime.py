@@ -88,7 +88,7 @@ class UpdateRealtime:
                 print(episode + 1, "th episode is completed, time cost:", one_episode_end_time - one_episode_start_time)
                 print('==========================================')
                 print(q_table)
-            q_table.to_csv(os.getcwd() + '/table/' + configuration.CITY + '_' + str(start_point) + '_' + str(
+            q_table.to_csv(os.getcwd() + '/table_realtime/' + configuration.CITY + '_' + str(start_point) + '_' + str(
                 end_point) + '_realtime_q_table.csv', encoding="utf-8")
         time_end = time.time()
         print('totally completely, time cost:', time_end - time_start)

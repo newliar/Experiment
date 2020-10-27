@@ -29,6 +29,7 @@ class Cross_2th:
 
     def get_length(self, state):
         try:
+            state = int(state)
             return len(self.action_list[state])
         except Exception as ex:
             print(state)
