@@ -24,7 +24,7 @@ if __name__ == '__main__':
 
         node_info_file_path = os.path.dirname(os.getcwd()) + "/dataset/" + configuration.CITY + '_public_node_info_.csv'
 
-        q_table = pd.read_csv(table_file_path, encoding='utf-8')
+        q_table = pd.read_csv(realtime_q_table, encoding='utf-8')
         q_table.set_index('Unnamed: 0', inplace=True)
 
         df_re = pd.read_csv(relation_file_path, encoding='utf-8')
@@ -63,19 +63,20 @@ if __name__ == '__main__':
             print('path is', path)
             traceback.print_exc()
         if end_point not in path:
+            print(path)
             print(start_point, '----->', end_point, 'not contain end_point')
 
         # 画图部分
-        m = folium.Map([31.7750817, 117.3165301], zoom_start=15)
-        coordinate = []
-        for node in path:
-            coordinate.append([df_co.iloc[node, 2], df_co.iloc[node, 1]])
-        folium.PolyLine(
-            coordinate,
-            color='blue',
-            radius=8
-        ).add_to(m)
-        #     os.getcwd() + "/table/" + configuration.CITY + '_' + str(
-        #     configuration.START_POINT) + '_' + str(configuration.END_POINT) + '_' + 'q_table.csv'
-        m.save(os.path.join(r'' + os.getcwd() + '/path/', configuration.CITY + '_' + str(
-            start_point) + '_' + str(end_point) + '_1th_generation_path.html'))
+        # m = folium.Map([31.7750817, 117.3165301], zoom_start=15)
+        # coordinate = []
+        # for node in path:
+        #     coordinate.append([df_co.iloc[node, 2], df_co.iloc[node, 1]])
+        # folium.PolyLine(
+        #     coordinate,
+        #     color='blue',
+        #     radius=8
+        # ).add_to(m)
+        # #     os.getcwd() + "/table/" + configuration.CITY + '_' + str(
+        # #     configuration.START_POINT) + '_' + str(configuration.END_POINT) + '_' + 'q_table.csv'
+        # m.save(os.path.join(r'' + os.getcwd() + '/path_2th/', configuration.CITY + '_' + str(
+        #     start_point) + '_' + str(end_point) + '_2th_generation_path.html'))

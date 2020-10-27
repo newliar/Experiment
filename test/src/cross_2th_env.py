@@ -29,6 +29,7 @@ class Cross_2th:
 
     def get_length(self, state):
         try:
+            state = int(state)
             return len(self.action_list[state])
         except Exception as ex:
             print(state)
@@ -115,7 +116,7 @@ class Cross_2th:
             if total_cost == 0:
                 reward = 0
             else:
-                reward = -(2 / total_cost)
+                reward = -abs(2 / total_cost)
             done = False
         # 如果下一状态到终点的直线距离两倍于起点到终点的直线距离，跳出循环
         elif distance_2 > distance_1 * 1.5:
@@ -130,14 +131,14 @@ class Cross_2th:
             if total_cost == 0:
                 reward = 0
             else:
-                reward = -(2 / total_cost)
+                reward = -abs(2 / total_cost)
             done = False
         # 超距后，惩罚
         elif distance_1 < distance_5:
             if total_cost == 0:
                 reward = 0
             else:
-                reward = -(3 / total_cost)
+                reward = -abs(3 / total_cost)
             done = False
         # elif distance_2 > distance_3:
         #     reward = -(2 / self.get_distance(state, index))
@@ -154,6 +155,6 @@ class Cross_2th:
             if total_cost == 0:
                 reward = 0
             else:
-                reward = -1 / total_cost
+                reward = -abs(1 / total_cost)
             done = False
         return s_, reward, done
