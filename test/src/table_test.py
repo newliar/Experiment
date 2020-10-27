@@ -24,7 +24,7 @@ if __name__ == '__main__':
 
         node_info_file_path = os.path.dirname(os.getcwd()) + "/dataset/" + configuration.CITY + '_public_node_info_.csv'
 
-        q_table = pd.read_csv(realtime_q_table, encoding='utf-8')
+        q_table = pd.read_csv(table_file_path, encoding='utf-8')
         q_table.set_index('Unnamed: 0', inplace=True)
 
         df_re = pd.read_csv(relation_file_path, encoding='utf-8')
@@ -44,6 +44,8 @@ if __name__ == '__main__':
 
                 # 返回q_table中value值最大的索引
                 action = action_list.astype(float).idxmax()
+
+                c = current_point
 
                 next_point = df_re.iloc[current_point, (int(action) - 1) * 5 + 1]
 

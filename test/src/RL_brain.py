@@ -13,7 +13,8 @@ class QLearningTable:
     def choose_action(self, observation, env, flag):
 
         # 检查当前state是否存在于Q表
-        self.check_state_exist(observation)
+        ob = observation
+        self.check_state_exist(observation, flag)
         # 获得当前状态的所有可用action的长度
         length = env.get_length(observation)
         # 当随机数小于epsilon时按Q表最大值执行，其他情况随机执行
@@ -35,12 +36,12 @@ class QLearningTable:
             index = self.actions.index(action)
         return index
 
-    def learn(self, s, i, r, s_):
+    def learn(self, s, i, r, s_, flag):
         # flag : 表示第一次调用还是第二次调用
         # 1    : 静态场景
         # 2    : 动态场景
         # 检查当前state是否存在于Q表
-        self.check_state_exist(s_)
+        self.check_state_exist(s_, flag)
         q_predict = self.q_table.loc[s, self.actions[i]]
         if s_ != 'terminal':
             q_target = r + self.gamma * self.q_table.loc[s_, :].max()
@@ -51,7 +52,9 @@ class QLearningTable:
         return self.q_table
 
     # 查看此状态是否存在于Q表，不在即添加
-    def check_state_exist(self, state):
+    def check_state_exist(self, state, flag):
+        if flag == 2:
+            state = str(state)
         if state not in self.q_table.index:
             self.q_table = self.q_table.append(
                 pd.Series(
