@@ -155,6 +155,6 @@ class Cross_2th:
             if total_cost == 0:
                 reward = 0
             else:
-                reward = 1 / total_cost
+                reward = -abs(1 / total_cost)
             done = False
         return s_, reward, done
