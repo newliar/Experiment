@@ -60,8 +60,9 @@ class UpdateRealtime:
                 while True:
                     index = RL.choose_action(observation, env, 2)
                     observation_, reward, done = env.step_2th(observation, index)
+                    current_time = time.time()
+                    if current_time - one_episode_start_time > 5:
 
-                    if episode > 5:
                         plt.clf()
                         plt.scatter(self.x[start_point], self.y[start_point], marker='o', s=100, label='start_point',
                                     c='yellow')
