@@ -96,7 +96,7 @@ class Cross_2th:
         tel_delay = int(np.random.choice(tel_delay_list))
 
         # total_cost = 0.8 * self.get_distance(state, index) + 0.2 * 20 * (tel_delay-10)
-        total_cost = (tel_delay-10)*200
+        total_cost = (10-tel_delay)*200
         # 如果到达终点，返回奖励1，并给予完成状态
 
         if s_ == self.end_point:
@@ -104,42 +104,42 @@ class Cross_2th:
             done = True
             s_ = 'end_point'
             print('get it')
-        # 靠近终点正向奖励
-        elif distance_2 < distance_3 and angle < 50:
-            if total_cost == 0:
-                reward = 0
-            else:
-                reward = 1 / total_cost
-            done = False
-        # 远离终点惩罚
-        elif distance_2 > distance_3:
-            if total_cost == 0:
-                reward = 0
-            else:
-                reward = -abs(2 / total_cost)
-            done = False
-        # 如果下一状态到终点的直线距离两倍于起点到终点的直线距离，跳出循环
-        elif distance_2 > distance_1 * 1.5:
-            if total_cost == 0:
-                reward = 0
-            else:
-                reward = -1
-            done = True
-            s_ = 'terminal'
-        # 如果所选下一个action与终点角度差距过大，惩罚
-        elif 120 < abs(azimuth_6 - azimuth_4) < 260:
-            if total_cost == 0:
-                reward = 0
-            else:
-                reward = -abs(2 / total_cost)
-            done = False
-        # 超距后，惩罚
-        elif distance_1 < distance_5:
-            if total_cost == 0:
-                reward = 0
-            else:
-                reward = -abs(3 / total_cost)
-            done = False
+        # # 靠近终点正向奖励
+        # elif distance_2 < distance_3 and angle < 50:
+        #     if total_cost == 0:
+        #         reward = 0
+        #     else:
+        #         reward = 1 / total_cost
+        #     done = False
+        # # 远离终点惩罚
+        # elif distance_2 > distance_3:
+        #     if total_cost == 0:
+        #         reward = 0
+        #     else:
+        #         reward = 2 / total_cost
+        #     done = False
+        # # 如果下一状态到终点的直线距离两倍于起点到终点的直线距离，跳出循环
+        # elif distance_2 > distance_1 * 1.5:
+        #     if total_cost == 0:
+        #         reward = 0
+        #     else:
+        #         reward = -1
+        #     done = True
+        #     s_ = 'terminal'
+        # # 如果所选下一个action与终点角度差距过大，惩罚
+        # elif 120 < abs(azimuth_6 - azimuth_4) < 260:
+        #     if total_cost == 0:
+        #         reward = 0
+        #     else:
+        #         reward = 2 / total_cost
+        #     done = False
+        # # 超距后，惩罚
+        # elif distance_1 < distance_5:
+        #     if total_cost == 0:
+        #         reward = 0
+        #     else:
+        #         reward = 3 / total_cost
+        #     done = False
         # elif distance_2 > distance_3:
         #     reward = -(2 / self.get_distance(state, index))
         #     done = False
@@ -155,6 +155,6 @@ class Cross_2th:
             if total_cost == 0:
                 reward = 0
             else:
-                reward = -abs(1 / total_cost)
+                reward = 1 / total_cost
             done = False
         return s_, reward, done

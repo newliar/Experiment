@@ -27,10 +27,12 @@ class UpdateRealtime:
         self.df_tel = df_tel
 
     def update_realtime(self):
-        error_point = [155, 199, 306, 457, 116, 461, 626, 750, 240, 189, 485, 380, 116]
+        error_point = [155, 199, 306, 457, 116, 461, 626, 750, 240, 189, 485, 380, 116, 753]
         time_start = time.time()
+        error_list = []
         # TODO Start_Point & End_Point 待输入
         for i in range(166, 288):
+            flag = False
 
             # 随机种子，保证和第一次训练是相同的
             np.random.seed(i)
@@ -46,6 +48,7 @@ class UpdateRealtime:
             df_q_table = df_q_table[['1', '2', '3', '4']].astype(np.float64)
             RL = QLearningTable(self.actions)
 
+            RL.gamma = 1
             # 贪心策略设置为1
             RL.epsilon = 1
             # 更换Q表
@@ -62,27 +65,30 @@ class UpdateRealtime:
                     observation_, reward, done = env.step_2th(observation, index)
                     current_time = time.time()
                     if current_time - one_episode_start_time > 5:
-
-                        plt.clf()
-                        plt.scatter(self.x[start_point], self.y[start_point], marker='o', s=100, label='start_point',
-                                    c='yellow')
-                        plt.scatter(self.x[end_point], self.y[end_point], marker='^', s=100, label='end_point', c='yellow')
-                        plt.scatter(self.x, self.y, s=15, alpha=0.3, c='green')
-                        if observation_ == 'end_point':
-                            plt.scatter(self.x[end_point], self.y[end_point], s=15, c='red')
-                        elif observation_ == 'terminal':
-                            plt.scatter(self.x[observation], self.y[observation], s=15, c='yellow')
-                        else:
-                            plt.scatter(self.x[observation_], self.y[observation_], s=15, c='red')
-                        plt.pause(0.01)
-                        plt.ioff()
+                        flag = True
+                        if observation not in error_list:
+                            error_list.append(start_point)
+                        break
+                        # plt.clf()
+                        # plt.scatter(self.x[start_point], self.y[start_point], marker='o', s=100, label='start_point',
+                        #             c='yellow')
+                        # plt.scatter(self.x[end_point], self.y[end_point], marker='^', s=100, label='end_point', c='yellow')
+                        # plt.scatter(self.x, self.y, s=15, alpha=0.3, c='green')
+                        # if observation_ == 'end_point':
+                        #     plt.scatter(self.x[end_point], self.y[end_point], s=15, c='red')
+                        # elif observation_ == 'terminal':
+                        #     plt.scatter(self.x[observation], self.y[observation], s=15, c='yellow')
+                        # else:
+                        #     plt.scatter(self.x[observation_], self.y[observation_], s=15, c='red')
+                        # plt.pause(0.01)
+                        # plt.ioff()
 
                     q_table = RL.learn(observation, index, reward, observation_, 2)
 
                     observation = observation_
                     current_time = time.time()
-                    if current_time - one_episode_start_time > 60:
-                        break
+                    # if current_time - one_episode_start_time > 60:
+                    #     break
                     if done:
                         break
                 one_episode_end_time = time.time()
@@ -90,7 +96,10 @@ class UpdateRealtime:
                 print(episode + 1, "th episode is completed, time cost:", one_episode_end_time - one_episode_start_time)
                 print('==========================================')
                 print(q_table)
-            # q_table.to_csv(os.getcwd() + '/table_realtime/' + configuration.CITY + '_' + str(start_point) + '_' + str(
-            #     end_point) + '_realtime_q_table.csv', encoding="utf-8")
+                if flag:
+                    break
+            q_table.to_csv(os.getcwd() + '/table_realtime/' + configuration.CITY + '_' + str(start_point) + '_' + str(
+                end_point) + '_realtime_q_table.csv', encoding="utf-8")
         time_end = time.time()
         print('totally completely, time cost:', time_end - time_start)
+        print(error_list)
