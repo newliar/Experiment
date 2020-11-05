@@ -26,11 +26,11 @@ if __name__ == "__main__":
     next_state_list, distance_list, action_list, tel_list = tools.get_details(cross_relation)
 
     # 第一次更新，基站延迟固定
-    # us = UpdateStatic(ACTIONS, df_re, df_co, x, y, cross_relation, cross_info, next_state_list, distance_list,
-    #                   action_list)
-    # UpdateStatic.update(us)
+    us = UpdateStatic(ACTIONS, df_re, df_co, x, y, cross_relation, cross_info, next_state_list, distance_list,
+                      action_list)
+    UpdateStatic.update(us)
 
     # 第二次更新，基站延迟随机
-    ur = UpdateRealtime(ACTIONS, df_re, df_co, x, y, cross_relation, cross_info, next_state_list, distance_list,
-                        action_list, tel_list, df_tel)
-    UpdateRealtime.update_realtime(ur)
+    # ur = UpdateRealtime(ACTIONS, df_re, df_co, x, y, cross_relation, cross_info, next_state_list, distance_list,
+    #                     action_list, tel_list, df_tel)
+    # UpdateRealtime.update_realtime(ur)

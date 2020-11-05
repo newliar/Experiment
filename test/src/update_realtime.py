@@ -27,7 +27,7 @@ class UpdateRealtime:
         self.df_tel = df_tel
 
     def update_realtime(self):
-        error_point = [155, 199, 306, 457, 116, 461, 626, 750, 240, 189, 485, 380, 116, 753]
+        error_point = [155, 199, 306, 457, 116, 461, 626, 750, 240, 189, 485, 380, 116, 753, 173, 322, 732, 599, 439, 345]
         time_start = time.time()
         error_list = []
         # TODO Start_Point & End_Point 待输入
@@ -48,9 +48,9 @@ class UpdateRealtime:
             df_q_table = df_q_table[['1', '2', '3', '4']].astype(np.float64)
             RL = QLearningTable(self.actions)
 
-            RL.gamma = 1
+            RL.gamma = 0.9
             # 贪心策略设置为1
-            RL.epsilon = 1
+            RL.epsilon = 0.9
             # 更换Q表
             RL.q_table = df_q_table
 
@@ -102,4 +102,4 @@ class UpdateRealtime:
                 end_point) + '_realtime_q_table.csv', encoding="utf-8")
         time_end = time.time()
         print('totally completely, time cost:', time_end - time_start)
-        print(error_list)
+        # print(error_list)
