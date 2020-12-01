@@ -43,24 +43,24 @@ class UpdateStatic:
 
                     observation_, reward, done = env.step(observation, index)
 
-                    plt.clf()
-                    plt.scatter(self.x[start_point], self.y[start_point], marker='o', s=100, label='start_point', c='yellow')
-                    plt.scatter(self.x[end_point], self.y[end_point], marker='^', s=100, label='end_point', c='yellow')
-                    plt.scatter(self.x, self.y, s=15, alpha=0.3, c='green')
-                    if observation_ == 'end_point':
-                        plt.scatter(self.x[end_point], self.y[end_point], s=15, c='red')
-                    elif observation_ == 'terminal':
-                        plt.scatter(self.x[observation], self.y[observation], s=15, c='yellow')
-                    else:
-                        plt.scatter(self.x[observation_], self.y[observation_], s=15, c='red')
-                    plt.pause(0.01)
-                    plt.ioff()
+                    # plt.clf()
+                    # plt.scatter(self.x[start_point], self.y[start_point], marker='o', s=100, label='start_point', c='yellow')
+                    # plt.scatter(self.x[end_point], self.y[end_point], marker='^', s=100, label='end_point', c='yellow')
+                    # plt.scatter(self.x, self.y, s=15, alpha=0.3, c='green')
+                    # if observation_ == 'end_point':
+                    #     plt.scatter(self.x[end_point], self.y[end_point], s=15, c='red')
+                    # elif observation_ == 'terminal':
+                    #     plt.scatter(self.x[observation], self.y[observation], s=15, c='yellow')
+                    # else:
+                    #     plt.scatter(self.x[observation_], self.y[observation_], s=15, c='red')
+                    # plt.pause(0.01)
+                    # plt.ioff()
 
                     q_table = RL.learn(observation, index, reward, observation_, 1)
 
                     observation = observation_
                     current_time = time.time()
-                    if current_time - episode_start_time > 180:
+                    if current_time - episode_start_time > 60:
                         break
                     if done:
                         break

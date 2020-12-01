@@ -27,7 +27,7 @@ class UpdateRealtime:
         self.df_tel = df_tel
 
     def update_realtime(self):
-        error_point = [155, 199, 306, 457, 116, 461, 626, 750, 240, 189, 485, 380, 116, 753, 173, 322, 732, 599, 439, 345]
+        error_point = [750,  240,  189, 155, 199,  485, 306, 457,  380,  626,  116, 461]
         time_start = time.time()
         error_list = []
         # TODO Start_Point & End_Point 待输入
@@ -92,10 +92,10 @@ class UpdateRealtime:
                     if done:
                         break
                 one_episode_end_time = time.time()
-                print('==========================================')
-                print(episode + 1, "th episode is completed, time cost:", one_episode_end_time - one_episode_start_time)
-                print('==========================================')
-                print(q_table)
+                # print('==========================================')
+                # print(episode + 1, "th episode is completed, time cost:", one_episode_end_time - one_episode_start_time)
+                # print('==========================================')
+                # print(q_table)
                 if flag:
                     break
             q_table.to_csv(os.getcwd() + '/table_realtime/' + configuration.CITY + '_' + str(start_point) + '_' + str(

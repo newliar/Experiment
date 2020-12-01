@@ -78,6 +78,7 @@ class Cross_2th:
         # 获得下一个状态范围内的基站并随机选择一个用来模拟延迟最小
         tel_list = self.tel_list[self.get_next_state(state, index)]
         # print(tel_list, '----', state, '-----', index, 'length', len(tel_list), 'type', type(tel_list))
+        # 如果数据集提供的数据在此范围无基站,自行生成基站和延迟
         if len(tel_list) == 2:
             # print(tel_list)
             tel = 7
@@ -87,25 +88,28 @@ class Cross_2th:
             tel_list = tel_list.split(',')
             tel = np.random.choice(tel_list)
             tel_delay_list = self.df_tel.iloc[int(tel), 3]
+            print(tel_list)
 
         tel_delay_list = tel_delay_list[1:-1]
         if tel_delay_list[0] == ' ':
             tel_delay_list = tel_delay_list[1:]
         tel_delay_list = tel_delay_list.replace('  ', ' ')
         tel_delay_list = tel_delay_list.split(' ')
+        # 在延迟列表中随机选择一个作为延迟
         tel_delay = int(np.random.choice(tel_delay_list))
+        # print(tel_list)
 
         # total_cost_pre = 0.8*self.get_distance(state, index) + 0.2*20*10
         # total_cost = 0.8*self.get_distance(state, index) + 0.2*20*(tel_delay-10)
         # gap = total_cost - total_cost_pre
-        total_cost = (tel_delay - 10)*20
+        total_cost = (tel_delay - 10)*200
         # 如果到达终点，返回奖励1，并给予完成状态
 
         if s_ == self.end_point:
             reward = 1
             done = True
             s_ = 'end_point'
-            print('get it')
+            # print('get it')
         # 靠近终点正向奖励
         elif distance_2 < distance_3 and angle < 50:
             if total_cost == 0:
