@@ -4,7 +4,6 @@ import os
 import pandas as pd
 import numpy as np
 from math import radians, cos, sin, asin, sqrt, atan2, degrees
-from bs4 import BeautifulSoup
 import random
 
 

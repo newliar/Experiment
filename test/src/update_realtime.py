@@ -27,6 +27,9 @@ class UpdateRealtime:
         self.df_tel = df_tel
 
     def update_realtime(self):
+        # error_point = [256, 512, 768, 3, 5, 778, 138, 779, 655, 786, 789, 793, 155, 34, 675, 420, 293, 424, 169, 428, 301,
+        #                173, 431, 49, 306, 182, 439, 701, 189, 65, 322, 199, 456, 457, 461, 725, 599, 345, 732, 734, 351,
+        #                98, 485, 742, 104, 490, 620, 750, 240, 753, 626, 116, 380]
         error_point = [750, 240, 189, 155, 199, 485, 306, 457, 380, 626, 116, 461]
         time_start = time.time()
         error_list = []
@@ -76,7 +79,7 @@ class UpdateRealtime:
             for episode in range(30):
                 one_episode_start_time = time.time()
                 # 画图
-                plt.ion()
+                # plt.ion()
                 observation = env.start_point
                 # while循环计数
                 index_while = 0
@@ -98,26 +101,27 @@ class UpdateRealtime:
 
                     # 陷入局部最优跳出
                     current_time = time.time()
-                    if current_time - one_episode_start_time > 5:
-                        # flag = True
+                    if current_time - one_episode_start_time > 10:
+                        flag = True
+
                         if observation not in error_list:
                             error_list.append(start_point)
                         break
 
-                        # 画图部分
-                        plt.clf()
-                        plt.scatter(self.x[start_point], self.y[start_point], marker='o', s=100, label='start_point',
-                                    c='yellow')
-                        plt.scatter(self.x[end_point], self.y[end_point], marker='^', s=100, label='end_point', c='yellow')
-                        plt.scatter(self.x, self.y, s=15, alpha=0.3, c='green')
-                        if observation_ == 'end_point':
-                            plt.scatter(self.x[end_point], self.y[end_point], s=15, c='red')
-                        elif observation_ == 'terminal':
-                            plt.scatter(self.x[observation], self.y[observation], s=15, c='yellow')
-                        else:
-                            plt.scatter(self.x[observation_], self.y[observation_], s=15, c='red')
-                        plt.pause(0.01)
-                        plt.ioff()
+                    # 画图部分
+                    # plt.clf()
+                    # plt.scatter(self.x[start_point], self.y[start_point], marker='o', s=100, label='start_point',
+                    #             c='yellow')
+                    # plt.scatter(self.x[end_point], self.y[end_point], marker='^', s=100, label='end_point', c='yellow')
+                    # plt.scatter(self.x, self.y, s=15, alpha=0.3, c='green')
+                    # if observation_ == 'end_point':
+                    #     plt.scatter(self.x[end_point], self.y[end_point], s=15, c='red')
+                    # elif observation_ == 'terminal':
+                    #     plt.scatter(self.x[observation], self.y[observation], s=15, c='yellow')
+                    # else:
+                    #     plt.scatter(self.x[observation_], self.y[observation_], s=15, c='red')
+                    # plt.pause(0.001)
+                    # plt.ioff()
 
                     q_table = RL.learn(observation, index, reward, observation_, 2)
 
@@ -137,10 +141,10 @@ class UpdateRealtime:
                 queue_for_sum += queue_while_avg
                 process_for_sum += process_while_avg
                 one_episode_end_time = time.time()
-                # print('==========================================')
-                # print(episode + 1, "th episode is completed, time cost:", one_episode_end_time - one_episode_start_time)
-                # print('==========================================')
-                # print(q_table)
+                print('==========================================')
+                print(episode + 1, "th episode is completed, time cost:", one_episode_end_time - one_episode_start_time)
+                print('==========================================')
+                print(q_table)
                 if flag:
                     break
             delay_avg = delay_for_sum / index_for
