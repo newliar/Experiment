@@ -72,11 +72,12 @@ def Dijkstra(mgraph: list, start: int, end: int):
     path.reverse()
 
     print(path)
-    print(len(path))
-    print(dis)
+    print('length: ', len(path))
+    with open("迪杰斯特拉路径.txt", "a") as f:
+        f.write(str(path))
+        f.write('\n')
+    # print(dis)
     # print(len(dis))
-
-
 
 
 if __name__ == "__main__":
@@ -109,7 +110,6 @@ if __name__ == "__main__":
 
     # print(map_matrix)
 
-
     error_point = [750, 240, 189, 155, 199, 485, 306, 457, 380, 626, 116, 461]
     dis_list = []
     for i in range(166, 288):
@@ -119,9 +119,5 @@ if __name__ == "__main__":
         if start_point in error_point:
             continue
         Dijkstra(map_matrix, start_point, end_point)
-        # print(dis)
-        # print(path)
-        # dis = startwith(start_point, map_matrix)
-        # dis_list.append(dis)
 
 

@@ -59,8 +59,8 @@ if __name__ == '__main__':
         end_point = np.random.randint(801, 1725)
         table_file_path = os.getcwd() + "/table/" + configuration.CITY + '_' + str(
             start_point) + '_' + str(end_point) + '_q_table.csv'
-        realtime_q_table = os.getcwd() + "/table_realtime/" + configuration.CITY + '_' + str(
-            start_point) + '_' + str(end_point) + '_realtime_q_table.csv'
+        # realtime_q_table = os.getcwd() + "/table_realtime/" + configuration.CITY + '_' + str(
+        #     start_point) + '_' + str(end_point) + '_realtime_q_table.csv'
 
         relation_file_path = os.path.dirname(
             os.getcwd()) + "/dataset/" + configuration.CITY + '_public_node_relation.csv'
@@ -70,37 +70,38 @@ if __name__ == '__main__':
         q_table = pd.read_csv(table_file_path, encoding='utf-8')
         q_table.set_index('Unnamed: 0', inplace=True)
 
-        q_table_realtime = pd.read_csv(realtime_q_table, encoding='utf-8')
-        q_table_realtime.set_index('Unnamed: 0', inplace=True)
+        # q_table_realtime = pd.read_csv(realtime_q_table, encoding='utf-8')
+        # q_table_realtime.set_index('Unnamed: 0', inplace=True)
 
         df_re = pd.read_csv(relation_file_path, encoding='utf-8')
 
         df_co = pd.read_csv(node_info_file_path, encoding='utf-8')
 
         path_1 = check(q_table, df_re, start_point)
-        path_2 = check(q_table_realtime, df_re, start_point)
-
-        if end_point in path_2 and path_1 != path_2:
-            count += 1
-            print('--------------------------')
-            print(start_point, '---->', end_point)
-            print(path_1)
-            print(path_2)
-            print('count:', count)
-            print('**************************')
+        print(path_1)
+        # path_2 = check(q_table_realtime, df_re, start_point)
+        #
+        # if end_point in path_2 and path_1 != path_2:
+        #     count += 1
+        #     print('--------------------------')
+        #     print(start_point, '---->', end_point)
+        #     print(path_1)
+        #     print(path_2)
+        #     print('count:', count)
+        #     print('**************************')
 
         # 画图部分
-        m = folium.Map([31.7750817, 117.3165301], zoom_start=10)
-        coordinate = []
-        for node in path_2:
-            coordinate.append([df_co.iloc[node, 2], df_co.iloc[node, 1]])
-        folium.PolyLine(
-            coordinate,
-            color='blue',
-            radius=8
-        ).add_to(m)
-        s_c = [df_co.iloc[path_2[0], 2], df_co.iloc[path_2[0], 1]]
-        e_c = [df_co.iloc[path_2[len(path_2)-1], 2], df_co.iloc[len(path_2)-1], 1]
+        # m = folium.Map([31.7750817, 117.3165301], zoom_start=10)
+        # coordinate = []
+        # for node in path_2:
+        #     coordinate.append([df_co.iloc[node, 2], df_co.iloc[node, 1]])
+        # folium.PolyLine(
+        #     coordinate,
+        #     color='blue',
+        #     radius=8
+        # ).add_to(m)
+        # s_c = [df_co.iloc[path_2[0], 2], df_co.iloc[path_2[0], 1]]
+        # e_c = [df_co.iloc[path_2[len(path_2)-1], 2], df_co.iloc[len(path_2)-1], 1]
         # folium.Marker(
         #     s_c,
         #
@@ -109,5 +110,5 @@ if __name__ == '__main__':
         #     configuration.START_POINT) + '_' + str(configuration.END_POINT) + '_' + 'q_table.csv'
         # m.save(os.path.join(r'' + os.getcwd() + '/path/', configuration.CITY + '_' + str(
         #     start_point) + '_' + str(end_point) + '_path.html'))
-        m.save(os.path.join(r'' + os.getcwd() + '/path_2th/', configuration.CITY + '_' + str(
-            start_point) + '_' + str(end_point) + '_2th_path.html'))
+        # m.save(os.path.join(r'' + os.getcwd() + '/path_2th/', configuration.CITY + '_' + str(
+        #     start_point) + '_' + str(end_point) + '_2th_path.html'))

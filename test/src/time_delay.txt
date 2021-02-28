@@ -1,0 +1,24 @@
+task_size:200 cpu_clock:0.25
+dijkstra_transfer_avg:640.365921247847 dijkstra_queue_avg:124.00691606413078 dijkstra_process_avg:800.0 dijkstra_delay_avg:1564.372837311976
+random_transfer_avg:636.4802077951838 random_queue_avg:288.15246777742846 random_process_avg:800.0 random_delay_avg:1724.6326755726093
+rl_based_transfer_avg:637.036990922028 rl_based_queue_avg:195.32199618563254 rl_based_process_avg:800.0 rl_based_delay_avg:1632.3589871076604
+
+task_size:300 cpu_clock:0.25
+dijkstra_transfer_avg:960.5488818717738 dijkstra_queue_avg:124.24237661112858 dijkstra_process_avg:1200.0 dijkstra_delay_avg:2284.7912584829114
+random_transfer_avg:954.7306238345243 random_queue_avg:281.45205910091164 random_process_avg:1200.0 random_delay_avg:2436.182682935416
+rl_based_transfer_avg:955.5554863830382 rl_based_queue_avg:191.89574062301335 rl_based_process_avg:1200.0 rl_based_delay_avg:2347.451227006032
+
+task_size:500 cpu_clock:0.25
+dijkstra_transfer_avg:1600.9148031196246 dijkstra_queue_avg:125.01446086136436 dijkstra_process_avg:2000.0 dijkstra_delay_avg:3725.929263980974
+random_transfer_avg:1591.0671592523556 random_queue_avg:283.98113800691607 random_process_avg:2000.0 random_delay_avg:3875.0482972592804
+rl_based_transfer_avg:1592.5924773050676 rl_based_queue_avg:194.89796567069294 rl_based_process_avg:2000.0 rl_based_delay_avg:3787.4904429757707
+
+task_size:200 cpu_clock:0.5
+dijkstra_transfer_avg:640.365921247847 dijkstra_queue_avg:124.33259981138006 dijkstra_process_avg:400.0 dijkstra_delay_avg:1164.6985210592245
+random_transfer_avg:636.402103496024 random_queue_avg:281.74599182646966 random_process_avg:400.0 random_delay_avg:1318.148095322494
+rl_based_transfer_avg:637.036990922028 rl_based_queue_avg:192.88779402415767 rl_based_process_avg:400.0 rl_based_delay_avg:1229.9247849461851
+
+task_size:200 cpu_clock:1
+dijkstra_transfer_avg:640.365921247847 dijkstra_queue_avg:125.02420622445771 dijkstra_process_avg:200.0 dijkstra_delay_avg:965.390127472302
+random_transfer_avg:636.4830266799087 random_queue_avg:282.7283872995913 random_process_avg:200.0 random_delay_avg:1119.2114139795015
+rl_based_transfer_avg:637.036990922028 rl_based_queue_avg:192.4758423394787 rl_based_process_avg:200.0 rl_based_delay_avg:1029.5128332615072
