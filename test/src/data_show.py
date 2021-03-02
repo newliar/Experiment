@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import os
 import pandas as pd
+import numpy as np
 
 # task_size
 # name_list = ['200', '300', '500']
@@ -33,16 +34,21 @@ import pandas as pd
 #             (transfer_time_2_mean + process_time_2_mean)/1000,
 #             (transfer_time_3_mean + process_time_3_mean)/1000]
 #
+# dijkstra = [1564.372837311976/1000, 2284.7912584829114/1000, 3725.929263980974/1000]
+# random = [1724.6326755726093/1000, 2436.182682935416/1000, 3875.0482972592804/1000]
+# rl_based = [1632.3589871076604/1000, 2347.451227006032/1000, 3787.4904429757707/1000]
 #
-# x = list(range(len(num_list)))
-# total_width, n = 0.8, 2
-# width = total_width / n
-# plt.bar(x, num_list, width=width, label='1', tick_label=name_list, fc='b')
+# x = np.arange(3)
+#
+# width = 0.15
+# plt.bar(x, num_list, width=width, label='1', tick_label=name_list, fc='r')
+# plt.bar(x+width, dijkstra, width=width, label='2', tick_label=name_list, fc='y')
+# plt.bar(x+2*width, random, width=width, label='3', tick_label=name_list, fc='g')
+# plt.bar(x+3*width, rl_based, width=width, label='4', tick_label=name_list, fc='b')
 # plt.xlabel('task size(mb)')
 # plt.ylabel('time cost(s)')
-# for i in range(len(x)):
-#     x[i] += width
-# plt.legend(['RLVPP'])
+# plt.legend(['RLVPP', 'dijkstra', 'random', 'rl_based'])
+# plt.xticks(x + 3*width/2, name_list)
 # plt.savefig('./task_size.svg')
 # plt.show()
 
@@ -77,16 +83,21 @@ num_list = [(transfer_time_1_mean + process_time_1_mean)/1000,
             (transfer_time_2_mean + process_time_2_mean)/1000,
             (transfer_time_3_mean + process_time_3_mean)/1000]
 
+dijkstra = [1564.372837311976/1000, 1164.6985210592245/1000, 965.390127472302/1000]
+random = [1724.6326755726093/1000, 1318.148095322494/1000, 1119.2114139795015/1000]
+rl_based = [1632.3589871076604/1000, 1229.9247849461851/1000, 1029.5128332615072/1000]
 
-x = list(range(len(num_list)))
-total_width, n = 0.8, 2
-width = total_width / n
-plt.bar(x, num_list, width=width, label='1', tick_label=name_list, fc='b')
+
+x = np.arange(3)
+width = 0.15
+plt.bar(x, num_list, width=width, label='1', tick_label=name_list, fc='r')
+plt.bar(x+width, dijkstra, width=width, label='2', tick_label=name_list, fc='y')
+plt.bar(x+2*width, random, width=width, label='3', tick_label=name_list, fc='g')
+plt.bar(x+3*width, rl_based, width=width, label='4', tick_label=name_list, fc='b')
 plt.xlabel('cpu clock(Ghz)')
 plt.ylabel('time cost(s)')
-for i in range(len(x)):
-    x[i] += width
-plt.legend(['RLVPP'])
+plt.legend(['RLVPP', 'dijkstra', 'random', 'rl_based'])
+plt.xticks(x + 3*width/2, name_list)
 plt.savefig('./cpu_clock.svg')
 plt.show()
 
