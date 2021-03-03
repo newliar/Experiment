@@ -127,22 +127,21 @@ class Cross_2th:
         # print(tel_delay)
         distance = self.get_distance(state, index)
         # 权重设置
-        total_cost = 0.4*distance+0.1*tel_delay
-        print(total_cost)
-        # print('distance is', distance, 'and tel_delay is', tel_delay, 'and total cost is', total_cost)
+        total_cost = 0.16*distance+0.04*(tel_delay-10)
+        print('distance is', distance, 'and tel_delay is', tel_delay, 'and total cost is', total_cost)
         # 如果到达终点，返回奖励1，并给予完成状态
 
         if s_ == self.end_point:
             reward = 1
             done = True
             s_ = 'end_point'
-            # print('get it')
+            print('get it')
         # 靠近终点正向奖励
         elif distance_2 < distance_3 and angle < 50:
             if total_cost == 0:
                 reward = 0
             else:
-                reward = -1 / total_cost
+                reward = 1 / total_cost
             done = False
         # 远离终点惩罚
         elif distance_2 > distance_3:

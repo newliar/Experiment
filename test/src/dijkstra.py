@@ -5,21 +5,79 @@ import configuration
 
 
 def startwith(start: int, mgraph: list) -> list:
+    # dist = mgraph[start]
+    # dist[start] = 0
+    # path = [0 for _ in range(len(mgraph))]
+    # path[start] = -1
+    # checked = [0 for _ in range(len(mgraph))]
+    # while True:
+    #     pass
     passed = [start]
     nopass = [x for x in range(len(mgraph)) if x != start]
     dis = mgraph[start]
+    print(dis)
     while len(nopass):
         idx = nopass[0]
         for i in nopass:
-            if dis[i] < dis[idx]: idx = i
+            if dis[i] < dis[idx]:
+                idx = i
 
         nopass.remove(idx)
         passed.append(idx)
 
         for i in nopass:
-            if dis[idx] + mgraph[idx][i] < dis[i]: dis[i] = dis[idx] + mgraph[idx][i]
-    print(passed)
+            if dis[idx] + mgraph[idx][i] < dis[i]:
+                dis[i] = dis[idx] + mgraph[idx][i]
+                # seq = (path[idx], str(i))
+                # print(seq)
+                # sym = '-'
+                # path[i] = sym.join(seq)  # 起始点到（当前点的相邻点k）的最短路径，以'-'来连接seq中的两个字符串
     return dis
+
+
+def Dijkstra(mgraph: list, start: int, end: int):
+    path = []
+    n = len(mgraph)
+    fmax = np.inf
+    w = [[0 for i in range(n)]for j in range(n)]
+    book = [0 for i in range(n)]
+    dis = [fmax for i in range(n)]
+    book[start-1] = 1
+    midpath = [-1 for i in range(n)]
+    for i in range(n):
+        for j in range(n):
+            if mgraph[i][j] != 0:
+                w[i][j] = mgraph[i][j]
+            else:
+                w[i][j] = fmax
+            if i == start-1 and mgraph[i][j] != 0:
+                dis[j] = mgraph[i][j]
+    for i in range(n-1):
+        min = fmax
+        for j in range(n):
+            if book[j] == 0 and dis[j] < min:
+                min = dis[j]
+                u = j
+        book[u] = 1
+        for v in range(n):
+            if dis[v] > dis[u] + w[u][v]:
+                dis[v] = dis[u] + w[u][v]
+                midpath[v] = u+1
+    j = end - 1
+    path.append(end)
+    while midpath[j] != -1:
+        path.append(midpath[j])
+        j = midpath[j] - 1
+    path.append(start)
+    path.reverse()
+
+    print(path)
+    print('length: ', len(path))
+    with open("迪杰斯特拉路径.txt", "a") as f:
+        f.write(str(path))
+        f.write('\n')
+    # print(dis)
+    # print(len(dis))
 
 
 if __name__ == "__main__":
@@ -50,12 +108,16 @@ if __name__ == "__main__":
         if bool(1 - pd.isna(row['target_point_four'])):
             map_matrix[index][int(row['target_point_four'])] = row['distance_four']
 
+    # print(map_matrix)
+
     error_point = [750, 240, 189, 155, 199, 485, 306, 457, 380, 626, 116, 461]
     dis_list = []
     for i in range(166, 288):
         np.random.seed(i)
         start_point = np.random.randint(0, 800)
+        end_point = np.random.randint(801, 1725)
         if start_point in error_point:
             continue
-        dis = startwith(start_point, map_matrix)
-        dis_list.append(dis)
+        Dijkstra(map_matrix, start_point, end_point)
+
+

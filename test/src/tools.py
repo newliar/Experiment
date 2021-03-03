@@ -4,7 +4,6 @@ import os
 import pandas as pd
 import numpy as np
 from math import radians, cos, sin, asin, sqrt, atan2, degrees
-from bs4 import BeautifulSoup
 import random
 
 
@@ -147,13 +146,13 @@ def get_angle(degree_A, degree_B):
         return bigger-smaller
 
 
-# 更改css和js文件地址到本地
-def boost_html(file_name):
-    file = open(os.path.dirname(os.getcwd()) + '/dataset/' + file_name, 'rb')
-    html = file.read()
-    bs = BeautifulSoup(html, "html.parser")
-    for item in bs.head.find_all('script'):
-        print(item)
+# # 更改css和js文件地址到本地
+# def boost_html(file_name):
+#     file = open(os.path.dirname(os.getcwd()) + '/dataset/' + file_name, 'rb')
+#     html = file.read()
+#     bs = BeautifulSoup(html, "html.parser")
+#     for item in bs.head.find_all('script'):
+#         print(item)
 
 
 def get_cross_info(cross_info_df):

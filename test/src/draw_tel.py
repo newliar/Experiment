@@ -3,7 +3,7 @@ import folium
 import pandas as pd
 import os
 
-file_path = os.path.dirname(os.getcwd()) + '//dataset//HF_5G_station.xls'
+file_path = os.path.dirname(os.getcwd()) + '//dataset//HF_BH_tel_station.xls'
 df = pd.read_excel(file_path)
 
 map = folium.Map([31.75, 117.29], zoom_start=13)

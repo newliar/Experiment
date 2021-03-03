@@ -3,6 +3,7 @@ import pandas as pd
 import configuration
 import os
 import traceback
+import folium
 
 
 def check(q_table, df_re, start_point):
@@ -29,22 +30,25 @@ def check(q_table, df_re, start_point):
                 break
 
     except:
-        print('---------------------')
-        print(start_point, '------>', end_point)
-        print('current point is', current_point)
-        print('action is', action)
-        print('next point is', next_point)
-        print('path is', path)
+        # print('---------------------')
+        # print(start_point, '------>', end_point)
+        # print('current point is', current_point)
+        # print('action is', action)
+        # print('next point is', next_point)
+        # print('path is', path)
         traceback.print_exc()
     # if end_point not in path:
-        # print(path)
-        # print(start_point, '----->', end_point, 'not contain end_point')
+    #     print(path)
+    #     print(start_point, '----->', end_point, 'not contain end_point')
 
     return path
 
 
 if __name__ == '__main__':
     error_point = [750, 240, 189, 155, 199, 485, 306, 457, 380, 626, 116, 461]
+    # error_point = [256, 512, 768, 3, 5, 778, 138, 779, 655, 786, 789, 793, 155, 34, 675, 420, 293, 424, 169, 428, 301,
+    #                173, 431, 49, 306, 182, 439, 701, 189, 65, 322, 199, 456, 457, 461, 725, 599, 345, 732, 734, 351,
+    #                98, 485, 742, 104, 490, 620, 750, 240, 753, 626, 116, 380]
     count = 0
     for i in range(166, 288):
         np.random.seed(i)
@@ -64,7 +68,7 @@ if __name__ == '__main__':
 
         node_info_file_path = os.path.dirname(os.getcwd()) + "/dataset/" + configuration.CITY + '_public_node_info_.csv'
 
-        q_table = pd.read_csv(realtime_file_path, encoding='utf-8')
+        q_table = pd.read_csv(static_file_path, encoding='utf-8')
         q_table.set_index('Unnamed: 0', inplace=True)
 
         q_table_realtime = pd.read_csv(realtime_file_path, encoding='utf-8')
@@ -85,3 +89,26 @@ if __name__ == '__main__':
             print(path_2)
             print('count:', count)
             print('**************************')
+
+            # 画图部分
+            m = folium.Map([31.7750817, 117.3165301], zoom_start=10)
+            coordinate = []
+            for node in path_2:
+                coordinate.append([df_co.iloc[node, 2], df_co.iloc[node, 1]])
+            folium.PolyLine(
+                coordinate,
+                color='blue',
+                radius=8
+            ).add_to(m)
+            s_c = [df_co.iloc[path_2[0], 2], df_co.iloc[path_2[0], 1]]
+            e_c = [df_co.iloc[path_2[len(path_2) - 1], 2], df_co.iloc[len(path_2) - 1], 1]
+            # folium.Marker(
+            #     s_c,
+            #
+            # )
+            #     os.getcwd() + "/table/" + configuration.CITY + '_' + str(
+            #     configuration.START_POINT) + '_' + str(configuration.END_POINT) + '_' + 'q_table.csv'
+            # m.save(os.path.join(r'' + os.getcwd() + '/path/', configuration.CITY + '_' + str(
+            #     start_point) + '_' + str(end_point) + '_path.html'))
+            m.save(os.path.join(r'' + os.getcwd() + '/path_2th/', configuration.CITY + '_' + str(
+                start_point) + '_' + str(end_point) + '_2th_path.html'))
