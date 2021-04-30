@@ -8,7 +8,16 @@ import random
 
 
 def get_queue_time() -> int:
-    return random.randint(0, 10)
+    return random.randint(0, 50)
+
+
+def get_real_queue(df_tel, tel) -> int:
+    if df_tel[df_tel['index'].isin([tel])].empty:
+        return 20
+    else:
+        tel = random.choice(list(map(int, df_tel['delay'].loc[df_tel.loc[df_tel['index'] == tel].index[0]][1:-1].split(','))))
+        print(tel)
+        return tel
 
 
 def get_process_time(task_size: int, tel_num: int) -> int:
@@ -31,8 +40,8 @@ class Choose:
         state_lat = self.node_info_file.loc[state].loc['lat']
         tel_lon = self.tel_station_file.loc[tel_num].loc['lon']
         tel_lat = self.tel_station_file.loc[tel_num].loc['lat']
-        # tel_index = self.tel_station_file.loc[tel_num].loc['index']
         distance = tools.geodistance(state_lon, state_lat, tel_lon, tel_lat)
+        print(distance)
         x_1 = math.log(distance, 10)
         transfer_speed = 20 * math.log(1 + (0.5 * (127 + 30 * math.log(distance, 10))) / 0.002, 2)
         transfer_time = task_size/transfer_speed*1000

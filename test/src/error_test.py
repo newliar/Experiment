@@ -6,7 +6,10 @@ import numpy as np
 import pandas as pd
 import traceback
 
-error_list = [750,  240,  189, 155, 199,  485, 306, 457,  380,  626,  116, 461]
+# error_list = [485, 199, 457, 461, 750, 240, 306, 626, 116, 155, 380, 189]
+# error_list = [34, 301, 461, 240, 306, 626, 380]
+error_list = [512, 5, 138, 779, 280, 155, 34, 675, 420, 424, 301, 430, 306, 439, 701, 189, 317, 63, 322, 199, 457, 461,
+              589, 725, 215, 599, 345, 732, 351, 609, 485, 620, 240, 626, 380]
 for i in range(166, 288):
     # 随机种子，保证和第一次训练是相同的
     np.random.seed(i)
@@ -16,10 +19,10 @@ for i in range(166, 288):
     end_point = np.random.randint(801, 1725)
 
     # 读取第一次q_table和第二次q_table
-    table_file_path = os.getcwd() + "/table/" + configuration.CITY + '_' + str(
+    table_file_path = os.getcwd() + "/table_0.9/" + configuration.CITY + '_' + str(
         start_point) + '_' + str(end_point) + '_q_table.csv'
-    realtime_q_table = os.getcwd() + "/table_realtime/" + configuration.CITY + '_' + str(
-        start_point) + '_' + str(end_point) + '_realtime_q_table.csv'
+    # realtime_q_table = os.getcwd() + "/table_realtime/" + configuration.CITY + '_' + str(
+    #     start_point) + '_' + str(end_point) + '_realtime_q_table.csv'
 
     # 节点关系信息
     relation_file_path = os.path.dirname(
@@ -32,8 +35,8 @@ for i in range(166, 288):
     q_table = pd.read_csv(table_file_path, encoding='utf-8')
     q_table.set_index('Unnamed: 0', inplace=True)
 
-    q_table_realtime = pd.read_csv(realtime_q_table, encoding='utf-8')
-    q_table_realtime.set_index('Unnamed: 0', inplace=True)
+    # q_table_realtime = pd.read_csv(realtime_q_table, encoding='utf-8')
+    # q_table_realtime.set_index('Unnamed: 0', inplace=True)
 
     df_re = pd.read_csv(relation_file_path, encoding='utf-8')
 
@@ -42,12 +45,12 @@ for i in range(166, 288):
     current_point = start_point
     path = []
     try:
-        for i in range(len(q_table_realtime)):
+        for i in range(len(q_table)):
             # 路径数组
             path.append(current_point)
 
             # 根据node_id获得其value值 返回Series
-            action_list = q_table_realtime.loc[str(current_point)]
+            action_list = q_table.loc[str(current_point)]
 
             # 返回q_table中value值最大的索引
             action = action_list.astype(float).idxmax()

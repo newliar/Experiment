@@ -32,5 +32,5 @@ if __name__ == "__main__":
 
     # 第二次更新，基站延迟随机
     ur = UpdateRealtime(ACTIONS, df_re, df_co, x, y, cross_relation, cross_info, next_state_list, distance_list,
-                        action_list, tel_list, df_tel)
+                        action_list, tel_list, df_tel, configuration.Omega)
     UpdateRealtime.update_realtime(ur)

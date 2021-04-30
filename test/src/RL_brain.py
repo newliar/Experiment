@@ -34,6 +34,7 @@ class QLearningTable:
             # 随机选择一个当前state的可用action，并返回其action的index
             action = np.random.choice(self.actions[0:length])
             index = self.actions.index(action)
+        # print('observation:', observation, 'index:', index)
         return index
 
     def learn(self, s, i, r, s_, flag):
@@ -47,7 +48,11 @@ class QLearningTable:
         self.check_state_exist(s_)
         q_predict = self.q_table.loc[s, self.actions[i]]
         if s_ != 'terminal':
+            # if s_ == '29' or s_ == '77':
+            #     print(self.q_table.loc[s_, :])
+            #     print(self.gamma * self.q_table.loc[s_, :].max())
             q_target = r + self.gamma * self.q_table.loc[s_, :].max()
+            # print(q_target)
         else:
             q_target = r
         self.q_table.loc[s, self.actions[i]] += self.lr * (q_target - q_predict)
@@ -57,6 +62,7 @@ class QLearningTable:
     # 查看此状态是否存在于Q表，不在即添加
     def check_state_exist(self, state):
         if state not in self.q_table.index:
+            # print('c')
             self.q_table = self.q_table.append(
                 pd.Series(
                     [0] * len(self.actions),

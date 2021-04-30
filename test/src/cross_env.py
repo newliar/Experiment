@@ -1,5 +1,8 @@
 import tools
 import traceback
+import configuration
+
+from RL_brain import QLearningTable
 
 
 class Cross:
@@ -34,7 +37,7 @@ class Cross:
             print('#########')
             print(traceback.format_exc())
 
-    def step(self, state, index):
+    def step(self, state, index, prior_state):
         s_ = self.get_next_state(state, index)
 
         # 获得终点相对于起点的方位角
@@ -92,17 +95,21 @@ class Cross:
 
         tel_list = self.get_tels(state, index)
 
-        total_cost = 0.8*self.get_distance(state, index) + 0.2*20*10
+        total_cost = configuration.Omega*self.get_distance(state, index) + (1-configuration.Omega)*20*10
 
+        if s_ == prior_state:
+            # print("loop s_:", s_, "<--> prior_state:", prior_state)
+            reward = -0.1
+            done = False
         # 如果到达终点，返回奖励1，并给予完成状态
-        if s_ == self.end_point:
+        elif s_ == self.end_point:
             reward = 1
             done = True
             s_ = 'end_point'
             print('get it')
         # 靠近终点正向奖励
         elif distance_2 < distance_3 and angle < 50:
-            reward = 1 / total_cost
+            reward = -1 / total_cost
             done = False
         # 远离终点惩罚
         elif distance_2 > distance_3:

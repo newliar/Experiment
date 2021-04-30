@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 
 import configuration
 from RL_brain import QLearningTable
+import tools
 from cross_env import Cross
 
 
@@ -33,16 +34,25 @@ class UpdateStatic:
             # update block
             time_start = time.time()
             for episode in range(100):
+                # import SA
+                T = 1000
+                epsilon, T = tools.SA(T, episode, 100, 0.95)
+                RL.epsilon = epsilon
+                if epsilon > 1:
+                    print("yes")
+                print(epsilon)
                 episode_start_time = time.time()
                 plt.ion()
                 observation = env.start_point
-                # if episode >= 30:
-                #     RL.epsilon = 1.0
+                prior_state = observation
                 while True:
                     index = RL.choose_action(observation, env, 1)
 
-                    observation_, reward, done = env.step(observation, index)
+                    observation_, reward, done = env.step(observation, index, prior_state)
 
+                    # print("observation_:", observation_, "observation:", observation, "prior_state:", prior_state)
+
+                    # 画图可视化
                     # plt.clf()
                     # plt.scatter(self.x[start_point], self.y[start_point], marker='o', s=100, label='start_point', c='yellow')
                     # plt.scatter(self.x[end_point], self.y[end_point], marker='^', s=100, label='end_point', c='yellow')
@@ -57,7 +67,9 @@ class UpdateStatic:
                     # plt.ioff()
 
                     q_table = RL.learn(observation, index, reward, observation_, 1)
+                    # print(q_table.loc[observation_])
 
+                    prior_state = observation
                     observation = observation_
                     current_time = time.time()
                     if current_time - episode_start_time > 60:
@@ -72,5 +84,7 @@ class UpdateStatic:
 
             time_end = time.time()
             print('totally completely, time cost:', time_end - time_start)
-            q_table.to_csv(os.getcwd() + '/table/' + configuration.CITY + '_' + str(start_point) + '_' + str(
-                end_point) + '_' + 'q_table.csv', encoding="utf-8")
+            if 1 - bool(os.path.exists(os.getcwd() + '/table_' + str(configuration.Omega))):
+                os.makedirs(os.getcwd() + '/table_' + str(configuration.Omega))
+            q_table.to_csv(os.getcwd() + '/table_' + str(configuration.Omega) + '/' + configuration.CITY + '_' +
+                           str(start_point) + '_' + str(end_point) + '_' + 'q_table.csv', encoding="utf-8")

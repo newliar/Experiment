@@ -2,31 +2,31 @@ import matplotlib.pyplot as plt
 import folium
 import pandas as pd
 import os
+import numpy as np
 
-file_path = os.path.dirname(os.getcwd()) + '//dataset//HF_BH_tel_station.xls'
-df = pd.read_excel(file_path)
+file_path = os.path.dirname(os.getcwd()) + '//dataset//基站信息.csv'
+df = pd.read_csv(file_path)
 
 map = folium.Map([31.75, 117.29], zoom_start=13)
-
+tel_list = np.array(df).tolist()
 i = 0
-for index, row in df.iterrows():
-    if 117.2111 <= row['扇区经度'] <= 117.3731 and 31.6906 <= row['扇区纬度'] <= 31.8079:
+for tel in tel_list:
         i += 1
-        coordinate = [row['扇区纬度'], row['扇区经度']]
+        coordinate = [tel[3], tel[2]]
         # 地图显示
-        folium.Circle(
-            coordinate,
-            color='#123456',
-            fill_color='#123456',
-            radius=400,
-            fill=True
-        ).add_to(map)
-        # folium.Marker(
+        # folium.Circle(
         #     coordinate,
         #     color='#123456',
-        #     radius=8
+        #     fill_color='#123456',
+        #     radius=400,
+        #     fill=True
         # ).add_to(map)
-        # print(i, index, row['扇区经度'], row['扇区纬度'])
+        folium.Marker(
+            coordinate,
+            color='#123456',
+            radius=8
+        ).add_to(map)
+        print(i, tel[3], tel[2])
 map.save(os.path.join(r'' + os.path.dirname(os.getcwd()) + '/dataset/', 'HF_BH_tel_station_node.html'))
 
 # location_ = df.values

@@ -5,6 +5,7 @@ import pandas as pd
 import numpy as np
 from math import radians, cos, sin, asin, sqrt, atan2, degrees
 import random
+import math
 
 
 # 画两条线段
@@ -111,7 +112,7 @@ def geodistance(lonA, latA, lonB, latB):
     dlat = latB - latA
     a = sin(dlat / 2) ** 2 + cos(latA) * cos(latB) * sin(dlon / 2) ** 2
     distance = 2 * asin(sqrt(a)) * 6371 * 1000  # 地球平均半径，6371km
-    distance = round(distance, 3)
+    distance = round(distance/1000, 3)
     return distance
 
 
@@ -224,3 +225,11 @@ def get_details(cross_info):
 
     return next_state_list, distance_list, action_list, tel_list
 
+
+def SA(prior: int, k: int, episode: int, lamda: int) -> int:
+    if k < episode:
+        epsilon = math.exp(-(episode-k)/prior)
+    else:
+        epsilon = 1
+    temperature = lamda * prior
+    return epsilon, temperature

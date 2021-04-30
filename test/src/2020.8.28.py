@@ -7,7 +7,6 @@ import folium
 import cross as cr
 import tools
 import configuration as conf
-import t_file
 import configuration
 
 
@@ -221,7 +220,6 @@ if __name__ == "__main__":
 
 
 
-    # t_file.draw_node_by_name(coordinate_info)
 
 
     # 获得公共点

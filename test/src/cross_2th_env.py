@@ -8,7 +8,7 @@ import configuration
 
 
 class Cross_2th:
-    def __init__(self, next_state_list, action_list, distance_list, start_point, end_point, cross_info, tel_list, df_tel, n_states=1724):
+    def __init__(self, next_state_list, action_list, distance_list, start_point, end_point, cross_info, tel_list, df_tel, omega, n_states=1724):
         self.next_state_list = next_state_list
         self.action_list = action_list
         self.distance_list = distance_list
@@ -18,11 +18,13 @@ class Cross_2th:
         self.tel_list = tel_list
         self.n_states = n_states
         self.df_tel = df_tel
+        self.omega = omega
 
     def get_next_states(self, state):
         return self.next_state_list[state]
 
     def get_next_state(self, state, index):
+        # print(self.next_state_list[state])
         return self.next_state_list[state][index]
 
     def get_distance(self, state, index):
@@ -42,8 +44,9 @@ class Cross_2th:
             print('#########')
             print(traceback.format_exc())
 
-    def step_2th(self, state, index):
+    def step_2th(self, state, index, prior_state):
         s_ = self.get_next_state(state, index)
+        # print('s_:', s_)
 
         # 获得终点相较于当前状态的方位角
         azimuth_4 = tools.getDegree(self.cross_info[state][1], self.cross_info[state][2],
@@ -103,7 +106,9 @@ class Cross_2th:
             tel_delay = 999999
             for tel in tel_list:
                 transfer_time = ch.get_transfer_time(configuration.TASK_SIZE, state, int(tel))
-                queue_time = choose_tel.get_queue_time()
+                # queue_time = choose_tel.get_queue_time()
+                # print(tel_list)
+                queue_time = choose_tel.get_real_queue(df_tel=self.df_tel, tel=int(tel))
                 process_time = choose_tel.get_process_time(configuration.TASK_SIZE, int(tel))
                 if tel_delay > transfer_time + queue_time + process_time:
                     tel_delay = transfer_time + queue_time + process_time
@@ -127,15 +132,19 @@ class Cross_2th:
         # print(tel_delay)
         distance = self.get_distance(state, index)
         # 权重设置
-        total_cost = 0.16*distance+0.04*(tel_delay-10)
-        print('distance is', distance, 'and tel_delay is', tel_delay, 'and total cost is', total_cost)
+        total_cost = self.omega/5*distance+(1-self.omega)/5*(tel_delay-10)
+        # print(total_cost)
+        # print('distance is', distance, 'and tel_delay is', tel_delay, 'and total cost is', total_cost)
         # 如果到达终点，返回奖励1，并给予完成状态
-
-        if s_ == self.end_point:
+        if s_ == prior_state:
+            # print("loop s_:", s_, "<--> prior_state:", prior_state)
+            reward = -0.5
+            done = False
+        elif s_ == self.end_point:
             reward = 1
             done = True
             s_ = 'end_point'
-            print('get it')
+            # print('get it')
         # 靠近终点正向奖励
         elif distance_2 < distance_3 and angle < 50:
             if total_cost == 0:
