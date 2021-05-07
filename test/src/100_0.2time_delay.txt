@@ -1,0 +1,50 @@
+task_size:100 cpu_clock:0.2
+dijkstra_transfer_avg:238.93347539307877 dijkstra_queue_avg:502.7653157398681 dijkstra_process_avg:500.0 dijkstra_delay_avg:1241.6987911329572
+random_transfer_avg:235.25711152292868 random_queue_avg:516.1979264844487 random_process_avg:500.0 random_delay_avg:1251.4550380073883
+rl_based_transfer_avg:235.05541450879426 rl_based_queue_avg:530.2761904761904 rl_based_process_avg:500.0 rl_based_delay_avg:1265.331604985003
+
+task_size:100 cpu_clock:0.2
+dijkstra_transfer_avg:238.93347539307877 dijkstra_queue_avg:498.6578699340245 dijkstra_process_avg:500.0 dijkstra_delay_avg:1237.5913453271135
+random_transfer_avg:235.9002583067133 random_queue_avg:518.1295947219604 random_process_avg:500.0 random_delay_avg:1254.029853028686
+rl_based_transfer_avg:235.05541450879426 rl_based_queue_avg:525.2619047619048 rl_based_process_avg:500.0 rl_based_delay_avg:1260.317319270719
+
+task_size:100 cpu_clock:0.2
+dijkstra_transfer_avg:238.93347539307877 dijkstra_queue_avg:499.3444863336475 dijkstra_process_avg:500.0 dijkstra_delay_avg:1238.2779617267367
+random_transfer_avg:234.59305606287018 random_queue_avg:527.1993402450519 random_process_avg:500.0 random_delay_avg:1261.7923963079345
+rl_based_transfer_avg:235.05541450879426 rl_based_queue_avg:538.0470588235294 rl_based_process_avg:500.0 rl_based_delay_avg:1273.1024733323402
+
+task_size:100 cpu_clock:0.2
+dijkstra_transfer_avg:238.93347539307877 dijkstra_queue_avg:498.82327992459943 dijkstra_process_avg:500.0 dijkstra_delay_avg:1237.7567553176893
+random_transfer_avg:235.2440985578765 random_queue_avg:679.6498586239397 random_process_avg:500.0 random_delay_avg:1414.8939571818385
+rl_based_transfer_avg:235.05541450879426 rl_based_queue_avg:527.6495798319328 rl_based_process_avg:500.0 rl_based_delay_avg:1262.7049943407462
+
+task_size:100 cpu_clock:0.2
+dijkstra_transfer_avg:238.93347539307877 dijkstra_queue_avg:515.3279924599434 dijkstra_process_avg:500.0 dijkstra_delay_avg:1254.2614678530338
+random_transfer_avg:236.66928227345704 random_queue_avg:525.0296889726673 random_process_avg:500.0 random_delay_avg:1261.6989712461352
+rl_based_transfer_avg:235.05541450879426 rl_based_queue_avg:528.0282913165266 rl_based_process_avg:500.0 rl_based_delay_avg:1263.0837058253394
+
+task_size:100 cpu_clock:0.2
+dijkstra_transfer_avg:238.93347539307877 dijkstra_queue_avg:498.1781338360038 dijkstra_process_avg:500.0 dijkstra_delay_avg:1237.1116092290927
+random_transfer_avg:234.8065904678482 random_queue_avg:538.3077285579642 random_process_avg:500.0 random_delay_avg:1273.114319025823
+rl_based_transfer_avg:235.05541450879426 rl_based_queue_avg:516.9316526610644 rl_based_process_avg:500.0 rl_based_delay_avg:1251.9870671698784
+
+task_size:100 cpu_clock:0.2
+dijkstra_transfer_avg:238.93347539307877 dijkstra_queue_avg:502.9787935909519 dijkstra_process_avg:500.0 dijkstra_delay_avg:1241.9122689840412
+random_transfer_avg:233.69696260829127 random_queue_avg:523.9090480678605 random_process_avg:500.0 random_delay_avg:1257.6060106761638
+rl_based_transfer_avg:235.05541450879426 rl_based_queue_avg:526.4016806722689 rl_based_process_avg:500.0 rl_based_delay_avg:1261.457095181081
+
+task_size:100 cpu_clock:0.2
+dijkstra_transfer_avg:238.93347539307877 dijkstra_queue_avg:498.5612629594722 dijkstra_process_avg:500.0 dijkstra_delay_avg:1237.4947383525612
+random_transfer_avg:237.2119977064141 random_queue_avg:510.0885956644675 random_process_avg:500.0 random_delay_avg:1247.300593370892
+rl_based_transfer_avg:235.05541450879426 rl_based_queue_avg:522.184593837535 rl_based_process_avg:500.0 rl_based_delay_avg:1257.2400083463488
+
+task_size:100 cpu_clock:0.2
+dijkstra_transfer_avg:238.93347539307877 dijkstra_queue_avg:502.96371347785106 dijkstra_process_avg:500.0 dijkstra_delay_avg:1241.8971888709407
+random_transfer_avg:236.17795957098923 random_queue_avg:682.1262959472197 random_process_avg:500.0 random_delay_avg:1418.304255518232
+rl_based_transfer_avg:235.05541450879426 rl_based_queue_avg:531.3397759103641 rl_based_process_avg:500.0 rl_based_delay_avg:1266.3951904191758
+
+task_size:100 cpu_clock:0.2
+dijkstra_transfer_avg:238.93347539307877 dijkstra_queue_avg:505.47973609802074 dijkstra_process_avg:500.0 dijkstra_delay_avg:1244.4132114911101
+random_transfer_avg:235.44350538307316 random_queue_avg:530.0160226201697 random_process_avg:500.0 random_delay_avg:1265.4595280032545
+rl_based_transfer_avg:235.05541450879426 rl_based_queue_avg:516.2655462184874 rl_based_process_avg:500.0 rl_based_delay_avg:1251.320960727302
+

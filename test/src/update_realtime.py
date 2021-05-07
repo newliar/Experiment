@@ -75,7 +75,7 @@ class UpdateRealtime:
 
             RL = QLearningTable(self.actions)
 
-            RL.gamma = 1
+            RL.gamma = configuration.VEHICLE_POWER
             # print(self.omega)
             # 贪心策略设置为1
             # RL.epsilon = 0.95

@@ -94,6 +94,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\test\src\dijkstra.py">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\test\src\draw_node.py">
           <value>
             <Attribute>
@@ -115,6 +122,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\test\src\gamma.py">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\test\src\main_fun.py">
           <value>
             <Attribute>
@@ -123,6 +137,13 @@
           </value>
         </entry>
         <entry key="\test\src\merge_tel_and_cross.py">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\test\src\result.py">
           <value>
             <Attribute>
               <option name="separator" value="," />

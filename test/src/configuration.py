@@ -15,8 +15,8 @@ TASK_SIZE = 100
 CPU_CLOCK = 0.1
 
 # 汽车发射功率(0.5W,1W,5W)
-VEHICLE_POWER = 666
+VEHICLE_POWER = 1
 
-Omega = 0.9
+Omega = 0.8
 
 

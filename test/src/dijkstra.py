@@ -36,37 +36,51 @@ def startwith(start: int, mgraph: list) -> list:
 
 
 def Dijkstra(mgraph: list, start: int, end: int):
+    # start-end的最短路径
     path = []
+    # 邻接矩阵维度，即节点个数
     n = len(mgraph)
     fmax = np.inf
+    # 邻接矩阵转化成维度矩阵，即0→max
     w = [[0 for i in range(n)]for j in range(n)]
+    # 是否已经是最小的标记列表
     book = [0 for i in range(n)]
+    # start到其他节点的最小距离
     dis = [fmax for i in range(n)]
-    book[start-1] = 1
+    # 节点编号从start开始，列表序号从0开始
+    book[start] = 1
+    # 上一跳列表
     midpath = [-1 for i in range(n)]
     for i in range(n):
         for j in range(n):
             if mgraph[i][j] != 0:
+                # 0→max
                 w[i][j] = mgraph[i][j]
             else:
                 w[i][j] = fmax
-            if i == start-1 and mgraph[i][j] != 0:
+            # 直连的节点最小距离就是network[i][j]
+            if i == start and mgraph[i][j] != 0:
                 dis[j] = mgraph[i][j]
+    # n-1次遍历，除了start节点
     for i in range(n-1):
         min = fmax
         for j in range(n):
+            # 如果未遍历且距离最小
             if book[j] == 0 and dis[j] < min:
                 min = dis[j]
                 u = j
         book[u] = 1
+        # u直连的节点遍历一遍
         for v in range(n):
             if dis[v] > dis[u] + w[u][v]:
                 dis[v] = dis[u] + w[u][v]
                 midpath[v] = u+1
-    j = end - 1
+    # j是序号
+    j = end
+    # 因为存储的是上一跳，所以先加入目的节点d，最后倒置
     path.append(end)
     while midpath[j] != -1:
-        path.append(midpath[j])
+        path.append(midpath[j]-1)
         j = midpath[j] - 1
     path.append(start)
     path.reverse()
@@ -76,7 +90,8 @@ def Dijkstra(mgraph: list, start: int, end: int):
     with open("迪杰斯特拉路径.txt", "a") as f:
         f.write(str(path))
         f.write('\n')
-    # print(dis)
+
+    return dis
     # print(len(dis))
 
 
@@ -110,14 +125,20 @@ if __name__ == "__main__":
 
     # print(map_matrix)
 
-    error_point = [750, 240, 189, 155, 199, 485, 306, 457, 380, 626, 116, 461]
+    error_point = [512, 5, 138, 779, 280, 155, 34, 675, 420, 424, 301, 430, 306, 439, 701, 189, 317, 63, 322, 199,
+                   457, 461, 589, 725, 215, 599, 345, 732, 351, 609, 485, 620, 240, 626, 380]
     dis_list = []
+    s_e_d = []
     for i in range(166, 288):
         np.random.seed(i)
         start_point = np.random.randint(0, 800)
         end_point = np.random.randint(801, 1725)
         if start_point in error_point:
             continue
-        Dijkstra(map_matrix, start_point, end_point)
+        print(start_point, end_point)
+        dis = Dijkstra(map_matrix, start_point, end_point)
+        s_e_d.append([start_point, end_point, dis[end_point]])
+    distance_info = pd.DataFrame(s_e_d, columns=['start_point', 'end_point', 'distance'])
+    distance_info.to_csv('./迪杰斯特拉距离.csv')
 
 

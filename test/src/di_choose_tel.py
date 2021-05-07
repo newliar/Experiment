@@ -28,6 +28,10 @@ for line in lines:
     paths.append(arr)
 f.close()
 
+for path in paths:
+    length = 0
+    print(path)
+
 # 获取节点旁基站
 tel_list = []
 for path in paths:
@@ -50,6 +54,9 @@ for path in paths:
 
 data = []
 delay_file = str(configuration.TASK_SIZE)+'_'+str(configuration.CPU_CLOCK)+'time_delay.txt'
+dijkstra_delay = 0
+random_delay = 0
+rl_based_delay = 0
 for idx in range(10):
     data_line = []
     # ①迪杰斯特拉
@@ -111,7 +118,7 @@ for idx in range(10):
                                              df_tel.loc[df_tel.loc[df_tel['index'] == dijkstra_choose_tel_list[i][j]].index[0]]['lon'],
                                              df_tel.loc[df_tel.loc[df_tel['index'] == dijkstra_choose_tel_list[i][j]].index[0]]['lat'])
                 print(distance)
-                transfer_speed = 3500 * math.log(1 + (0.5 * (127 + 30 * math.log(distance, 10))) / 0.002, 2)
+                transfer_speed = 20 * math.log(1 + (0.5 * (127 + 30 * math.log(distance, 10))) / 0.002, 2)
                 transfer_time = configuration.TASK_SIZE / transfer_speed * 1000
                 # 最近优先会导致队列延迟增大
                 queue_time = choose_tel.get_real_queue(df_tel, tel)
@@ -144,6 +151,7 @@ for idx in range(10):
     data_line.append(str(dijkstra_queue_avg))
     data_line.append(str(dijkstra_process_avg))
     data_line.append(str(dijkstra_delay_avg))
+    dijkstra_delay += dijkstra_delay_avg
 
     # ②随机选择基站
     random_choose_tel_list = []
@@ -216,6 +224,7 @@ for idx in range(10):
     data_line.append(str(random_queue_avg))
     data_line.append(str(random_process_avg))
     data_line.append(str(random_delay_avg))
+    random_delay += random_delay_avg
 
     # ③RL-Based路径规划算法
     def check(q_table, df_re, start_point):
@@ -357,7 +366,9 @@ for idx in range(10):
     data_line.append(str(rl_based_process_avg))
     data_line.append(str(rl_based_delay_avg))
     data.append(data_line)
+    rl_based_delay += rl_based_delay_avg
 df_data = pd.DataFrame(data, columns=('dijkstra_transfer_avg', 'dijkstra_queue_avg:', 'dijkstra_process_avg', 'dijkstra_delay_avg',
                                           'random_transfer_avg', 'random_queue_avg', 'random_process_avg', 'random_delay_avg',
                                           'rl_based_transfer_avg', 'rl_based_queue_avg', 'rl_based_process_avg', 'rl_based_delay_avg'))
 df_data.to_csv(os.path.dirname(os.getcwd()) + "/dataset/" + str(configuration.TASK_SIZE)+'_'+str(configuration.CPU_CLOCK)+'time_delay.csv', encoding='utf-8')
+print('dijkstra_delay', dijkstra_delay/10, 'random_delay', random_delay/10, 'rl_based_delay', rl_based_delay/10)
